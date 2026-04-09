@@ -1,4 +1,3 @@
-const auth = require("./middleware/auth");
 require("dotenv").config();
 
 const express = require("express");
@@ -6,6 +5,8 @@ const cors = require("cors");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./api/auth");
+const auth = require("./middleware/auth");
+const admin = require("./middleware/admin");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,11 @@ app.get("/", (req, res) => {
 app.get("/api/protected", auth, (req, res) => {
   res.json({ message: "Protected route working", user: req.user });
 });
+
+app.get("/api/admin", auth, admin, (req, res) => {
+  res.json({ message: "Admin route working" });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
