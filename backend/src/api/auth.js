@@ -19,7 +19,14 @@ router.post("/register", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = new User({ email, password: hashedPassword });
+  const isFirstUser = (await User.countDocuments()) === 0;
+
+  const user = new User({
+    email,
+    password: hashedPassword,
+    role: isFirstUser ? "admin" : "staff"
+  });
+
   await user.save();
 
   res.json({ message: "User registered" });
@@ -45,12 +52,16 @@ router.post("/login", async (req, res) => {
   }
 
   const token = jwt.sign(
-    { id: user._id },
+    { id: user._id, role: user.role },
     process.env.JWT_SECRET || "secret",
     { expiresIn: "7d" }
   );
 
-  res.json({ message: "Login successful", token });
+  res.json({
+    message: "Login successful",
+    token,
+    role: user.role
+  });
 });
 
 module.exports = router;
