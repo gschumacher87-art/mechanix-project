@@ -1,3 +1,4 @@
+const auth = require("./middleware/auth");
 require("dotenv").config();
 
 const express = require("express");
@@ -20,6 +21,9 @@ app.get("/", (req, res) => {
   res.send("Mechanix API running");
 });
 
+app.get("/api/protected", auth, (req, res) => {
+  res.json({ message: "Protected route working", user: req.user });
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
