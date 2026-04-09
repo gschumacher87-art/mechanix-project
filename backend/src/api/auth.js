@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+const User = require("../models/User");
+
 let users = [];
 
 router.post("/register", (req, res) => {
   const { email, password } = req.body;
 
-  users.push({ email, password });
+  const newUser = new User(email, password);
+  users.push(newUser);
 
   res.json({ message: "User registered" });
 });
