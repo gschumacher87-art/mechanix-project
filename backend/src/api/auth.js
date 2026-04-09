@@ -3,6 +3,7 @@ const router = express.Router();
 
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
@@ -43,7 +44,13 @@ router.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  res.json({ message: "Login successful" });
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET || "secret",
+    { expiresIn: "7d" }
+  );
+
+  res.json({ message: "Login successful", token });
 });
 
 module.exports = router;
