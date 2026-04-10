@@ -185,17 +185,7 @@ async function addCustomer() {
     loadCustomers();
 }
 
-async function loadVehicles() {
-    const res = await fetch(API + "/vehicles");
-    const data = await res.json();
 
-    let options = "";
-    data.forEach(v => {
-        options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-    });
-
-    jobVehicle.innerHTML = options;
-}
 async function createJob() {
     const res = await fetch(API + "/jobs", {
         method:"POST",
@@ -206,7 +196,23 @@ async function createJob() {
             vehicle: jobVehicle.value
         })
     });
+async function loadVehicles(customerId = null) {
+    const res = await fetch(API + "/vehicles");
+    const data = await res.json();
 
+    let options = "";
+
+    data.forEach(v => {
+
+        // 🔥 FILTER BY CUSTOMER
+        if (!customerId || v.customer === customerId) {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        }
+
+    });
+
+    jobVehicle.innerHTML = options;
+}
     const newJob = await res.json();
 
     jobTitle.value = "";
