@@ -301,6 +301,8 @@ function renderJob() {
     let photos = "";
     currentJob.photos?.other?.forEach(p => photos += `<img src="${p}">`);
     photoList.innerHTML = photos;
+
+    jobNotes.value = currentJob.notes || "";
 }
 
 function uploadPhoto(e) {
