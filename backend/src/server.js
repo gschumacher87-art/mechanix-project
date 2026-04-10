@@ -6,6 +6,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./api/auth");
 const customerRoutes = require("./api/customers");
+const jobRoutes = require("./api/jobs");
 const auth = require("./middleware/auth");
 const admin = require("./middleware/admin");
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
+app.use("/api/jobs", jobRoutes);
 
 app.get("/", (req, res) => {
   res.send("Mechanix API running");
