@@ -260,7 +260,7 @@ async function loadJobs() {
         <div class="card" onclick="openJob('${j._id}')" style="border-left:6px solid ${color}">
             <div class="title">${j.title}</div>
             <span class="status ${j.status}">${j.status}</span><br><br>
-            <b>${j.customer?.firstName || "No customer"}</b><br>
+            <b>${j.customer ? j.customer.firstName + " " + j.customer.lastName : "No customer"}</b><br>
             ${j.vehicle?.make || ""} ${j.vehicle?.model || ""}
         </div>`;
     });
