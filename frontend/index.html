@@ -5,63 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
-            margin:0;
-            font-family: Arial;
-            background:#f0f2f5;
-        }
+        body { margin:0; font-family: Arial; background:#f0f2f5; }
 
-        .nav {
-            display:flex;
-            background:#111;
-        }
-
+        .nav { display:flex; background:#111; }
         .nav button {
-            flex:1;
-            padding:18px;
-            font-size:18px;
-            color:white;
-            background:none;
-            border:none;
+            flex:1; padding:18px; font-size:18px;
+            color:white; background:none; border:none;
         }
+        .nav button.active { background:#007bff; }
 
-        .nav button.active {
-            background:#007bff;
-        }
-
-        .screen {
-            display:none;
-            padding:15px;
-        }
-
-        .screen.active {
-            display:block;
-        }
+        .screen { display:none; padding:15px; }
+        .screen.active { display:block; }
 
         .card {
             background:white;
             padding:18px;
             margin-bottom:12px;
             border-radius:10px;
-            font-size:16px;
         }
 
-        .title {
-            font-size:20px;
-            font-weight:bold;
-        }
+        .title { font-size:20px; font-weight:bold; }
 
         input, select {
             width:100%;
             padding:14px;
-            font-size:16px;
             margin-bottom:12px;
         }
 
         button.primary {
             width:100%;
             padding:18px;
-            font-size:18px;
             background:#007bff;
             color:white;
             border:none;
@@ -72,17 +45,14 @@
         button.secondary {
             width:100%;
             padding:16px;
-            font-size:16px;
             background:#ddd;
             border:none;
             border-radius:10px;
-            margin-top:10px;
         }
 
         .status {
             padding:6px 10px;
             border-radius:6px;
-            font-size:14px;
             display:inline-block;
         }
 
@@ -92,11 +62,7 @@
         .pending-invoice { background:purple; color:white; }
         .completed { background:green; color:white; }
 
-        img {
-            width:100%;
-            border-radius:8px;
-            margin-top:10px;
-        }
+        img { width:100%; border-radius:8px; margin-top:10px; }
     </style>
 </head>
 
@@ -108,32 +74,24 @@
     <button onclick="show('invoices', this)">Invoices</button>
 </div>
 
-<!-- JOBS -->
 <div id="jobs" class="screen active">
-
     <div class="card">
         <div class="title">New Job</div>
-
         <input id="jobTitle" placeholder="Job Title">
         <select id="jobCustomer"></select>
         <select id="jobVehicle"></select>
-
         <button class="primary" onclick="createJob()">Create Job</button>
     </div>
 
     <div class="title">Jobs</div>
     <div id="jobList"></div>
-
 </div>
 
-<!-- JOB DETAIL -->
 <div id="jobDetail" class="screen">
-
     <div id="jobInfo"></div>
 
     <div class="card">
         <div class="title">Actions</div>
-
         <button class="primary" onclick="setStatus('arrived')">Arrived</button>
         <button class="primary" onclick="startJob()">Start Job</button>
         <button class="primary" onclick="finishJob()">Finish Job</button>
@@ -142,32 +100,24 @@
 
     <div class="card">
         <div class="title">Photos</div>
-
         <input type="file" accept="image/*" onchange="uploadPhoto(event)">
         <div id="photoList"></div>
     </div>
 
     <button class="secondary" onclick="show('jobs')">Back</button>
-
 </div>
 
-<!-- CUSTOMERS -->
 <div id="customers" class="screen">
-
     <div class="card">
         <div class="title">Add Customer</div>
-
         <input id="custName" placeholder="Name">
         <input id="custPhone" placeholder="Phone">
-
         <button class="primary" onclick="addCustomer()">Add Customer</button>
     </div>
 
     <div id="customerList"></div>
-
 </div>
 
-<!-- INVOICES -->
 <div id="invoices" class="screen">
     <div class="title">Invoices</div>
     <div id="invoiceList"></div>
@@ -191,7 +141,6 @@ async function loadCustomers() {
     const data = await res.json();
 
     let html = "", options = "";
-
     data.forEach(c => {
         html += `<div class="card">${c.firstName} - ${c.phone}</div>`;
         options += `<option value="${c._id}">${c.firstName}</option>`;
@@ -202,8 +151,8 @@ async function loadCustomers() {
 }
 
 async function addCustomer() {
-    const name = document.getElementById("custName").value;
-    const phone = document.getElementById("custPhone").value;
+    const name = custName.value;
+    const phone = custPhone.value;
 
     await fetch(API + "/customers", {
         method:"POST",
@@ -223,7 +172,7 @@ async function loadVehicles() {
         options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
     });
 
-    document.getElementById("jobVehicle").innerHTML = options;
+    jobVehicle.innerHTML = options;
 }
 
 async function loadJobs() {
@@ -239,18 +188,18 @@ async function loadJobs() {
         </div>`;
     });
 
-    document.getElementById("jobList").innerHTML = html;
+    jobList.innerHTML = html;
 }
 
 async function createJob() {
-    const title = document.getElementById("jobTitle").value;
-    const customer = document.getElementById("jobCustomer").value;
-    const vehicle = document.getElementById("jobVehicle").value;
-
     await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ title, customer, vehicle })
+        body: JSON.stringify({
+            title: jobTitle.value,
+            customer: jobCustomer.value,
+            vehicle: jobVehicle.value
+        })
     });
 
     loadJobs();
@@ -259,38 +208,32 @@ async function createJob() {
 async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
-
     renderJob();
     show("jobDetail");
 }
 
 function renderJob() {
-    document.getElementById("jobInfo").innerHTML = `
+    jobInfo.innerHTML = `
         <div class="card">
             <div class="title">${currentJob.title}</div>
-            <span class="status ${currentJob.status}">${currentJob.status}</span>
+            <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
+
+            <b>Customer:</b> ${currentJob.customer?.firstName || "N/A"}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
         </div>
     `;
 
     let photos = "";
-    if(currentJob.photos?.other){
-        currentJob.photos.other.forEach(p => {
-            photos += `<img src="${p}">`;
-        });
-    }
-
-    document.getElementById("photoList").innerHTML = photos;
+    currentJob.photos?.other?.forEach(p => photos += `<img src="${p}">`);
+    photoList.innerHTML = photos;
 }
 
-function uploadPhoto(event) {
-    const file = event.target.files[0];
+function uploadPhoto(e) {
     const reader = new FileReader();
-
-    reader.onload = async function(e) {
-        if(!currentJob.photos) currentJob.photos = {};
-        if(!currentJob.photos.other) currentJob.photos.other = [];
-
-        currentJob.photos.other.push(e.target.result);
+    reader.onload = async x => {
+        currentJob.photos ??= {};
+        currentJob.photos.other ??= [];
+        currentJob.photos.other.push(x.target.result);
 
         await fetch(API + "/jobs/" + currentJob._id, {
             method:"PUT",
@@ -300,41 +243,27 @@ function uploadPhoto(event) {
 
         renderJob();
     };
-
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(e.target.files[0]);
 }
 
-async function setStatus(status) {
-    currentJob.status = status;
-
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(currentJob)
-    });
-
-    loadJobs();
-    openJob(currentJob._id);
+async function setStatus(s) {
+    currentJob.status = s;
+    await saveJob();
 }
 
 async function startJob() {
     currentJob.status = "in-progress";
     currentJob.clockIn = new Date();
-
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(currentJob)
-    });
-
-    loadJobs();
-    openJob(currentJob._id);
+    await saveJob();
 }
 
 async function finishJob() {
     currentJob.status = "pending-invoice";
     currentJob.clockOut = new Date();
+    await saveJob();
+}
 
+async function saveJob() {
     await fetch(API + "/jobs/" + currentJob._id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
@@ -346,23 +275,14 @@ async function finishJob() {
 }
 
 async function createInvoice() {
-    await fetch(API + "/invoices/from-job/" + currentJob._id, {
-        method:"POST"
-    });
-
+    await fetch(API + "/invoices/from-job/" + currentJob._id, { method:"POST" });
     loadInvoices();
 }
 
 async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
-
-    let html = "";
-    data.forEach(i => {
-        html += `<div class="card">$${i.totalCost}</div>`;
-    });
-
-    document.getElementById("invoiceList").innerHTML = html;
+    invoiceList.innerHTML = data.map(i => `<div class="card">$${i.totalCost}</div>`).join("");
 }
 
 loadCustomers();
