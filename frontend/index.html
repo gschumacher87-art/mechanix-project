@@ -116,7 +116,9 @@
     <button class="secondary" onclick="show('jobs')">Back</button>
 </div>
 
+<!-- ✅ FIXED CUSTOMERS SECTION -->
 <div id="customers" class="screen">
+
     <div class="card">
         <div class="title">Add Customer</div>
         <input id="custName" placeholder="Name">
@@ -124,7 +126,16 @@
         <button class="primary" onclick="addCustomer()">Add Customer</button>
     </div>
 
+    <div class="card">
+        <div class="title">Add Vehicle</div>
+        <select id="vehicleCustomer"></select>
+        <input id="vehicleMake" placeholder="Make">
+        <input id="vehicleModel" placeholder="Model">
+        <button class="primary" onclick="addVehicle()">Add Vehicle</button>
+    </div>
+
     <div id="customerList"></div>
+
 </div>
 
 <div id="invoices" class="screen">
@@ -154,6 +165,7 @@ async function loadCustomers() {
     const data = await res.json();
 
     let html = "", options = "";
+
     data.forEach(c => {
         html += `<div class="card">${c.firstName} - ${c.phone}</div>`;
         options += `<option value="${c._id}">${c.firstName}</option>`;
@@ -161,6 +173,7 @@ async function loadCustomers() {
 
     customerList.innerHTML = html;
     jobCustomer.innerHTML = options;
+    vehicleCustomer.innerHTML = options;
 }
 
 async function addCustomer() {
@@ -177,6 +190,23 @@ async function addCustomer() {
     custPhone.value = "";
 
     loadCustomers();
+}
+
+async function addVehicle() {
+    await fetch(API + "/vehicles", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            customer: vehicleCustomer.value,
+            make: vehicleMake.value,
+            model: vehicleModel.value
+        })
+    });
+
+    vehicleMake.value = "";
+    vehicleModel.value = "";
+
+    loadVehicles(vehicleCustomer.value);
 }
 
 async function loadVehicles(customerId = null) {
