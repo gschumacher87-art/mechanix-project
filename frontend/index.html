@@ -444,6 +444,20 @@ async function saveNotes() {
     currentJob.notes = jobNotes.value;
     await saveJob();
 }
+    async function deleteJob() {
+
+    const confirmDelete = confirm("Delete this job?");
+    if (!confirmDelete) return;
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "DELETE"
+    });
+
+    currentJob = null;
+
+    show("jobs");
+    loadJobs();
+}
 
 loadCustomers();
 loadVehicles();
