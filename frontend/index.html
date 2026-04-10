@@ -304,6 +304,15 @@ function renderJob() {
 
     jobNotes.value = currentJob.notes || "";
 }
+    if(currentJob.invoice){
+        jobInfo.innerHTML += `
+            <div class="card">
+                <div class="title">Invoice</div>
+                Total: $${currentJob.invoice.total}
+            </div>
+        `;
+    }
+}
 
 function uploadPhoto(e) {
     const reader = new FileReader();
