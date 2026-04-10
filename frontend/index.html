@@ -380,13 +380,18 @@ async function loadInvoices() {
     <div class="card" onclick="openInvoice('${i._id}')">
         $${i.totalCost}
     </div>
-`).join("");
-}
-    async function openInvoice(id) {
+`).async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    alert("Invoice Total: $" + invoice.totalCost);
+    invoiceList.innerHTML = `
+        <div class="card">
+            <div class="title">Invoice</div>
+            <b>Total:</b> $${invoice.totalCost}
+        </div>
+
+        <button class="secondary" onclick="loadInvoices()">Back</button>
+    `;
 }
 
 async function assignTech() {
