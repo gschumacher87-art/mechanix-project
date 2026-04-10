@@ -150,7 +150,6 @@ function show(id, btn) {
     document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
     if(btn) btn.classList.add("active");
 
-    // 🔥 AUTO REFRESH
     if(id === "jobs") loadJobs();
     if(id === "customers") loadCustomers();
     if(id === "invoices") loadInvoices();
@@ -180,7 +179,6 @@ async function addCustomer() {
         body: JSON.stringify({ firstName:name, phone })
     });
 
-    // ✅ CLEAR FORM
     custName.value = "";
     custPhone.value = "";
 
@@ -198,9 +196,8 @@ async function loadVehicles() {
 
     jobVehicle.innerHTML = options;
 }
-
 async function createJob() {
-    await fetch(API + "/jobs", {
+    const res = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
@@ -210,12 +207,15 @@ async function createJob() {
         })
     });
 
+    const newJob = await res.json();
 
     jobTitle.value = "";
     jobCustomer.selectedIndex = 0;
     jobVehicle.selectedIndex = 0;
 
     loadJobs();
+
+    openJob(newJob._id);
 }
 
 async function loadJobs() {
