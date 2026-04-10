@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mechanix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #f4f4f4;
+        }
+
+        .nav {
+            display: flex;
+            background: #222;
+        }
+
+        .nav button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        .nav button.active {
+            background: #007bff;
+        }
+
+        .screen {
+            display: none;
+            padding: 15px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        button.primary {
+            width: 100%;
+            padding: 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="nav">
+    <button class="active" onclick="showScreen('jobs', this)">Jobs</button>
+    <button onclick="showScreen('customers', this)">Customers</button>
+    <button onclick="showScreen('invoices', this)">Invoices</button>
+</div>
+
+<!-- JOBS -->
+<div id="jobs" class="screen active">
+    <h2>Jobs</h2>
+
+    <div id="jobList"></div>
+</div>
+
+<!-- CUSTOMERS -->
+<div id="customers" class="screen">
+    <h2>Add Customer</h2>
+
+    <input id="custFirst" placeholder="First Name">
+    <input id="custPhone" placeholder="Phone">
+
+    <button class="primary" onclick="addCustomer()">Add Customer</button>
+
+    <h3>Customer List</h3>
+    <div id="customerList"></div>
+</div>
+
+<!-- INVOICES -->
+<div id="invoices" class="screen">
+    <h2>Invoices</h2>
+
+    <div id="invoiceList"></div>
+</div>
+
+<script>
+
+const API = "http://localhost:3000/api";
+
+// NAVIGATION
+function showScreen(id, btn) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+}
+
+// LOAD CUSTOMERS
+async function loadCustomers() {
+    const res = await fetch(API + "/customers");
+    const data = await res.json();
+
+    const list = document.getElementById("customerList");
+    list.innerHTML = "";
+
+    data.forEach(c => {
+        list.innerHTML += `
+            <div class="card">
+                ${c.firstName} - ${c.phone}
+            </div>
+        `;
+    });
+}
+
+// ADD CUSTOMER
+async function addCustomer() {
+    const firstName = document.getElementById("custFirst").value;
+    const phone = document.getElementById("custPhone").value;
+
+    if (!firstName || !phone) return;
+
+    await fetch(API + "/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, phone })
+    });
+
+    document.getElementById("custFirst").value = "";
+    document.getElementById("custPhone").value = "";
+
+    loadCustomers();
+}
+
+// LOAD JOBS
+async function loadJobs() {
+    const res = await fetch(API + "/jobs");
+    const data = await res.json();
+
+    const list = document.getElementById("jobList");
+    list.innerHTML = "";
+
+    data.forEach(j => {
+        list.innerHTML += `
+            <div class="card">
+                <div class="title">${j.title}</div>
+
+                Status: <b>${j.status}</b><br>
+
+                Customer: ${j.customer?.firstName || "N/A"}<br>
+                Vehicle: ${j.vehicle?.make || ""} ${j.vehicle?.model || ""}
+            </div>
+        `;
+    });
+}
+
+// LOAD INVOICES
+async function loadInvoices() {
+    const res = await fetch(API + "/invoices");
+    const data = await res.json();
+
+    const list = document.getElementById("invoiceList");
+    list.innerHTML = "";
+
+    data.forEach(i => {
+        list.innerHTML += `
+            <div class="card">
+                Invoice: $${i.totalCost} - ${i.status}
+            </div>
+        `;
+    });
+}
+
+// INITIAL LOAD
+loadCustomers();
+loadJobs();
+loadInvoices();
+
+</script>
+
+</body>
+</html>
