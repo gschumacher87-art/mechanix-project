@@ -72,5 +72,9 @@ const jobSchema = new mongoose.Schema(
     timestamps: true
 }
 );
+jobSchema.pre("save", function(next) {
+    this.totalCost = this.labourCost + this.partsCost;
+    next();
+});
 
 module.exports = mongoose.model("Job", jobSchema);
