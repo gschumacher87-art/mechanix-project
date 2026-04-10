@@ -111,6 +111,7 @@
     <div class="card">
         <div class="title">Finish</div>
         <button class="primary" onclick="createInvoice()">Create Invoice</button>
+        <button class="primary" onclick="printJob()">Print Job Card</button>
     </div>
 
     <button class="secondary" onclick="show('jobs')">Back</button>
@@ -352,6 +353,56 @@ loadVehicles();
 loadJobs();
 loadInvoices();
 
+    function printJob() {
+
+    const w = window.open("", "_blank");
+
+    w.document.write(`
+    <html>
+    <head>
+        <title>Job Card</title>
+        <style>
+            body { font-family: Arial; padding:20px; }
+            .section { margin-top:20px; }
+            .box { border:1px solid #000; height:80px; margin-top:5px; }
+        </style>
+    </head>
+    <body>
+
+        <h1>${currentJob.title}</h1>
+        <b>Status:</b> ${currentJob.status}<br><br>
+
+        <b>Customer:</b> ${currentJob.customer?.firstName || "N/A"}<br>
+        <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
+
+        <div class="section">
+            <h3>Technician Notes</h3>
+            <div class="box"></div>
+        </div>
+
+        <div class="section">
+            <h3>Work Carried Out</h3>
+            <div class="box"></div>
+        </div>
+
+        <div class="section">
+            <h3>Parts Used</h3>
+            <div class="box"></div>
+        </div>
+
+        <div class="section">
+            <h3>Sign Off</h3>
+            Technician: ____________<br><br>
+            Customer: ____________
+        </div>
+
+    </body>
+    </html>
+    `);
+
+    w.document.close();
+    w.print();
+}
 </script>
 
 </body>
