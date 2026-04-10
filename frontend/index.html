@@ -276,7 +276,7 @@ function renderJob() {
             <div class="title">${currentJob.title}</div>
             <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
 
-            <b>Customer:</b> ${currentJob.customer?.firstName || "N/A"}<br>
+            <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
             <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
             <b>Technician:</b> ${currentJob.technician || "Unassigned"}
         </div>
