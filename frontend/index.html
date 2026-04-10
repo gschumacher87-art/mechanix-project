@@ -202,6 +202,23 @@ async function addCustomer() {
 
     loadCustomers();
 }
+    async function addVehicle() {
+    await fetch(API + "/vehicles", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            customer: vehicleCustomer.value,
+            make: vehicleMake.value,
+            model: vehicleModel.value
+        })
+    });
+
+    vehicleMake.value = "";
+    vehicleModel.value = "";
+
+    loadVehicles(vehicleCustomer.value);
+}
+    
 
 async function loadVehicles(customerId = null) {
     const res = await fetch(API + "/vehicles");
@@ -382,7 +399,6 @@ async function createInvoice() {
     await saveJob();
 }
 
-/* ✅ FIXED SECTION */
 async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
