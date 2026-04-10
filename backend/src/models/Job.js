@@ -8,10 +8,11 @@ const jobSchema = new mongoose.Schema(
         required: true
     },
     vehicle: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Vehicle",
-    required: true
-},
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vehicle",
+        required: true
+    },
+
     title: {
         type: String,
         required: true
@@ -19,11 +20,37 @@ const jobSchema = new mongoose.Schema(
     description: {
         type: String
     },
+
+    // 🔥 WORKFLOW STATUS
     status: {
         type: String,
-        enum: ["pending", "in-progress", "completed"],
-        default: "pending"
+        enum: [
+            "booked",
+            "arrived",
+            "in-progress",
+            "pending-invoice",
+            "completed"
+        ],
+        default: "booked"
     },
+
+    // ⏱️ CLOCKING
+    clockIn: {
+        type: Date
+    },
+    clockOut: {
+        type: Date
+    },
+
+    // 📸 PHOTO CATEGORIES
+    photos: {
+        brakes: [String],
+        suspension: [String],
+        engine: [String],
+        other: [String]
+    },
+
+    // 💰 COSTS
     labourCost: {
         type: Number,
         default: 0
