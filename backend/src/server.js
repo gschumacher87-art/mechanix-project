@@ -7,7 +7,8 @@ const connectDB = require("./config/db");
 const authRoutes = require("./api/auth");
 const customerRoutes = require("./api/customers");
 const jobRoutes = require("./api/jobs");
-const vehicleRoutes = require("./api/vehicles"); // ← ADD THIS
+const vehicleRoutes = require("./api/vehicles"); 
+const invoiceRoutes = require("./api/invoices");
 const auth = require("./middleware/auth");
 const admin = require("./middleware/admin");
 
@@ -22,7 +23,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/jobs", jobRoutes);
-app.use("/api/vehicles", vehicleRoutes); // ← ADD THIS
+app.use("/api/vehicles", vehicleRoutes);
+app.use("/api/invoices", invoiceRoutes);
 
 app.get("/", (req, res) => {
   res.send("Mechanix API running");
