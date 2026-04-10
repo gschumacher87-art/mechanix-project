@@ -308,7 +308,7 @@ function renderJob() {
         jobInfo.innerHTML += `
             <div class="card">
                 <div class="title">Invoice</div>
-                Total: $${currentJob.invoice.total}
+                Total: $${Number(currentJob.invoice.total).toFixed(2)}
             </div>
         `;
     }
