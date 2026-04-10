@@ -180,6 +180,10 @@ async function addCustomer() {
         body: JSON.stringify({ firstName:name, phone })
     });
 
+    // ✅ CLEAR FORM
+    custName.value = "";
+    custPhone.value = "";
+
     loadCustomers();
 }
 
