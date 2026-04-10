@@ -199,8 +199,6 @@ async function loadVehicles() {
     jobVehicle.innerHTML = options;
 }
 
-
-
 async function createJob() {
     await fetch(API + "/jobs", {
         method:"POST",
@@ -212,8 +210,14 @@ async function createJob() {
         })
     });
 
+
+    jobTitle.value = "";
+    jobCustomer.selectedIndex = 0;
+    jobVehicle.selectedIndex = 0;
+
     loadJobs();
 }
+
 async function loadJobs() {
     const res = await fetch(API + "/jobs");
     const data = await res.json();
