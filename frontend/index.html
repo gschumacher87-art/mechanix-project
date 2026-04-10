@@ -129,7 +129,8 @@
 
     <div class="card">
         <div class="title">Add Customer</div>
-        <input id="custName" placeholder="Name">
+        <input id="custFirstName" placeholder="First Name">
+        <input id="custLastName" placeholder="Last Name">
         <input id="custPhone" placeholder="Phone">
         <button class="primary" onclick="addCustomer()">Add Customer</button>
     </div>
@@ -189,28 +190,18 @@ async function addCustomer() {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            firstName: custName.value,
+            firstName: custFirstName.value,
+            lastName: custLastName.value,
             phone: custPhone.value
         })
     });
 
-    custName.value = "";
+    custFirstName.value = "";
+    custLastName.value = "";
     custPhone.value = "";
 
     loadCustomers();
 }
-
-async function addVehicle() {
-    await fetch(API + "/vehicles", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            customer: vehicleCustomer.value,
-            make: vehicleMake.value,
-            model: vehicleModel.value
-        })
-    });
-
     vehicleMake.value = "";
     vehicleModel.value = "";
 
