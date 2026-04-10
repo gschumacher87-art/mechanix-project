@@ -303,7 +303,7 @@ function renderJob() {
     photoList.innerHTML = photos;
 
     jobNotes.value = currentJob.notes || "";
-}
+
     if(currentJob.invoice){
         jobInfo.innerHTML += `
             <div class="card">
@@ -313,7 +313,6 @@ function renderJob() {
         `;
     }
 }
-
 function uploadPhoto(e) {
     const reader = new FileReader();
     reader.onload = async x => {
