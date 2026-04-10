@@ -126,7 +126,6 @@
     <button class="secondary" onclick="show('jobs')">Back</button>
 </div>
 
-<!-- ✅ FIXED CUSTOMERS SECTION -->
 <div id="customers" class="screen">
 
     <div class="card">
@@ -364,6 +363,7 @@ async function createInvoice() {
 
     if(!total) return;
 
+    currentJob.status = "completed";
     currentJob.invoice = {
         items: [],
         total: Number(total)
