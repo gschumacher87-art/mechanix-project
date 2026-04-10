@@ -352,6 +352,16 @@ async function loadInvoices() {
     invoiceList.innerHTML = data.map(i => `<div class="card">$${i.totalCost}</div>`).join("");
 }
 
+async function assignTech() {
+
+    const name = prompt("Enter technician name:");
+
+    if(!name) return;
+
+    currentJob.technician = name;
+
+    await saveJob();
+}
 loadCustomers();
 loadVehicles();
 loadJobs();
