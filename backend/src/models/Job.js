@@ -12,6 +12,10 @@ const jobSchema = new mongoose.Schema(
         ref: "Vehicle",
         required: true
     },
+    technician: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+},
 
     title: {
         type: String,
