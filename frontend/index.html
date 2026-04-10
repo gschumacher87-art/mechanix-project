@@ -175,21 +175,7 @@ async function loadVehicles() {
     jobVehicle.innerHTML = options;
 }
 
-async function loadJobs() {
-    const res = await fetch(API + "/jobs");
-    const data = await res.json();
 
-    let html = "";
-    data.forEach(j => {
-        html += `
-        <div class="card" onclick="openJob('${j._id}')">
-            <div class="title">${j.title}</div>
-            <span class="status ${j.status}">${j.status}</span>
-        </div>`;
-    });
-
-    jobList.innerHTML = html;
-}
 
 async function createJob() {
     await fetch(API + "/jobs", {
@@ -204,7 +190,35 @@ async function createJob() {
 
     loadJobs();
 }
+async function loadJobs() {
+    const res = await fetch(API + "/jobs");
+    const data = await res.json();
 
+    let html = "";
+
+    data.forEach(j => {
+
+        let color = "#ccc";
+        if(j.status === "arrived") color = "orange";
+        if(j.status === "in-progress") color = "#007bff";
+        if(j.status === "pending-invoice") color = "purple";
+        if(j.status === "completed") color = "green";
+
+        html += `
+        <div class="card" onclick="openJob('${j._id}')" style="border-left:6px solid ${color}">
+            
+            <div class="title">${j.title}</div>
+
+            <span class="status ${j.status}">${j.status}</span><br><br>
+
+            <b>${j.customer?.firstName || "No customer"}</b><br>
+            ${j.vehicle?.make || ""} ${j.vehicle?.model || ""}
+
+        </div>`;
+    });
+
+    jobList.innerHTML = html;
+}
 async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
