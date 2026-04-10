@@ -88,23 +88,38 @@
 </div>
 
 <div id="jobDetail" class="screen">
+
     <div id="jobInfo"></div>
 
     <div class="card">
-        <div class="title">Actions</div>
+        <div class="title">Quick Actions</div>
+
+        <button class="primary" onclick="startJob()">▶ Start Job</button>
+        <button class="primary" onclick="finishJob()">✔ Finish Job</button>
+    </div>
+
+    <div class="card">
+        <div class="title">Status</div>
+
         <button class="primary" onclick="setStatus('arrived')">Arrived</button>
-        <button class="primary" onclick="startJob()">Start Job</button>
-        <button class="primary" onclick="finishJob()">Finish Job</button>
-        <button class="primary" onclick="createInvoice()">Create Invoice</button>
+        <button class="primary" onclick="setStatus('completed')">Completed</button>
     </div>
 
     <div class="card">
         <div class="title">Photos</div>
+
         <input type="file" accept="image/*" onchange="uploadPhoto(event)">
         <div id="photoList"></div>
     </div>
 
+    <div class="card">
+        <div class="title">Finish</div>
+
+        <button class="primary" onclick="createInvoice()">Create Invoice</button>
+    </div>
+
     <button class="secondary" onclick="show('jobs')">Back</button>
+
 </div>
 
 <div id="customers" class="screen">
