@@ -36,6 +36,7 @@
             background:#007bff;
             color:white;
             border:none;
+            margin-bottom:5px;
         }
 
         img {
@@ -54,7 +55,6 @@
     <button onclick="show('invoices', this)">Invoices</button>
 </div>
 
-<!-- JOBS -->
 <div id="jobs" class="screen active">
     <h2>Create Job</h2>
 
@@ -68,11 +68,12 @@
     <div id="jobList"></div>
 </div>
 
-<!-- JOB DETAIL -->
 <div id="jobDetail" class="screen">
     <h2>Job Detail</h2>
 
     <div id="jobInfo"></div>
+
+    <button class="primary" onclick="printJob()">🖨️ Print Job Card</button>
 
     <h3>Photos</h3>
     <input type="file" accept="image/*" onchange="uploadPhoto(event)">
@@ -87,7 +88,6 @@
     <button onclick="show('jobs')">Back</button>
 </div>
 
-<!-- CUSTOMERS -->
 <div id="customers" class="screen">
     <h2>Add Customer</h2>
 
@@ -99,7 +99,6 @@
     <div id="customerList"></div>
 </div>
 
-<!-- INVOICES -->
 <div id="invoices" class="screen">
     <h2>Invoices</h2>
     <div id="invoiceList"></div>
@@ -110,7 +109,6 @@
 const API = "http://localhost:3000/api";
 let currentJob = null;
 
-// NAV
 function show(id, btn) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
@@ -119,13 +117,11 @@ function show(id, btn) {
     if(btn) btn.classList.add("active");
 }
 
-// CUSTOMERS
 async function loadCustomers() {
     const res = await fetch(API + "/customers");
     const data = await res.json();
 
-    let html = "";
-    let options = "";
+    let html = "", options = "";
 
     data.forEach(c => {
         html += `<div class="card">${c.firstName} - ${c.phone}</div>`;
@@ -149,7 +145,6 @@ async function addCustomer() {
     loadCustomers();
 }
 
-// VEHICLES
 async function loadVehicles() {
     const res = await fetch(API + "/vehicles");
     const data = await res.json();
@@ -162,7 +157,6 @@ async function loadVehicles() {
     document.getElementById("jobVehicle").innerHTML = options;
 }
 
-// JOBS
 async function loadJobs() {
     const res = await fetch(API + "/jobs");
     const data = await res.json();
@@ -210,7 +204,7 @@ function renderJob() {
     `;
 
     let photos = "";
-    if(currentJob.photos && currentJob.photos.other){
+    if(currentJob.photos?.other){
         currentJob.photos.other.forEach(p => {
             photos += `<img src="${p}">`;
         });
@@ -219,7 +213,35 @@ function renderJob() {
     document.getElementById("photoList").innerHTML = photos;
 }
 
-// PHOTO
+// 🔥 PRINT JOB CARD
+function printJob() {
+    const w = window.open("", "_blank");
+
+    w.document.write(`
+        <h2>Job Card</h2>
+        <p><b>${currentJob.title}</b></p>
+
+        <hr>
+
+        <h3>Inspection Checklist</h3>
+        <p>[ ] Brakes</p>
+        <p>[ ] Suspension</p>
+        <p>[ ] Engine</p>
+
+        <hr>
+
+        <h3>Notes</h3>
+        <br><br><br><br><br><br>
+
+        <hr>
+
+        <h3>Customer Signature</h3>
+        <br><br><br>
+    `);
+
+    w.print();
+}
+
 function uploadPhoto(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -242,7 +264,6 @@ function uploadPhoto(event) {
     reader.readAsDataURL(file);
 }
 
-// STATUS
 async function setStatus(status) {
     currentJob.status = status;
 
@@ -284,50 +305,26 @@ async function finishJob() {
     openJob(currentJob._id);
 }
 
-// 🔥 CREATE INVOICE WITH PHOTOS
 async function createInvoice() {
-
-    await fetch(API + "/invoices", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            job: currentJob._id,
-            customer: currentJob.customer,
-            vehicle: currentJob.vehicle,
-            totalCost: currentJob.totalCost,
-            photos: currentJob.photos
-        })
+    await fetch(API + "/invoices/from-job/" + currentJob._id, {
+        method:"POST"
     });
 
     loadInvoices();
 }
 
-// INVOICES (NOW SHOW PHOTOS)
 async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
 
     let html = "";
     data.forEach(i => {
-
-        let photos = "";
-        if(i.photos && i.photos.other){
-            i.photos.other.forEach(p => {
-                photos += `<img src="${p}">`;
-            });
-        }
-
-        html += `
-        <div class="card">
-            <b>$${i.totalCost}</b><br>
-            ${photos}
-        </div>`;
+        html += `<div class="card">$${i.totalCost}</div>`;
     });
 
     document.getElementById("invoiceList").innerHTML = html;
 }
 
-// LOAD
 loadCustomers();
 loadVehicles();
 loadJobs();
