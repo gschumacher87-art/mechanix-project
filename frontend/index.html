@@ -149,6 +149,11 @@ function show(id, btn) {
 
     document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
     if(btn) btn.classList.add("active");
+
+    // 🔥 AUTO REFRESH
+    if(id === "jobs") loadJobs();
+    if(id === "customers") loadCustomers();
+    if(id === "invoices") loadInvoices();
 }
 
 async function loadCustomers() {
