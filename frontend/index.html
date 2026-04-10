@@ -37,6 +37,12 @@
             color:white;
             border:none;
         }
+
+        img {
+            width:100%;
+            margin-top:10px;
+            border-radius:8px;
+        }
     </style>
 </head>
 
@@ -48,7 +54,6 @@
     <button onclick="show('invoices', this)">Invoices</button>
 </div>
 
-<!-- JOBS -->
 <div id="jobs" class="screen active">
     <h2>Create Job</h2>
 
@@ -62,11 +67,15 @@
     <div id="jobList"></div>
 </div>
 
-<!-- JOB DETAIL -->
 <div id="jobDetail" class="screen">
     <h2>Job Detail</h2>
 
     <div id="jobInfo"></div>
+
+    <h3>Add Photo</h3>
+    <input type="file" accept="image/*" onchange="uploadPhoto(event)">
+
+    <div id="photoList"></div>
 
     <button class="primary" onclick="setStatus('arrived')">Arrived</button>
     <button class="primary" onclick="startJob()">Start Job</button>
@@ -74,10 +83,9 @@
     <button class="primary" onclick="createInvoice()">Create Invoice</button>
 
     <br><br>
-    <button onclick="show('jobs', document.querySelector('.nav button'))">Back</button>
+    <button onclick="show('jobs')">Back</button>
 </div>
 
-<!-- CUSTOMERS -->
 <div id="customers" class="screen">
     <h2>Add Customer</h2>
 
@@ -89,7 +97,6 @@
     <div id="customerList"></div>
 </div>
 
-<!-- INVOICES -->
 <div id="invoices" class="screen">
     <h2>Invoices</h2>
     <div id="invoiceList"></div>
@@ -187,6 +194,11 @@ async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
 
+    renderJob();
+    show("jobDetail");
+}
+
+function renderJob() {
     document.getElementById("jobInfo").innerHTML = `
         <div class="card">
             <b>${currentJob.title}</b><br>
@@ -194,9 +206,40 @@ async function openJob(id) {
         </div>
     `;
 
-    show("jobDetail");
+    let photos = "";
+    if(currentJob.photos && currentJob.photos.other){
+        currentJob.photos.other.forEach(p => {
+            photos += `<img src="${p}">`;
+        });
+    }
+
+    document.getElementById("photoList").innerHTML = photos;
 }
 
+// PHOTO UPLOAD
+function uploadPhoto(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async function(e) {
+        if(!currentJob.photos) currentJob.photos = {};
+        if(!currentJob.photos.other) currentJob.photos.other = [];
+
+        currentJob.photos.other.push(e.target.result);
+
+        await fetch(API + "/jobs/" + currentJob._id, {
+            method:"PUT",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify(currentJob)
+        });
+
+        renderJob();
+    };
+
+    reader.readAsDataURL(file);
+}
+
+// STATUS
 async function setStatus(status) {
     currentJob.status = status;
 
@@ -259,7 +302,7 @@ async function loadInvoices() {
     document.getElementById("invoiceList").innerHTML = html;
 }
 
-// LOAD ALL
+// LOAD
 loadCustomers();
 loadVehicles();
 loadJobs();
