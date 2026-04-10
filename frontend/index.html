@@ -397,9 +397,19 @@ async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
+    let itemsHtml = "";
+
+    invoice.items?.forEach(i => {
+        itemsHtml += `<div>${i.name} - $${i.price}</div>`;
+    });
+
     invoiceList.innerHTML = `
         <div class="card">
             <div class="title">Invoice</div>
+
+            ${itemsHtml || "<div>No items</div>"}
+
+            <br>
             <b>Total:</b> $${invoice.totalCost}
         </div>
 
