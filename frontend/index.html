@@ -360,9 +360,13 @@ async function saveJob() {
 }
 async function createInvoice() {
 
+    const total = prompt("Enter total invoice amount:");
+
+    if(!total) return;
+
     currentJob.invoice = {
-        items: invoiceItems,
-total: invoiceItems.reduce((t, i) => t + i.price, 0)
+        items: [],
+        total: Number(total)
     };
 
     await saveJob();
