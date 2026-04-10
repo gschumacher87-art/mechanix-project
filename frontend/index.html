@@ -78,7 +78,7 @@
     <div class="card">
         <div class="title">New Job</div>
         <input id="jobTitle" placeholder="Job Title">
-        <select id="jobCustomer"></select>
+        <select id="jobCustomer" onchange="loadVehicles(this.value)"></select>
         <select id="jobVehicle"></select>
         <button class="primary" onclick="createJob()">Create Job</button>
     </div>
@@ -88,38 +88,32 @@
 </div>
 
 <div id="jobDetail" class="screen">
-
     <div id="jobInfo"></div>
 
     <div class="card">
         <div class="title">Quick Actions</div>
-
         <button class="primary" onclick="startJob()">▶ Start Job</button>
         <button class="primary" onclick="finishJob()">✔ Finish Job</button>
     </div>
 
     <div class="card">
         <div class="title">Status</div>
-
         <button class="primary" onclick="setStatus('arrived')">Arrived</button>
         <button class="primary" onclick="setStatus('completed')">Completed</button>
     </div>
 
     <div class="card">
         <div class="title">Photos</div>
-
         <input type="file" accept="image/*" onchange="uploadPhoto(event)">
         <div id="photoList"></div>
     </div>
 
     <div class="card">
         <div class="title">Finish</div>
-
         <button class="primary" onclick="createInvoice()">Create Invoice</button>
     </div>
 
     <button class="secondary" onclick="show('jobs')">Back</button>
-
 </div>
 
 <div id="customers" class="screen">
@@ -165,18 +159,18 @@ async function loadCustomers() {
         options += `<option value="${c._id}">${c.firstName}</option>`;
     });
 
-    document.getElementById("customerList").innerHTML = html;
-    document.getElementById("jobCustomer").innerHTML = options;
+    customerList.innerHTML = html;
+    jobCustomer.innerHTML = options;
 }
 
 async function addCustomer() {
-    const name = custName.value;
-    const phone = custPhone.value;
-
     await fetch(API + "/customers", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ firstName:name, phone })
+        body: JSON.stringify({
+            firstName: custName.value,
+            phone: custPhone.value
+        })
     });
 
     custName.value = "";
@@ -185,6 +179,19 @@ async function addCustomer() {
     loadCustomers();
 }
 
+async function loadVehicles(customerId = null) {
+    const res = await fetch(API + "/vehicles");
+    const data = await res.json();
+
+    let options = "";
+    data.forEach(v => {
+        if (!customerId || v.customer === customerId) {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        }
+    });
+
+    jobVehicle.innerHTML = options;
+}
 
 async function createJob() {
     const res = await fetch(API + "/jobs", {
@@ -196,23 +203,7 @@ async function createJob() {
             vehicle: jobVehicle.value
         })
     });
-async function loadVehicles(customerId = null) {
-    const res = await fetch(API + "/vehicles");
-    const data = await res.json();
 
-    let options = "";
-
-    data.forEach(v => {
-
-        // 🔥 FILTER BY CUSTOMER
-        if (!customerId || v.customer === customerId) {
-            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-        }
-
-    });
-
-    jobVehicle.innerHTML = options;
-}
     const newJob = await res.json();
 
     jobTitle.value = "";
@@ -220,7 +211,6 @@ async function loadVehicles(customerId = null) {
     jobVehicle.selectedIndex = 0;
 
     loadJobs();
-
     openJob(newJob._id);
 }
 
@@ -229,9 +219,7 @@ async function loadJobs() {
     const data = await res.json();
 
     let html = "";
-
     data.forEach(j => {
-
         let color = "#ccc";
         if(j.status === "arrived") color = "orange";
         if(j.status === "in-progress") color = "#007bff";
@@ -240,19 +228,16 @@ async function loadJobs() {
 
         html += `
         <div class="card" onclick="openJob('${j._id}')" style="border-left:6px solid ${color}">
-            
             <div class="title">${j.title}</div>
-
             <span class="status ${j.status}">${j.status}</span><br><br>
-
             <b>${j.customer?.firstName || "No customer"}</b><br>
             ${j.vehicle?.make || ""} ${j.vehicle?.model || ""}
-
         </div>`;
     });
 
     jobList.innerHTML = html;
 }
+
 async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
@@ -265,7 +250,6 @@ function renderJob() {
         <div class="card">
             <div class="title">${currentJob.title}</div>
             <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
-
             <b>Customer:</b> ${currentJob.customer?.firstName || "N/A"}<br>
             <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
         </div>
