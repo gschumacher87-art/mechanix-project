@@ -372,6 +372,10 @@ async function assignTech() {
 
     await saveJob();
 }
+    async function saveNotes() {
+    currentJob.notes = jobNotes.value;
+    await saveJob();
+}
 loadCustomers();
 loadVehicles();
 loadJobs();
