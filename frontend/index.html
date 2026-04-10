@@ -5,44 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body { margin:0; font-family:Arial; background:#f4f4f4; }
-
-        .nav { display:flex; background:#222; }
-        .nav button {
-            flex:1; padding:15px; border:none;
-            background:none; color:white;
+        body {
+            margin:0;
+            font-family: Arial;
+            background:#f0f2f5;
         }
-        .nav button.active { background:#007bff; }
 
-        .screen { display:none; padding:15px; }
-        .screen.active { display:block; }
+        .nav {
+            display:flex;
+            background:#111;
+        }
+
+        .nav button {
+            flex:1;
+            padding:18px;
+            font-size:18px;
+            color:white;
+            background:none;
+            border:none;
+        }
+
+        .nav button.active {
+            background:#007bff;
+        }
+
+        .screen {
+            display:none;
+            padding:15px;
+        }
+
+        .screen.active {
+            display:block;
+        }
 
         .card {
             background:white;
-            padding:15px;
-            margin-bottom:10px;
-            border-radius:8px;
+            padding:18px;
+            margin-bottom:12px;
+            border-radius:10px;
+            font-size:16px;
+        }
+
+        .title {
+            font-size:20px;
+            font-weight:bold;
         }
 
         input, select {
             width:100%;
-            padding:10px;
-            margin-bottom:10px;
+            padding:14px;
+            font-size:16px;
+            margin-bottom:12px;
         }
 
         button.primary {
             width:100%;
-            padding:15px;
+            padding:18px;
+            font-size:18px;
             background:#007bff;
             color:white;
             border:none;
-            margin-bottom:5px;
+            border-radius:10px;
+            margin-bottom:8px;
         }
+
+        button.secondary {
+            width:100%;
+            padding:16px;
+            font-size:16px;
+            background:#ddd;
+            border:none;
+            border-radius:10px;
+            margin-top:10px;
+        }
+
+        .status {
+            padding:6px 10px;
+            border-radius:6px;
+            font-size:14px;
+            display:inline-block;
+        }
+
+        .booked { background:#ccc; }
+        .arrived { background:orange; color:white; }
+        .in-progress { background:#007bff; color:white; }
+        .pending-invoice { background:purple; color:white; }
+        .completed { background:green; color:white; }
 
         img {
             width:100%;
-            margin-top:10px;
             border-radius:8px;
+            margin-top:10px;
         }
     </style>
 </head>
@@ -55,52 +108,68 @@
     <button onclick="show('invoices', this)">Invoices</button>
 </div>
 
+<!-- JOBS -->
 <div id="jobs" class="screen active">
-    <h2>Create Job</h2>
 
-    <input id="jobTitle" placeholder="Job Title">
-    <select id="jobCustomer"></select>
-    <select id="jobVehicle"></select>
+    <div class="card">
+        <div class="title">New Job</div>
 
-    <button class="primary" onclick="createJob()">Create Job</button>
+        <input id="jobTitle" placeholder="Job Title">
+        <select id="jobCustomer"></select>
+        <select id="jobVehicle"></select>
 
-    <h3>Jobs</h3>
+        <button class="primary" onclick="createJob()">Create Job</button>
+    </div>
+
+    <div class="title">Jobs</div>
     <div id="jobList"></div>
+
 </div>
 
+<!-- JOB DETAIL -->
 <div id="jobDetail" class="screen">
-    <h2>Job Detail</h2>
 
     <div id="jobInfo"></div>
 
-    <button class="primary" onclick="printJob()">🖨️ Print Job Card</button>
+    <div class="card">
+        <div class="title">Actions</div>
 
-    <h3>Photos</h3>
-    <input type="file" accept="image/*" onchange="uploadPhoto(event)">
-    <div id="photoList"></div>
+        <button class="primary" onclick="setStatus('arrived')">Arrived</button>
+        <button class="primary" onclick="startJob()">Start Job</button>
+        <button class="primary" onclick="finishJob()">Finish Job</button>
+        <button class="primary" onclick="createInvoice()">Create Invoice</button>
+    </div>
 
-    <button class="primary" onclick="setStatus('arrived')">Arrived</button>
-    <button class="primary" onclick="startJob()">Start Job</button>
-    <button class="primary" onclick="finishJob()">Finish Job</button>
-    <button class="primary" onclick="createInvoice()">Create Invoice</button>
+    <div class="card">
+        <div class="title">Photos</div>
 
-    <br><br>
-    <button onclick="show('jobs')">Back</button>
+        <input type="file" accept="image/*" onchange="uploadPhoto(event)">
+        <div id="photoList"></div>
+    </div>
+
+    <button class="secondary" onclick="show('jobs')">Back</button>
+
 </div>
 
+<!-- CUSTOMERS -->
 <div id="customers" class="screen">
-    <h2>Add Customer</h2>
 
-    <input id="custName" placeholder="Name">
-    <input id="custPhone" placeholder="Phone">
+    <div class="card">
+        <div class="title">Add Customer</div>
 
-    <button class="primary" onclick="addCustomer()">Add</button>
+        <input id="custName" placeholder="Name">
+        <input id="custPhone" placeholder="Phone">
+
+        <button class="primary" onclick="addCustomer()">Add Customer</button>
+    </div>
 
     <div id="customerList"></div>
+
 </div>
 
+<!-- INVOICES -->
 <div id="invoices" class="screen">
-    <h2>Invoices</h2>
+    <div class="title">Invoices</div>
     <div id="invoiceList"></div>
 </div>
 
@@ -165,8 +234,8 @@ async function loadJobs() {
     data.forEach(j => {
         html += `
         <div class="card" onclick="openJob('${j._id}')">
-            <b>${j.title}</b><br>
-            ${j.status}
+            <div class="title">${j.title}</div>
+            <span class="status ${j.status}">${j.status}</span>
         </div>`;
     });
 
@@ -198,8 +267,8 @@ async function openJob(id) {
 function renderJob() {
     document.getElementById("jobInfo").innerHTML = `
         <div class="card">
-            <b>${currentJob.title}</b><br>
-            Status: ${currentJob.status}
+            <div class="title">${currentJob.title}</div>
+            <span class="status ${currentJob.status}">${currentJob.status}</span>
         </div>
     `;
 
@@ -211,35 +280,6 @@ function renderJob() {
     }
 
     document.getElementById("photoList").innerHTML = photos;
-}
-
-// 🔥 PRINT JOB CARD
-function printJob() {
-    const w = window.open("", "_blank");
-
-    w.document.write(`
-        <h2>Job Card</h2>
-        <p><b>${currentJob.title}</b></p>
-
-        <hr>
-
-        <h3>Inspection Checklist</h3>
-        <p>[ ] Brakes</p>
-        <p>[ ] Suspension</p>
-        <p>[ ] Engine</p>
-
-        <hr>
-
-        <h3>Notes</h3>
-        <br><br><br><br><br><br>
-
-        <hr>
-
-        <h3>Customer Signature</h3>
-        <br><br><br>
-    `);
-
-    w.print();
 }
 
 function uploadPhoto(event) {
