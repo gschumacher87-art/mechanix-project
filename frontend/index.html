@@ -78,8 +78,16 @@
 
 <!-- JOBS -->
 <div id="jobs" class="screen active">
-    <h2>Jobs</h2>
+    <h2>Create Job</h2>
 
+    <input id="jobTitle" placeholder="Job Title">
+
+    <select id="jobCustomer"></select>
+    <select id="jobVehicle"></select>
+
+    <button class="primary" onclick="createJob()">Create Job</button>
+
+    <h3>Job List</h3>
     <div id="jobList"></div>
 </div>
 
