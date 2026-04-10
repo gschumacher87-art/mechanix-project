@@ -380,7 +380,18 @@ async function loadInvoices() {
     <div class="card" onclick="openInvoice('${i._id}')">
         $${i.totalCost}
     </div>
-`).async function openInvoice(id) {
+async function loadInvoices() {
+    const res = await fetch(API + "/invoices");
+    const data = await res.json();
+
+    invoiceList.innerHTML = data.map(i => `
+        <div class="card" onclick="openInvoice('${i._id}')">
+            $${i.totalCost}
+        </div>
+    `).join("");
+}
+
+async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
@@ -393,7 +404,6 @@ async function loadInvoices() {
         <button class="secondary" onclick="loadInvoices()">Back</button>
     `;
 }
-
 async function assignTech() {
 
     const name = prompt("Enter technician name:");
