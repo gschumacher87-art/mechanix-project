@@ -202,11 +202,6 @@ async function addCustomer() {
 
     loadCustomers();
 }
-    vehicleMake.value = "";
-    vehicleModel.value = "";
-
-    loadVehicles(vehicleCustomer.value);
-}
 
 async function loadVehicles(customerId = null) {
     const res = await fetch(API + "/vehicles");
