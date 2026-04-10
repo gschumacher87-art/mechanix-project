@@ -231,7 +231,8 @@ async function createJob() {
         body: JSON.stringify({
             title: jobTitle.value,
             customer: jobCustomer.value,
-            vehicle: jobVehicle.value
+            vehicle: jobVehicle.value,
+            technician: "Unassigned"
         })
     });
 
