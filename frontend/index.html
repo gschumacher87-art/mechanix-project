@@ -356,19 +356,30 @@ async function saveJob() {
     loadJobs();
     openJob(currentJob._id);
 }
-
 async function createInvoice() {
+
     const total = prompt("Enter total invoice amount:");
     if(!total) return;
 
+    // ✅ create invoice in backend
+    const res = await fetch(API + "/invoices", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            job: currentJob._id,
+            totalCost: Number(total)
+        })
+    });
+
+    const newInvoice = await res.json();
+
+    // ✅ link invoice to job
     currentJob.status = "completed";
-    currentJob.invoice = {
-        items: [],
-        total: Number(total)
-    };
+    currentJob.invoice = newInvoice;
 
     await saveJob();
 }
+
 
 /* ✅ FIXED SECTION */
 async function loadInvoices() {
