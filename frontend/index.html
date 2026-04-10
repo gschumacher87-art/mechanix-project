@@ -358,28 +358,42 @@ async function saveJob() {
 }
 async function createInvoice() {
 
-    const total = prompt("Enter total invoice amount:");
-    if(!total) return;
+    let items = [];
 
-    // ✅ create invoice in backend
+    while (true) {
+        const name = prompt("Item name (Cancel to finish):");
+        if (!name) break;
+
+        const price = prompt("Price:");
+        if (!price) continue;
+
+        items.push({
+            name,
+            price: Number(price)
+        });
+    }
+
+    if (items.length === 0) return;
+
+    const total = items.reduce((sum, i) => sum + i.price, 0);
+
     const res = await fetch(API + "/invoices", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             job: currentJob._id,
-            totalCost: Number(total)
+            items,
+            totalCost: total
         })
     });
 
     const newInvoice = await res.json();
 
-    // ✅ link invoice to job
     currentJob.status = "completed";
     currentJob.invoice = newInvoice;
 
     await saveJob();
 }
-
 
 /* ✅ FIXED SECTION */
 async function loadInvoices() {
