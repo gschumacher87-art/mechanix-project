@@ -173,7 +173,7 @@ async function loadCustomers() {
     const res = await fetch(API + "/customers");
     const data = await res.json();
 
-    let html = "", 
+    let html = "", options = "";
         
         data.forEach(c => {
     html += `<div class="card">${c.firstName} ${c.lastName} - ${c.phone}</div>`;
