@@ -382,6 +382,12 @@ async function loadInvoices() {
     </div>
 `).join("");
 }
+    async function openInvoice(id) {
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    alert("Invoice Total: $" + invoice.totalCost);
+}
 
 async function assignTech() {
 
