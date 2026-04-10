@@ -376,7 +376,11 @@ async function createInvoice() {
 async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
-    invoiceList.innerHTML = data.map(i => `<div class="card">$${i.totalCost}</div>`).join("");
+    invoiceList.innerHTML = data.map(i => `
+    <div class="card" onclick="openInvoice('${i._id}')">
+        $${i.totalCost}
+    </div>
+`).join("");
 }
 
 async function assignTech() {
