@@ -361,8 +361,8 @@ async function saveJob() {
 async function createInvoice() {
 
     currentJob.invoice = {
-        items: [],
-        total: 0
+        items: invoiceItems,
+total: invoiceItems.reduce((t, i) => t + i.price, 0)
     };
 
     await saveJob();
