@@ -13,6 +13,38 @@ router.post("/", async (req, res) => {
     }
 });
 
+// 🔥 CREATE invoice FROM job
+router.post("/from-job/:jobId", async (req, res) => {
+    try {
+        const Job = require("../models/Job");
+
+        const job = await Job.findById(req.params.jobId);
+
+        if (!job) {
+            return res.status(404).json({ error: "Job not found" });
+        }
+
+        const invoice = new Invoice({
+            job: job._id,
+            customer: job.customer,
+            vehicle: job.vehicle,
+            labourCost: job.labourCost,
+            partsCost: job.partsCost,
+            totalCost: job.totalCost
+        });
+
+        await invoice.save();
+
+        // update job status
+        job.status = "completed";
+        await job.save();
+
+        res.status(201).json(invoice);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // GET all invoices
 router.get("/", async (req, res) => {
     try {
