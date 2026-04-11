@@ -422,11 +422,11 @@ async function loadInvoices() {
     const data = await res.json();
 
     invoiceList.innerHTML = data.map(i => `
-    <div class="card">
-        <div class="title">$${i.totalCost}</div>
-        <div>Job: ${i.job}</div>
-    </div>
-`).join("");
+        <div class="card" onclick="openInvoice('${i._id}')">
+            <div class="title">$${i.totalCost}</div>
+            <div>Tap to view</div>
+        </div>
+    `).join("");
 }
 
 async function openInvoice(id) {
