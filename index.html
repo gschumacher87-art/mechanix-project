@@ -460,7 +460,11 @@ async function assignTech() {
 
     currentJob.technician = users[index]._id;
 
-    await saveJob();
+    await fetch(API + "/jobs/" + currentJob._id, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(currentJob)
+});
 }
 
 async function addTechnician() {
