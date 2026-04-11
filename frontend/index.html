@@ -389,10 +389,22 @@ async function createInvoice() {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             job: currentJob._id,
+            customer: currentJob.customer?._id,
+            vehicle: currentJob.vehicle?._id,
             items,
             totalCost: total
         })
     });
+
+    const newInvoice = await res.json();
+
+    currentJob.status = "completed";
+    currentJob.invoice = newInvoice;
+
+    await saveJob();
+    await loadInvoices();
+    show("invoices");
+}
 
     const newInvoice = await res.json();
 
