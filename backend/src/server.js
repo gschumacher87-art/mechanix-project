@@ -25,6 +25,7 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/invoices", invoiceRoutes);
+app.use("/api/users", require("./api/users"));
 
 app.get("/", (req, res) => {
   res.send("Mechanix API running");
