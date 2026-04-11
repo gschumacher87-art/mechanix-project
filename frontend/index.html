@@ -248,12 +248,20 @@ async function createJob() {
 
     const newJob = await res.json();
 
+    console.log("NEW JOB:", newJob); // DEBUG
+
     jobTitle.value = "";
     jobCustomer.selectedIndex = 0;
     jobVehicle.selectedIndex = 0;
 
     loadJobs();
-    openJob(newJob._id);
+
+    // ✅ SAFE OPEN
+    if (newJob && newJob._id) {
+        openJob(newJob._id);
+    } else {
+        alert("Job created but ID missing (check backend)");
+    }
 }
 
 async function loadJobs() {
