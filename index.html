@@ -399,8 +399,8 @@ async function createInvoice() {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             job: currentJob._id,
-            customer: currentJob.customer?._id,
-            vehicle: currentJob.vehicle?._id,
+            customer: currentJob.customer,
+            vehicle: currentJob.vehicle,
             totalCost: total
         })
     });
