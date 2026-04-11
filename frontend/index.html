@@ -270,7 +270,7 @@ async function loadJobs() {
 
         html += `
         <div class="card" onclick="openJob('${j._id}')" style="border-left:6px solid ${color}">
-            <div class="title">${j.title}</div>
+            <div class="title">${j.title || j.name || "Job"}</div>
             <span class="status ${j.status}">${j.status}</span><br><br>
             <b>${j.customer ? j.customer.firstName + " " + j.customer.lastName : "No customer"}</b><br>
             ${j.vehicle?.make || ""} ${j.vehicle?.model || ""}
@@ -290,7 +290,7 @@ async function openJob(id) {
 function renderJob() {
     jobInfo.innerHTML = `
         <div class="card">
-            <div class="title">${currentJob.title}</div>
+            <div class="title">${currentJob.title || currentJob.name || "Job"}</div>
             <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
 
             <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
