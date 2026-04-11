@@ -468,6 +468,23 @@ loadVehicles();
 loadJobs();
 loadInvoices();
 
+async function addTechnician() {
+    const name = prompt("Technician name:");
+    if (!name) return;
+
+    await fetch(API + "/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: name,
+            email: name + "@test.com",
+            password: "123"
+        })
+    });
+
+    alert("Technician added");
+}
+
 function printJob() {
     const w = window.open("", "_blank");
 
