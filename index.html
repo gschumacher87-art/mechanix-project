@@ -418,11 +418,11 @@ async function loadInvoices() {
     const data = await res.json();
 
     invoiceList.innerHTML = data.map(i => `
-        <div class="card" onclick="openInvoice('${i._id}')">
-            $${i.totalCost}
-        </div>
-    `).join("");
-}
+    <div class="card">
+        <div class="title">$${i.totalCost}</div>
+        <div>Job: ${i.job}</div>
+    </div>
+`).join("");
 
 async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
