@@ -415,7 +415,7 @@ console.log("SENDING INVOICE", {
     currentJob.invoice = newInvoice;
 
     await saveJob();
-loadInvoices();
+await loadInvoices();
 show("invoices");
 }
 
