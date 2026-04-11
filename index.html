@@ -371,8 +371,7 @@ async function saveJob() {
         body: JSON.stringify(currentJob)
     });
 
-    loadJobs();
-    openJob(currentJob._id);
+    loadJobs()
 }
 async function createInvoice() {
 
