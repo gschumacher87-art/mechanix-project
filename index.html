@@ -443,6 +443,29 @@ async function assignTech() {
     currentJob.technician = name;
     await saveJob();
 }
+async function addTechnician() {
+    const name = prompt("Technician name:");
+    if (!name) return;
+
+    const email = prompt("Email:");
+    if (!email) return;
+
+    const password = prompt("Password:");
+    if (!password) return;
+
+    await fetch(API + "/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name,
+            email,
+            password,
+            role: "staff"
+        })
+    });
+
+    alert("Technician created");
+}
 
 async function saveNotes() {
     currentJob.notes = jobNotes.value;
