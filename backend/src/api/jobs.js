@@ -42,17 +42,6 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// GET single job
-router.get("/:id", async (req, res) => {
-    try {
-        const job = await Job.findById(req.params.id).populate("customer");
-        if (!job) return res.status(404).json({ error: "Not found" });
-        res.json(job);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
 // UPDATE job
 router.put("/:id", async (req, res) => {
     try {
