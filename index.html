@@ -421,7 +421,7 @@ show("invoices");
 
 async function loadInvoices() {
     const res = await fetch(API + "/invoices");
-    const text = await res.text();
+    const data = await res.json();
 
     invoiceList.innerHTML = data.map(i => `
         <div class="card" onclick="openInvoice('${i._id}')">
