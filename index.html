@@ -423,6 +423,7 @@ async function loadInvoices() {
         <div>Job: ${i.job}</div>
     </div>
 `).join("");
+}
 
 async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
