@@ -394,7 +394,11 @@ async function createInvoice() {
     if (items.length === 0) return;
 
     const total = items.reduce((sum, i) => sum + i.price, 0);
-
+console.log("SENDING INVOICE", {
+    job: currentJob._id,
+    items,
+    totalCost: total
+});
     const res = await fetch(API + "/invoices", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
