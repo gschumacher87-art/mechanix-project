@@ -378,11 +378,11 @@ async function createInvoice() {
     let items = [];
 
     while (true) {
-        const name = prompt("Item name (Cancel to finish):");
-        if (!name) break;
+        const name = prompt("Item name:");
+        if (name === null) break;
 
         const price = prompt("Price:");
-        if (!price) continue;
+        if (price === null) break;
 
         items.push({
             name,
@@ -393,21 +393,17 @@ async function createInvoice() {
     if (items.length === 0) return;
 
     const total = items.reduce((sum, i) => sum + i.price, 0);
-console.log("SENDING INVOICE", {
-    job: currentJob._id,
-    items,
-    totalCost: total
-});
+
     const res = await fetch(API + "/invoices", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             job: currentJob._id,
-            items,
+            customer: currentJob.customer?._id,
+            vehicle: currentJob.vehicle?._id,
             totalCost: total
         })
     });
-    console.log("RESPONSE STATUS", res.status);
 
     const newInvoice = await res.json();
 
@@ -415,8 +411,8 @@ console.log("SENDING INVOICE", {
     currentJob.invoice = newInvoice;
 
     await saveJob();
-await loadInvoices();
-show("invoices");
+    await loadInvoices();
+    show("invoices");
 }
 
 async function loadInvoices() {
