@@ -285,7 +285,7 @@ async function loadJobs() {
 async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
-    renderJob();
+    await renderJob();
     show("jobDetail");
 }
 
