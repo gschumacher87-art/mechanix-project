@@ -294,10 +294,13 @@ async function renderJob() {
     let techName = "Unassigned";
 
     if (currentJob.technician) {
-        const res = await fetch(API + "/users/" + currentJob.technician);
-        const tech = await res.json();
-        techName = tech.name;
-    }
+    const res = await fetch(API + "/users");
+    const users = await res.json();
+
+    const tech = users.find(u => u._id === currentJob.technician);
+
+    if (tech) techName = tech.name;
+}
 
     jobInfo.innerHTML = `
         <div class="card">
