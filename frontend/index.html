@@ -406,14 +406,6 @@ async function createInvoice() {
     show("invoices");
 }
 
-    const newInvoice = await res.json();
-
-    currentJob.status = "completed";
-    currentJob.invoice = newInvoice;
-
-    await saveJob();
-}
-
 async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
