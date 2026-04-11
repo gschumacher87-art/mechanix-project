@@ -408,6 +408,7 @@ console.log("SENDING INVOICE", {
             totalCost: total
         })
     });
+    console.log("RESPONSE STATUS", res.status);
 
     const newInvoice = await res.json();
 
