@@ -289,7 +289,16 @@ async function openJob(id) {
     show("jobDetail");
 }
 
-function renderJob() {
+async function renderJob() {
+
+    let techName = "Unassigned";
+
+    if (currentJob.technician) {
+        const res = await fetch(API + "/users/" + currentJob.technician);
+        const tech = await res.json();
+        techName = tech.name;
+    }
+
     jobInfo.innerHTML = `
         <div class="card">
             <div class="title">${currentJob.title}</div>
@@ -297,7 +306,7 @@ function renderJob() {
 
             <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
             <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
-            <b>Technician:</b> ${currentJob.technician || "Unassigned"}
+            <b>Technician:</b> ${techName}
         </div>
     `;
 
