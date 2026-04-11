@@ -239,7 +239,7 @@ async function createJob() {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: jobTitle.value,
+            name: jobTitle.value, // ✅ FIXED
             customer: jobCustomer.value,
             vehicle: jobVehicle.value,
             technician: "Unassigned"
@@ -248,19 +248,14 @@ async function createJob() {
 
     const newJob = await res.json();
 
-    console.log("NEW JOB:", newJob); // DEBUG
-
     jobTitle.value = "";
     jobCustomer.selectedIndex = 0;
     jobVehicle.selectedIndex = 0;
 
     loadJobs();
 
-    // ✅ SAFE OPEN
     if (newJob && newJob._id) {
         openJob(newJob._id);
-    } else {
-        alert("Job created but ID missing (check backend)");
     }
 }
 
