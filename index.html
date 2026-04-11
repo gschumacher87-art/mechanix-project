@@ -437,12 +437,23 @@ async function openInvoice(id) {
 }
 
 async function assignTech() {
-    const name = prompt("Enter technician name:");
-    if(!name) return;
 
-    currentJob.technician = name;
+    const res = await fetch(API + "/users");
+    const users = await res.json();
+
+    let list = users.map((u, i) => `${i + 1}. ${u.name}`).join("\n");
+
+    const choice = prompt("Select technician:\n" + list);
+
+    const index = Number(choice) - 1;
+
+    if (!users[index]) return;
+
+    currentJob.technician = users[index]._id;
+
     await saveJob();
 }
+
 async function addTechnician() {
     const name = prompt("Technician name:");
     if (!name) return;
