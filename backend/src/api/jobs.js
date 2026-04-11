@@ -16,8 +16,27 @@ router.post("/", async (req, res) => {
 // GET all jobs
 router.get("/", async (req, res) => {
     try {
-        const jobs = await Job.find().populate("customer").sort({ createdAt: -1 });
+        const jobs = await Job.find()
+            .populate("customer")
+            .populate("vehicle")
+            .sort({ createdAt: -1 });
+
         res.json(jobs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET single job
+router.get("/:id", async (req, res) => {
+    try {
+        const job = await Job.findById(req.params.id)
+            .populate("customer")
+            .populate("vehicle");
+
+        if (!job) return res.status(404).json({ error: "Not found" });
+
+        res.json(job);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
