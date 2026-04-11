@@ -235,37 +235,26 @@ async function loadVehicles(customerId = null) {
 }
 
 async function createJob() {
-    try {
-        const res = await fetch(API + "/jobs", {
-            method:"POST",
-            headers:{ "Content-Type":"application/json" },
-            body: JSON.stringify({
-                title: jobTitle.value,
-                customer: jobCustomer.value,
-                vehicle: jobVehicle.value
-            })
-        });
+    if (!jobTitle.value || !jobCustomer.value || !jobVehicle.value) return;
 
-        if (!res.ok) {
-            alert("API ERROR: " + res.status);
-            return;
-        }
+    const res = await fetch(API + "/jobs", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: jobTitle.value,
+            customer: jobCustomer.value,
+            vehicle: jobVehicle.value
+        })
+    });
 
-        const newJob = await res.json();
+    if (!res.ok) return;
 
-        if (!newJob || !newJob._id) {
-            alert("NOT SAVED");
-            return;
-        }
+    const newJob = await res.json();
 
-        jobTitle.value = "";
+    jobTitle.value = "";
 
-        loadJobs();
-        openJob(newJob._id);
-
-    } catch (err) {
-        alert("FETCH FAILED");
-    }
+    loadJobs();
+    openJob(newJob._id);
 }
 
 async function loadJobs() {
