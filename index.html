@@ -275,7 +275,8 @@ async function createJob() {
 
     currentJob = job;
 
-    openJobCard(job._id);
+    // SWAPPED FLOW → go to DETAIL (not card)
+    openJob(job._id);
 }
 
 async function loadJobs() {
@@ -342,7 +343,9 @@ async function openJob(id) {
     currentJob.checklist ??= [];
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobDetail").classList.add("active");
+
+    // SWAPPED → creation screen now acts as card view
+    document.getElementById("createJob").classList.add("active");
 
     renderJob();
 }
