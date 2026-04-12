@@ -243,13 +243,14 @@ async function createJob() {
         body: JSON.stringify({
             title: jobTitle.value,
             customer: jobCustomer.value,
-            vehicle: jobVehicle.value
+            vehicle: jobVehicle.value,
+            status: "booked"
         })
     });
 
     if (!res.ok) return;
 
-    const newJob = await res.json();
+    await res.json();
 
     jobTitle.value = "";
 
