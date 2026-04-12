@@ -344,7 +344,6 @@ async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
 
-    // ensure safe structure so UI never breaks
     currentJob.customer ??= null;
     currentJob.vehicle ??= null;
     currentJob.checklist ??= [];
@@ -352,7 +351,7 @@ async function openJob(id) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobDetail").classList.add("active");
 
-    renderJobCard();
+    renderJobDetail();
 }
 
 async function renderJob() {
