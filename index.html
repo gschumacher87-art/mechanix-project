@@ -834,7 +834,10 @@ async function toggleChecklist(index) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(currentJob)
     });
+
+    renderJob();
 }
+
 </script>
 
 </body>
