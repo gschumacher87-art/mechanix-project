@@ -292,18 +292,30 @@ async function loadJobs() {
     let booked = "", active = "", pending = "", completed = "";
 
     data.forEach(j => {
+
+        // SAFETY NORMALISATION (prevents undefined UI issues)
+        const customerName =
+            j.customer && typeof j.customer === "object"
+                ? j.customer.firstName + " " + j.customer.lastName
+                : "No customer";
+
+        const vehicleName =
+            j.vehicle && typeof j.vehicle === "object"
+                ? j.vehicle.make + " " + j.vehicle.model
+                : "";
+
         let color = "#ccc";
-        if(j.status === "arrived") color = "orange";
-        if(j.status === "in-progress") color = "#007bff";
-        if(j.status === "pending-invoice") color = "purple";
-        if(j.status === "completed") color = "green";
+        if (j.status === "arrived") color = "orange";
+        if (j.status === "in-progress") color = "#007bff";
+        if (j.status === "pending-invoice") color = "purple";
+        if (j.status === "completed") color = "green";
 
         const card = `
         <div class="card" onclick="openJob('${j._id}')" style="border-left:6px solid ${color}">
             <div class="title">${j.title}</div>
             <span class="status ${j.status}">${j.status}</span><br><br>
-            <b>${j.customer ? j.customer.firstName + " " + j.customer.lastName : "No customer"}</b><br>
-            ${j.vehicle?.make || ""} ${j.vehicle?.model || ""}
+            <b>${customerName}</b><br>
+            ${vehicleName}
         </div>`;
 
         if (j.status === "booked") booked += card;
@@ -332,8 +344,13 @@ async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
 
+    // ensure safe structure so UI never breaks
+    currentJob.customer ??= null;
+    currentJob.vehicle ??= null;
+    currentJob.checklist ??= [];
+
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobCard").classList.add("active");
+    document.getElementById("jobDetail").classList.add("active");
 
     renderJobCard();
 }
@@ -934,14 +951,22 @@ function renderJobCard() {
             <div class="title">${currentJob.title}</div>
             <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
 
-            <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
-            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
+            <b>Customer:</b> ${
+                currentJob.customer && typeof currentJob.customer === "object"
+                    ? currentJob.customer.firstName + " " + currentJob.customer.lastName
+                    : "Loading..."
+            }<br>
+
+            <b>Vehicle:</b> ${
+                currentJob.vehicle && typeof currentJob.vehicle === "object"
+                    ? currentJob.vehicle.make + " " + currentJob.vehicle.model
+                    : "Loading..."
+            }
         </div>
     `;
 
     jobCardChecklist.innerHTML = checklistHtml || "<div style='color:#777;'>No checklist items</div>";
 
-    // ✅ ACTION BUTTON LOGIC (THIS WAS MISSING)
     let actions = "";
 
     if (currentJob.status === "booked") {
