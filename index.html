@@ -414,10 +414,12 @@ async function setStatus(s) {
     if (s === "completed") {
 
         const invoiceTemplate = {
-            items: (currentJob.checklist || []).map(c => ({
-                name: c.text,
-                price: 0
-            })),
+            items: (currentJob.checklist || [])
+                .filter(c => c.done)
+                .map(c => ({
+                    name: c.text,
+                    price: 0
+                })),
             labour: [],
             notes: ""
         };
