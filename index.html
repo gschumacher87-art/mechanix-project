@@ -737,6 +737,18 @@ async function addNote(id) {
     openInvoice(id);
 }
 
+async function deleteInvoice(id) {
+
+    const confirmDelete = confirm("Delete this invoice?");
+    if (!confirmDelete) return;
+
+    await fetch(API + "/invoices/" + id, {
+        method: "DELETE"
+    });
+
+    loadInvoices();
+}
+
 </script>
 
 </body>
