@@ -810,6 +810,31 @@ async function deleteInvoice(id) {
     loadInvoices();
 }
 
+async function addChecklist() {
+    const text = prompt("Checklist item:");
+    if (!text) return;
+
+    currentJob.checklist ??= [];
+    currentJob.checklist.push({ text, done: false });
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    renderJob();
+}
+
+async function toggleChecklist(index) {
+    currentJob.checklist[index].done = !currentJob.checklist[index].done;
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+}
 </script>
 
 </body>
