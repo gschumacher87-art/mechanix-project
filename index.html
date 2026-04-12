@@ -414,7 +414,10 @@ async function setStatus(s) {
     if (s === "completed") {
 
         const invoiceTemplate = {
-            items: [],
+            items: (currentJob.checklist || []).map(c => ({
+                name: c.text,
+                price: 0
+            })),
             labour: [],
             notes: ""
         };
