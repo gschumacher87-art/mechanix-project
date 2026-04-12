@@ -731,16 +731,24 @@ async function addLabour(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    invoice.template ??= { items: [], labour: [], notes: "" };
-    invoice.template.labour ??= [];
+    const template = {
+        items: [...(invoice.template?.items || [])],
+        labour: [...(invoice.template?.labour || [])],
+        notes: invoice.template?.notes || ""
+    };
 
-    invoice.template.labour.push({ name, price });
+    template.labour.push({ name, price });
+
+    invoice.template = template;
     invoice.totalCost += price;
 
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(invoice)
+        body: JSON.stringify({
+            template: invoice.template,
+            totalCost: invoice.totalCost
+        })
     });
 
     openInvoice(id);
