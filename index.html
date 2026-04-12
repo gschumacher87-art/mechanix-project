@@ -367,7 +367,6 @@ async function renderJob() {
         if (tech) techName = tech.name;
     }
 
-    // ✅ SAFE CHECKLIST
     currentJob.checklist ??= [];
 
     let checklistHtml = "";
@@ -429,15 +428,6 @@ async function renderJob() {
     photoList.innerHTML = photos;
 
     jobNotes.value = currentJob.notes || "";
-
-    if(currentJob.invoice){
-        jobInfo.innerHTML += `
-            <div class="card">
-                <div class="title">Invoice</div>
-                Total: $${Number(currentJob.invoice.totalCost).toFixed(2)}
-            </div>
-        `;
-    }
 }
 
 function uploadPhoto(e) {
