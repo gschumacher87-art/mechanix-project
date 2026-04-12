@@ -235,6 +235,13 @@ async function loadVehicles(customerId = null) {
 async function createJob() {
     if (!jobTitle.value || !jobCustomer.value || !jobVehicle.value) return;
 
+    const serviceTemplate = [
+        { text: "Oil", done: false },
+        { text: "Oil Filter", done: false },
+        { text: "Air Filter", done: false },
+        { text: "Cabin Filter", done: false }
+    ];
+
     const res = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -242,7 +249,8 @@ async function createJob() {
             title: jobTitle.value,
             customer: jobCustomer.value,
             vehicle: jobVehicle.value,
-            status: "booked"
+            status: "booked",
+            checklist: serviceTemplate
         })
     });
 
