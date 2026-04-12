@@ -318,9 +318,9 @@ async function openJob(id) {
     currentJob = await res.json();
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobDetail").classList.add("active");
+    document.getElementById("jobCard").classList.add("active");
 
-    await renderJob();
+    renderJobCard();
 }
 
 async function renderJob() {
