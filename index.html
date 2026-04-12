@@ -896,7 +896,10 @@ function renderJobCard() {
     jobCardInfo.innerHTML = `
         <div class="card">
             <div class="title">${currentJob.title}</div>
-            <span class="status ${currentJob.status}">${currentJob.status}</span>
+            <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
+
+            <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
         </div>
     `;
 
