@@ -503,23 +503,23 @@ async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    const template = invoice.template || {};
+    const template = invoice.template || { items: [], labour: [], notes: "" };
 
-    let itemsHtml = "";
-    let labourHtml = "";
-    let notesHtml = "";
+let itemsHtml = "";
+let labourHtml = "";
+let notesHtml = "";
 
-    template.items?.forEach(i => {
-        itemsHtml += `<div>${i.name} - $${i.price}</div>`;
-    });
+(template.items || []).forEach(i => {
+    itemsHtml += `<div>${i.name} - $${i.price}</div>`;
+});
 
-    template.labour?.forEach(l => {
-        labourHtml += `<div>${l.name} - $${l.price}</div>`;
-    });
+(template.labour || []).forEach(l => {
+    labourHtml += `<div>${l.name} - $${l.price}</div>`;
+});
 
-    if (template.notes) {
-        notesHtml = `<div>${template.notes}</div>`;
-    }
+if (template.notes) {
+    notesHtml = `<div>${template.notes}</div>`;
+}
 
     invoiceList.innerHTML = `
         <div class="card">
