@@ -445,6 +445,10 @@ async function openInvoice(id) {
 
             <br>
             <b>Total:</b> $${invoice.totalCost}
+
+            <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
+                Finalise Invoice
+            </button>
         </div>
 
         <button class="secondary" onclick="loadInvoices()">Back</button>
