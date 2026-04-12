@@ -373,7 +373,25 @@ async function saveJob() {
     loadJobs()
 }
 async function createInvoice() {
-    
+
+    const res = await fetch(API + "/invoices", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            job: currentJob._id,
+            customer: currentJob.customer,
+            vehicle: currentJob.vehicle,
+            totalCost: 0
+        })
+    });
+
+    const newInvoice = await res.json();
+
+    currentJob.invoice = newInvoice;
+
+    await saveJob();
+    await loadInvoices();
+    show("invoices");
 }
 
 async function loadInvoices() {
