@@ -484,6 +484,7 @@ async function createInvoice() {
     await saveJob();
     await loadInvoices();
     show("invoices");
+    await openInvoice(newInvoice._id);
 }
 
 async function loadInvoices() {
