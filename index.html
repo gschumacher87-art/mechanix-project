@@ -394,6 +394,12 @@ async function setStatus(s) {
 
     if (s === "completed") {
 
+        const invoiceTemplate = {
+            items: [],
+            labour: [],
+            notes: ""
+        };
+
         const res = await fetch(API + "/invoices", {
             method:"POST",
             headers:{ "Content-Type":"application/json" },
@@ -401,13 +407,22 @@ async function setStatus(s) {
                 job: currentJob._id,
                 customer: currentJob.customer,
                 vehicle: currentJob.vehicle,
-                totalCost: 0
+                totalCost: 0,
+                template: invoiceTemplate
             })
         });
 
         const newInvoice = await res.json();
 
         currentJob.invoice = newInvoice;
+        currentJob.status = "completed";
+
+        await saveJob();
+        await loadInvoices();
+        show("invoices");
+        await openInvoice(newInvoice._id);
+
+        return;
     }
 
     currentJob.status = s;
