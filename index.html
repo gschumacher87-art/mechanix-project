@@ -697,7 +697,6 @@ async function addItem(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    // FORCE SAFE TEMPLATE
     const template = {
         items: [...(invoice.template?.items || [])],
         labour: [...(invoice.template?.labour || [])],
@@ -712,7 +711,10 @@ async function addItem(id) {
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(invoice)
+        body: JSON.stringify({
+            template: invoice.template,
+            totalCost: invoice.totalCost
+        })
     });
 
     openInvoice(id);
