@@ -505,42 +505,60 @@ async function openInvoice(id) {
 
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
-let itemsHtml = "";
-let labourHtml = "";
-let notesHtml = "";
+    let itemsHtml = "";
+    let labourHtml = "";
+    let notesHtml = "";
 
-(template.items || []).forEach(i => {
-    itemsHtml += `<div>${i.name} - $${i.price}</div>`;
-});
+    (template.items || []).forEach(i => {
+        itemsHtml += `<div style="display:flex; justify-content:space-between;">
+            <span>${i.name}</span>
+            <span>$${i.price}</span>
+        </div>`;
+    });
 
-(template.labour || []).forEach(l => {
-    labourHtml += `<div>${l.name} - $${l.price}</div>`;
-});
+    (template.labour || []).forEach(l => {
+        labourHtml += `<div style="display:flex; justify-content:space-between;">
+            <span>${l.name}</span>
+            <span>$${l.price}</span>
+        </div>`;
+    });
 
-if (template.notes) {
-    notesHtml = `<div>${template.notes}</div>`;
-}
+    if (template.notes) {
+        notesHtml = `<div>${template.notes}</div>`;
+    }
 
     invoiceList.innerHTML = `
         <div class="card">
-            <div class="title">Invoice</div>
 
-            <b>Items</b>
+            <div class="title">INVOICE</div>
+
+            <hr>
+
+            <div><b>Items</b></div>
             ${itemsHtml || "<div>No items</div>"}
-            <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
 
             <br>
-            <b>Labour</b>
+
+            <div><b>Labour</b></div>
             ${labourHtml || "<div>No labour</div>"}
-            <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
 
             <br>
-            <b>Notes</b>
-            ${notesHtml || "<div>No notes</div>"}
-            <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
 
-            <br><br>
-            <b>Total:</b> $${invoice.totalCost}
+            <div><b>Notes</b></div>
+            ${notesHtml || "<div>No notes</div>"}
+
+            <hr>
+
+            <div style="font-size:22px; font-weight:bold;">
+                Total: $${invoice.totalCost}
+            </div>
+
+        </div>
+
+        <div class="card">
+            <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
+            <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
+            <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
 
             <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
                 Finalise Invoice
@@ -549,9 +567,9 @@ if (template.notes) {
             <button class="secondary" onclick="deleteInvoice('${invoice._id}')">
                 Delete Invoice
             </button>
-        </div>
 
-        <button class="secondary" onclick="loadInvoices()">Back</button>
+            <button class="secondary" onclick="loadInvoices()">Back</button>
+        </div>
     `;
 }
 
