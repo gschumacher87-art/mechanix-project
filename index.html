@@ -526,6 +526,27 @@ loadVehicles();
 loadJobs();
 loadInvoices();
 
+async function finaliseInvoice(id) {
+
+    const confirmDone = confirm("Finalise invoice? This cannot be edited.");
+    if (!confirmDone) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    const jobRes = await fetch(API + "/jobs/" + invoice.job);
+    const job = await jobRes.json();
+
+    job.status = "completed";
+
+    await fetch(API + "/jobs/" + job._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(job)
+    });
+
+    loadInvoices();
+}
 function printJob() {
     const w = window.open("", "_blank");
 
