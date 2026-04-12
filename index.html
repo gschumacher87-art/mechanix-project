@@ -675,6 +675,9 @@ async function addItem(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
+    invoice.template ??= { items: [], labour: [], notes: "" };
+    invoice.template.items ??= [];
+
     invoice.template.items.push({ name, price });
     invoice.totalCost += price;
 
@@ -698,6 +701,9 @@ async function addLabour(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
+    invoice.template ??= { items: [], labour: [], notes: "" };
+    invoice.template.labour ??= [];
+
     invoice.template.labour.push({ name, price });
     invoice.totalCost += price;
 
@@ -717,6 +723,8 @@ async function addNote(id) {
 
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
+
+    invoice.template ??= { items: [], labour: [], notes: "" };
 
     invoice.template.notes = note;
 
