@@ -310,13 +310,26 @@ async function renderJob() {
     let techName = "Unassigned";
 
     if (currentJob.technician) {
-    const res = await fetch(API + "/users");
-    const users = await res.json();
+        const res = await fetch(API + "/users");
+        const users = await res.json();
 
-    const tech = users.find(u => u._id === currentJob.technician);
+        const tech = users.find(u => u._id === currentJob.technician);
 
-    if (tech) techName = tech.name;
-}
+        if (tech) techName = tech.name;
+    }
+
+    // ✅ SAFE CHECKLIST
+    currentJob.checklist ??= [];
+
+    let checklistHtml = "";
+
+    currentJob.checklist.forEach((item, i) => {
+        checklistHtml += `
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleChecklist(${i})">
+            <span>${item.text}</span>
+        </div>`;
+    });
 
     jobInfo.innerHTML = `
         <div class="card">
@@ -326,6 +339,12 @@ async function renderJob() {
             <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
             <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
             <b>Technician:</b> ${techName}
+        </div>
+
+        <div class="card">
+            <div class="title">Checklist</div>
+            ${checklistHtml || "<div style='color:#777;'>No checklist items</div>"}
+            <button class="primary" onclick="addChecklist()">+ Add Item</button>
         </div>
     `;
 
