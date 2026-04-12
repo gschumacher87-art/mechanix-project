@@ -408,6 +408,12 @@ async function setStatus(s) {
 async function startJob() {
     currentJob.status = "in-progress";
     currentJob.clockIn = new Date();
+    currentJob.clockOut = null;
+    await saveJob();
+}
+
+async function pauseJob() {
+    currentJob.clockOut = new Date();
     await saveJob();
 }
 
