@@ -373,44 +373,7 @@ async function saveJob() {
     loadJobs()
 }
 async function createInvoice() {
-
-    let items = [];
-
-    while (true) {
-        const name = prompt("Item name:");
-        if (name === null) break;
-
-        const price = prompt("Price:");
-        if (price === null) break;
-
-        items.push({
-            name,
-            price: Number(price)
-        });
-    }
-
-    if (items.length === 0) return;
-
-    const total = items.reduce((sum, i) => sum + i.price, 0);
-
-    const res = await fetch(API + "/invoices", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            job: currentJob._id,
-            customer: currentJob.customer,
-            vehicle: currentJob.vehicle,
-            totalCost: total
-        })
-    });
-
-    const newInvoice = await res.json();
-
-    currentJob.invoice = newInvoice;
-
-    await saveJob();
-    await loadInvoices();
-    show("invoices");
+    
 }
 
 async function loadInvoices() {
