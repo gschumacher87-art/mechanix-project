@@ -92,21 +92,6 @@
 
     <div class="card">
     <div class="title">Quick Actions</div>
-
-    ${currentJob.status === "booked" ? `
-        <button class="primary" onclick="setStatus('arrived')">Arrived</button>
-        <button class="primary" onclick="assignTech()">👷 Assign Technician</button>
-    ` : ""}
-
-    ${currentJob.status === "arrived" ? `
-        <button class="primary" onclick="startJob()">▶ Start Job</button>
-        <button class="primary" onclick="assignTech()">👷 Assign Technician</button>
-    ` : ""}
-
-    ${currentJob.status === "in-progress" ? `
-        <button class="primary" onclick="finishJob()">✔ Finish Job</button>
-    ` : ""}
-
 </div>
 
     <div class="card">
