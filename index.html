@@ -697,10 +697,16 @@ async function addItem(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    invoice.template ??= { items: [], labour: [], notes: "" };
-    invoice.template.items ??= [];
+    // FORCE SAFE TEMPLATE
+    const template = {
+        items: [...(invoice.template?.items || [])],
+        labour: [...(invoice.template?.labour || [])],
+        notes: invoice.template?.notes || ""
+    };
 
-    invoice.template.items.push({ name, price });
+    template.items.push({ name, price });
+
+    invoice.template = template;
     invoice.totalCost += price;
 
     await fetch(API + "/invoices/" + id, {
