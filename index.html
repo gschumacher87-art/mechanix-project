@@ -705,16 +705,16 @@ async function addItem(id) {
 
     template.items.push({ name, price });
 
-    invoice.template = template;
-    invoice.totalCost += price;
+    const updatedInvoice = {
+        ...invoice,
+        template: template,
+        totalCost: (invoice.totalCost || 0) + price
+    };
 
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            template: invoice.template,
-            totalCost: invoice.totalCost
-        })
+        body: JSON.stringify(updatedInvoice)
     });
 
     openInvoice(id);
