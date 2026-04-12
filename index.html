@@ -309,8 +309,11 @@ async function loadJobs() {
 async function openJob(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobDetail").classList.add("active");
+
     await renderJob();
-    show("jobDetail");
 }
 
 async function renderJob() {
