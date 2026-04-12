@@ -507,50 +507,54 @@ async function openInvoice(id) {
 
     let itemsHtml = "";
     let labourHtml = "";
-    let notesHtml = "";
 
     (template.items || []).forEach(i => {
-        itemsHtml += `<div style="display:flex; justify-content:space-between;">
+        itemsHtml += `
+        <div style="display:flex; justify-content:space-between; padding:6px 0;">
             <span>${i.name}</span>
             <span>$${i.price}</span>
         </div>`;
     });
 
     (template.labour || []).forEach(l => {
-        labourHtml += `<div style="display:flex; justify-content:space-between;">
+        labourHtml += `
+        <div style="display:flex; justify-content:space-between; padding:6px 0;">
             <span>${l.name}</span>
             <span>$${l.price}</span>
         </div>`;
     });
 
-    if (template.notes) {
-        notesHtml = `<div>${template.notes}</div>`;
-    }
-
     invoiceList.innerHTML = `
         <div class="card">
 
-            <div class="title">INVOICE</div>
+            <div style="text-align:center; font-size:22px; font-weight:bold;">
+                INVOICE
+            </div>
 
             <hr>
 
-            <div><b>Items</b></div>
-            ${itemsHtml || "<div>No items</div>"}
+            <div style="margin-bottom:10px;">
+                <b>Items</b>
+                ${itemsHtml || "<div style='color:#777;'>No items</div>"}
+            </div>
 
-            <br>
+            <div style="margin-bottom:10px;">
+                <b>Labour</b>
+                ${labourHtml || "<div style='color:#777;'>No labour</div>"}
+            </div>
 
-            <div><b>Labour</b></div>
-            ${labourHtml || "<div>No labour</div>"}
-
-            <br>
-
-            <div><b>Notes</b></div>
-            ${notesHtml || "<div>No notes</div>"}
+            <div style="margin-bottom:10px;">
+                <b>Notes</b><br>
+                <div style="color:#555;">
+                    ${template.notes || "No notes"}
+                </div>
+            </div>
 
             <hr>
 
-            <div style="font-size:22px; font-weight:bold;">
-                Total: $${invoice.totalCost}
+            <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:bold;">
+                <span>Total</span>
+                <span>$${invoice.totalCost}</span>
             </div>
 
         </div>
