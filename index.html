@@ -664,6 +664,71 @@ function printJob() {
     w.print();
 }
 
+async function addItem(id) {
+
+    const name = prompt("Item name:");
+    if (!name) return;
+
+    const price = Number(prompt("Price:"));
+    if (!price) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    invoice.template.items.push({ name, price });
+    invoice.totalCost += price;
+
+    await fetch(API + "/invoices/" + id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(invoice)
+    });
+
+    openInvoice(id);
+}
+
+async function addLabour(id) {
+
+    const name = prompt("Labour description:");
+    if (!name) return;
+
+    const price = Number(prompt("Price:"));
+    if (!price) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    invoice.template.labour.push({ name, price });
+    invoice.totalCost += price;
+
+    await fetch(API + "/invoices/" + id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(invoice)
+    });
+
+    openInvoice(id);
+}
+
+async function addNote(id) {
+
+    const note = prompt("Note:");
+    if (!note) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    invoice.template.notes = note;
+
+    await fetch(API + "/invoices/" + id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(invoice)
+    });
+
+    openInvoice(id);
+}
+
 </script>
 
 </body>
