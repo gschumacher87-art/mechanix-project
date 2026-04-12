@@ -342,6 +342,15 @@ async function renderJob() {
     }
 
     if (currentJob.status === "in-progress") {
+
+        if (!currentJob.clockIn || currentJob.clockOut) {
+            actions += `<button class="primary" onclick="startJob()">▶ Resume Job</button>`;
+        }
+
+        if (currentJob.clockIn && !currentJob.clockOut) {
+            actions += `<button class="primary" onclick="pauseJob()">⏸ Clock Off</button>`;
+        }
+
         actions += `<button class="primary" onclick="finishJob()">✔ Finish Job</button>`;
     }
 
