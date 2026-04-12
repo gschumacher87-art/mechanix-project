@@ -29,6 +29,15 @@ const invoiceSchema = new mongoose.Schema(
         type: Number,
         default: 0
     },
+
+    // INSERTED BLOCK START
+    template: {
+        items: [{ name: String, price: Number }],
+        labour: [{ name: String, price: Number }],
+        notes: String
+    },
+    // INSERTED BLOCK END
+
     status: {
         type: String,
         enum: ["unpaid", "paid"],
