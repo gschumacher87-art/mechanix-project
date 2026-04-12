@@ -444,6 +444,12 @@ async function saveJob() {
 
 async function createInvoice() {
 
+    const invoiceTemplate = {
+        items: [],
+        labour: [],
+        notes: ""
+    };
+
     const res = await fetch(API + "/invoices", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -451,7 +457,8 @@ async function createInvoice() {
             job: currentJob._id,
             customer: currentJob.customer,
             vehicle: currentJob.vehicle,
-            totalCost: 0
+            totalCost: 0,
+            template: invoiceTemplate
         })
     });
 
