@@ -64,7 +64,7 @@ router.post("/:id/convert", async (req, res) => {
 
         // create job from booking
         const job = new Job({
-            customerId: booking.customerId,
+            customer: booking.customerId, // ✅ FIXED
             bookingId: booking._id,
             status: "in-progress"
         });
