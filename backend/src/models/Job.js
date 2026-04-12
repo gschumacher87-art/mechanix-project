@@ -13,9 +13,9 @@ const jobSchema = new mongoose.Schema(
         required: true
     },
     technician: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-},
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
 
     title: {
         type: String,
@@ -24,6 +24,17 @@ const jobSchema = new mongoose.Schema(
     description: {
         type: String
     },
+
+    // ✅ CHECKLIST
+    checklist: [
+        {
+            text: String,
+            done: {
+                type: Boolean,
+                default: false
+            }
+        }
+    ],
 
     // 🔥 WORKFLOW STATUS
     status: {
@@ -72,6 +83,7 @@ const jobSchema = new mongoose.Schema(
     timestamps: true
 }
 );
+
 jobSchema.pre("save", function(next) {
     this.totalCost = this.labourCost + this.partsCost;
     next();
