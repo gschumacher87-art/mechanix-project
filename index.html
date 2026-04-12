@@ -509,9 +509,46 @@ async function pauseJob() {
 }
 
 async function finishJob() {
-    currentJob.status = "pending-invoice";
-    currentJob.clockOut = new Date();
+    currentJob.status = "completed";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    // 👉 GO STRAIGHT TO INVOICE (STEP 4 FIX)
+    const invoiceTemplate = {
+        items: (currentJob.checklist || [])
+            .filter(c => c.done)
+            .map(c => ({
+                name: c.text,
+                price: 0
+            })),
+        labour: [],
+        notes: ""
+    };
+
+    const res = await fetch(API + "/invoices", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            job: currentJob._id,
+            customer: currentJob.customer,
+            vehicle: currentJob.vehicle,
+            totalCost: 0,
+            template: invoiceTemplate
+        })
+    });
+
+    const newInvoice = await res.json();
+
+    currentJob.invoice = newInvoice;
+
     await saveJob();
+
+    show("invoices");
+    await openInvoice(newInvoice._id);
 }
 
 async function saveJob() {
