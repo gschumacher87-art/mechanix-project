@@ -9,6 +9,10 @@ const customerRoutes = require("./api/customers");
 const jobRoutes = require("./api/jobs");
 const vehicleRoutes = require("./api/vehicles"); 
 const invoiceRoutes = require("./api/invoices");
+
+// ✅ NEW
+const bookingRoutes = require("./api/bookings");
+
 const auth = require("./middleware/auth");
 const admin = require("./middleware/admin");
 
@@ -25,6 +29,10 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/invoices", invoiceRoutes);
+
+// ✅ NEW
+app.use("/api/bookings", bookingRoutes);
+
 app.use("/api/users", require("./api/users"));
 
 app.get("/", (req, res) => {
