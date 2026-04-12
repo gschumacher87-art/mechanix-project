@@ -502,19 +502,40 @@ async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    let itemsHtml = "";
+    const template = invoice.template || {};
 
-    invoice.items?.forEach(i => {
+    let itemsHtml = "";
+    let labourHtml = "";
+    let notesHtml = "";
+
+    template.items?.forEach(i => {
         itemsHtml += `<div>${i.name} - $${i.price}</div>`;
     });
+
+    template.labour?.forEach(l => {
+        labourHtml += `<div>${l.name} - $${l.price}</div>`;
+    });
+
+    if (template.notes) {
+        notesHtml = `<div>${template.notes}</div>`;
+    }
 
     invoiceList.innerHTML = `
         <div class="card">
             <div class="title">Invoice</div>
 
+            <b>Items</b>
             ${itemsHtml || "<div>No items</div>"}
 
             <br>
+            <b>Labour</b>
+            ${labourHtml || "<div>No labour</div>"}
+
+            <br>
+            <b>Notes</b>
+            ${notesHtml || "<div>No notes</div>"}
+
+            <br><br>
             <b>Total:</b> $${invoice.totalCost}
 
             <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
@@ -525,7 +546,6 @@ async function openInvoice(id) {
         <button class="secondary" onclick="loadInvoices()">Back</button>
     `;
 }
-
 
 async function assignTech() {
 
