@@ -264,13 +264,10 @@ async function createJob() {
 
     if (!res.ok) return;
 
-    const job = await res.json();
-
     jobTitle.value = "";
 
-    await loadJobs();
-
-    await openJob(job._id);
+    show("jobs");
+    loadJobs();
 }
 
 async function loadJobs() {
