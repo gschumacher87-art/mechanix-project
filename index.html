@@ -100,7 +100,6 @@
     <div class="card">
         <div class="title">Checklist</div>
         <div id="jobCardChecklist"></div>
-        <button class="primary" onclick="addChecklist()">+ Add Item</button>
     </div>
 
     <div class="card">
@@ -261,13 +260,6 @@ async function loadVehicles(customerId = null) {
 async function createJob() {
     if (!jobTitle.value || !jobCustomer.value || !jobVehicle.value) return;
 
-    const serviceTemplate = [
-        { text: "Oil", done: false },
-        { text: "Oil Filter", done: false },
-        { text: "Air Filter", done: false },
-        { text: "Cabin Filter", done: false }
-    ];
-
     const res = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -276,7 +268,7 @@ async function createJob() {
             customer: jobCustomer.value,
             vehicle: jobVehicle.value,
             status: "booked",
-            checklist: serviceTemplate
+            checklist: []
         })
     });
 
@@ -286,11 +278,10 @@ async function createJob() {
 
     jobTitle.value = "";
 
-    // 👉 GO STRAIGHT TO JOB CARD (STEP 2 FIX)
+    currentJob = job;
+
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
-
-    currentJob = job;
 
     renderJobCard();
 }
@@ -509,15 +500,7 @@ async function pauseJob() {
 }
 
 async function finishJob() {
-    currentJob.status = "completed";
 
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(currentJob)
-    });
-
-    // 👉 GO STRAIGHT TO INVOICE (STEP 4 FIX)
     const invoiceTemplate = {
         items: (currentJob.checklist || [])
             .filter(c => c.done)
@@ -544,8 +527,13 @@ async function finishJob() {
     const newInvoice = await res.json();
 
     currentJob.invoice = newInvoice;
+    currentJob.status = "completed";
 
-    await saveJob();
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
 
     show("invoices");
     await openInvoice(newInvoice._id);
@@ -947,7 +935,7 @@ function renderJobCard() {
         </div>
     `;
 
-    jobCardChecklist.innerHTML = checklistHtml;
+    jobCardChecklist.innerHTML = checklistHtml || "<div style='color:#777;'>No checklist items</div>";
 }
 
 </script>
