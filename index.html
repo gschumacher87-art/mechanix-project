@@ -280,9 +280,9 @@ async function createJob() {
     currentJob = job;
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobCard").classList.add("active");
+    document.getElementById("jobDetail").classList.add("active");
 
-    renderJobCard();
+    renderJob();
 }
 
 async function loadJobs() {
