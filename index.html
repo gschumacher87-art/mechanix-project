@@ -279,10 +279,10 @@ async function createJob() {
 
     currentJob = job;
 
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobDetail").classList.add("active");
+    // IMPORTANT: STAY IN HUB
+    show("jobs");
 
-    renderJob();
+    loadJobs();
 }
 
 async function loadJobs() {
