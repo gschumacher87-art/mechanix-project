@@ -92,6 +92,7 @@
 
     <div class="card">
     <div class="title">Quick Actions</div>
+    <div id="quickActions"></div>
 </div>
 
     <div class="card">
@@ -327,6 +328,24 @@ async function renderJob() {
             <b>Technician:</b> ${techName}
         </div>
     `;
+
+    let actions = "";
+
+    if (currentJob.status === "booked") {
+        actions += `<button class="primary" onclick="setStatus('arrived')">Arrived</button>`;
+        actions += `<button class="primary" onclick="assignTech()">👷 Assign Technician</button>`;
+    }
+
+    if (currentJob.status === "arrived") {
+        actions += `<button class="primary" onclick="startJob()">▶ Start Job</button>`;
+        actions += `<button class="primary" onclick="assignTech()">👷 Assign Technician</button>`;
+    }
+
+    if (currentJob.status === "in-progress") {
+        actions += `<button class="primary" onclick="finishJob()">✔ Finish Job</button>`;
+    }
+
+    document.getElementById("quickActions").innerHTML = actions;
 
     let photos = "";
     currentJob.photos?.other?.forEach(p => photos += `<img src="${p}">`);
