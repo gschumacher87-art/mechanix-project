@@ -407,7 +407,6 @@ async function createInvoice() {
 
     const newInvoice = await res.json();
 
-    currentJob.status = "completed";
     currentJob.invoice = newInvoice;
 
     await saveJob();
