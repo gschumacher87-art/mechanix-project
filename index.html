@@ -545,6 +545,10 @@ async function openInvoice(id) {
             <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
                 Finalise Invoice
             </button>
+
+            <button class="secondary" onclick="deleteInvoice('${invoice._id}')">
+                Delete Invoice
+            </button>
         </div>
 
         <button class="secondary" onclick="loadInvoices()">Back</button>
