@@ -347,6 +347,26 @@ function uploadPhoto(e) {
 }
 
 async function setStatus(s) {
+
+    // If marking completed → create invoice automatically
+    if (s === "completed") {
+
+        const res = await fetch(API + "/invoices", {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({
+                job: currentJob._id,
+                customer: currentJob.customer,
+                vehicle: currentJob.vehicle,
+                totalCost: 0
+            })
+        });
+
+        const newInvoice = await res.json();
+
+        currentJob.invoice = newInvoice;
+    }
+
     currentJob.status = s;
     await saveJob();
 }
