@@ -7,6 +7,13 @@ const jobSchema = new mongoose.Schema(
         ref: "Customer",
         required: true
     },
+
+    bookingId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+        default: null
+    },
+
     vehicle: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Vehicle",
