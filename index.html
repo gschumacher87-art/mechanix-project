@@ -527,14 +527,17 @@ async function openInvoice(id) {
 
             <b>Items</b>
             ${itemsHtml || "<div>No items</div>"}
+            <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
 
             <br>
             <b>Labour</b>
             ${labourHtml || "<div>No labour</div>"}
+            <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
 
             <br>
             <b>Notes</b>
             ${notesHtml || "<div>No notes</div>"}
+            <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
 
             <br><br>
             <b>Total:</b> $${invoice.totalCost}
