@@ -266,23 +266,16 @@ async function createJob() {
             title: jobTitle.value,
             customer: jobCustomer.value,
             vehicle: jobVehicle.value,
-            status: "booked",
+            status: "draft",
             checklist: []
         })
     });
 
-    if (!res.ok) return;
-
     const job = await res.json();
-
-    jobTitle.value = "";
 
     currentJob = job;
 
-    // IMPORTANT: STAY IN HUB
-    show("jobs");
-
-    loadJobs();
+    openJobCard(job._id);
 }
 
 async function loadJobs() {
@@ -919,6 +912,47 @@ async function toggleChecklist(index) {
     });
 
     renderJob();
+}
+
+async function openJobCard(id) {
+    const res = await fetch(API + "/jobs/" + id);
+    currentJob = await res.json();
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobCard").classList.add("active");
+
+    renderJobCard();
+}
+
+function renderJobCard() {
+    document.getElementById("jobCardInfo").innerHTML = `
+        <div class="card">
+            <div class="title">${currentJob.title}</div>
+            <b>Status:</b> ${currentJob.status}<br>
+            <b>Customer:</b> ${currentJob.customer}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle}
+        </div>
+    `;
+
+    document.getElementById("jobCardActions").innerHTML = `
+        <button class="primary" onclick="startJobFromCard()">Start Job</button>
+        <button class="primary" onclick="assignTech()">Assign Tech</button>
+        <button class="primary" onclick="addChecklist()">Checklist</button>
+        <button class="secondary" onclick="show('jobs')">Back to Board</button>
+    `;
+}
+
+async function startJobFromCard() {
+    currentJob.status = "in-progress";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    show("jobs");
+    loadJobs();
 }
 
 </script>
