@@ -282,10 +282,17 @@ async function createJob() {
 
     if (!res.ok) return;
 
+    const job = await res.json();
+
     jobTitle.value = "";
 
-    show("jobs");
-    loadJobs();
+    // 👉 GO STRAIGHT TO JOB CARD (STEP 2 FIX)
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobCard").classList.add("active");
+
+    currentJob = job;
+
+    renderJobCard();
 }
 
 async function loadJobs() {
