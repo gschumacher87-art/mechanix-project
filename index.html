@@ -489,9 +489,14 @@ async function setStatus(s) {
 
 async function startJob() {
     currentJob.status = "in-progress";
-    currentJob.clockIn = new Date();
-    currentJob.clockOut = null;
-    await saveJob();
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    renderJobCard();
 }
 
 async function pauseJob() {
