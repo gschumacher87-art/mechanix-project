@@ -254,7 +254,6 @@ async function createJob() {
     jobTitle.value = "";
 
     loadJobs();
-    openJob(newJob._id);
 }
 
 async function loadJobs() {
@@ -348,7 +347,6 @@ function uploadPhoto(e) {
 
 async function setStatus(s) {
 
-    // If marking completed → create invoice automatically
     if (s === "completed") {
 
         const res = await fetch(API + "/invoices", {
@@ -392,6 +390,7 @@ async function saveJob() {
 
     loadJobs()
 }
+
 async function createInvoice() {
 
     const res = await fetch(API + "/invoices", {
@@ -470,12 +469,12 @@ async function assignTech() {
     currentJob.technician = users[index]._id;
 
     await fetch(API + "/jobs/" + currentJob._id, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(currentJob)
-});
-await openJob(currentJob._id);
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
 
+    await openJob(currentJob._id);
 }
 
 async function addTechnician() {
@@ -506,7 +505,8 @@ async function saveNotes() {
     currentJob.notes = jobNotes.value;
     await saveJob();
 }
-    async function deleteJob() {
+
+async function deleteJob() {
 
     const confirmDelete = confirm("Delete this job?");
     if (!confirmDelete) return;
@@ -547,6 +547,7 @@ async function finaliseInvoice(id) {
 
     loadInvoices();
 }
+
 function printJob() {
     const w = window.open("", "_blank");
 
