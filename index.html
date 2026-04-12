@@ -921,54 +921,6 @@ async function toggleChecklist(index) {
     renderJobCard();
 }
 
-function renderJobCard() {
-
-    currentJob.checklist ??= [];
-
-    let checklistHtml = "";
-
-    currentJob.checklist.forEach((item, i) => {
-        checklistHtml += `
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-            <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleChecklist(${i})">
-            <span>${item.text}</span>
-        </div>`;
-    });
-
-    jobCardInfo.innerHTML = `
-        <div class="card">
-            <div class="title">${currentJob.title}</div>
-            <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
-
-            <b>Customer:</b> ${
-                currentJob.customer && typeof currentJob.customer === "object"
-                    ? currentJob.customer.firstName + " " + currentJob.customer.lastName
-                    : "Loading..."
-            }<br>
-
-            <b>Vehicle:</b> ${
-                currentJob.vehicle && typeof currentJob.vehicle === "object"
-                    ? currentJob.vehicle.make + " " + currentJob.vehicle.model
-                    : "Loading..."
-            }
-        </div>
-    `;
-
-    jobCardChecklist.innerHTML = checklistHtml || "<div style='color:#777;'>No checklist items</div>";
-
-    let actions = "";
-
-    if (currentJob.status === "booked") {
-        actions = `<button class="primary" onclick="startJob()">Start Job</button>`;
-    }
-
-    if (currentJob.status === "in-progress") {
-        actions = `<button class="primary" onclick="finishJob()">Finish Job</button>`;
-    }
-
-    document.getElementById("jobCardActions").innerHTML = actions;
-}
-
 </script>
 
 </body>
