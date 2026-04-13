@@ -944,6 +944,12 @@ function renderJobCard() {
         ${checklistHtml || "<div style='color:#777;'>No tasks</div>"}
     `;
 
+    if (currentJob.isBooking) {
+    document.getElementById("jobCardActions").innerHTML = `
+        <button class="primary" onclick="convertBooking('${currentJob._id}')">Convert to Job</button>
+        <button class="secondary" onclick="show('bookings')">Back</button>
+    `;
+} else {
     document.getElementById("jobCardActions").innerHTML = `
         <button class="primary" onclick="startJobFromCard()">Start Job</button>
         <button class="primary" onclick="finishJob()">Finish Job</button>
