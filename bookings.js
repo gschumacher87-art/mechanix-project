@@ -4,6 +4,8 @@ async function loadBookings() {
     const res = await fetch(API + "/bookings");
     const data = await res.json();
 
+    console.log(data); // 👈 keep this for now
+
     bookings = data;
 
     let html = "";
@@ -11,11 +13,13 @@ async function loadBookings() {
     data.forEach(b => {
         html += `
         <div class="card" onclick="openBooking('${b._id}')">
-            <div class="title">${b.title}</div>
-            <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
+            <div class="title">${b.title || "Booking"}</div>
+            <b>${b.customer?.firstName || "No"} ${b.customer?.lastName || "Customer"}</b><br>
             ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
         </div>`;
     });
+
+    const bookingList = document.getElementById("bookingList"); // 👈 THIS WAS MISSING
 
     bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
 }
