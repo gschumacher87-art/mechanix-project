@@ -297,3 +297,4 @@ function renderJobs() {
 
     document.getElementById("jobsContainer").innerHTML = html;
 }
+    
