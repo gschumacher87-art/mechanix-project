@@ -29,7 +29,7 @@ async function openBooking(id) {
     document.getElementById("jobCard").classList.add("active");
 
     currentJob = {
-        _id: null, // IMPORTANT: prevents job API calls
+        _id: booking._id, // ✅ FIXED
         isBooking: true,
         title: booking.title,
         customer: booking.customer,
