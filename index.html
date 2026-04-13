@@ -271,28 +271,6 @@ async function loadVehicles(customerId = null) {
 bookingVehicle.innerHTML = options;
 }
 
-async function createJob() {
-    if (!jobTitle.value || !jobCustomer.value || !jobVehicle.value) return;
-
-    const res = await fetch(API + "/jobs", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            title: jobTitle.value,
-            customer: jobCustomer.value,
-            vehicle: jobVehicle.value,
-            status: "draft",
-            checklist: []
-        })
-    });
-
-    const job = await res.json();
-
-    currentJob = job;
-
-    openJob(job._id);
-}
-
 async function loadJobs() {
     const res = await fetch(API + "/jobs");
     const data = await res.json();
