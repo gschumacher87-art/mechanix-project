@@ -69,8 +69,10 @@ function renderBookingCard() {
     `;
 
     document.getElementById("jobCardActions").innerHTML = `
-        <button class="primary" onclick="convertBooking('${currentJob._id}')">Convert to Job</button>
-        <button class="secondary" onclick="show('bookings')">Back</button>
+    <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
+    <button class="secondary" onclick="rebookBooking()">Rebook</button>
+    <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete Booking</button>
+    <button class="secondary" onclick="show('bookings')">Back</button>
     `;
 }
 
@@ -109,6 +111,46 @@ function openBookingModal() {
 
 function closeBookingModal() {
     document.getElementById("bookingModal").style.display = "none";
+}
+
+async function arrivedBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    const jobRes = await fetch(API + "/jobs", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: booking.title,
+            customer: booking.customer,
+            vehicle: booking.vehicle,
+            status: "in-progress",
+            checklist: booking.checklist || []
+        })
+    });
+
+    const job = await jobRes.json();
+
+    await fetch(API + "/bookings/" + id, {
+        method:"DELETE"
+    });
+
+    openJobCard(job._id);
+}
+
+function rebookBooking() {
+    alert("Rebook coming later");
+}
+
+async function deleteBooking(id) {
+
+    await fetch(API + "/bookings/" + id, {
+        method:"DELETE"
+    });
+
+    show('bookings');
+    loadBookings();
 }
 
 // ================= BOOKING CREATION FLOW =================
