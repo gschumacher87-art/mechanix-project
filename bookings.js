@@ -211,6 +211,8 @@ async function confirmBooking() {
     })
 });
 
+console.log(res.status);
+
 await res.json(); 
 
 closeBookingModal();
