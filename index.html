@@ -97,7 +97,7 @@
 
 <div id="bookings" class="screen active">
 
-    <button class="primary" onclick="show('createBooking')">+ New Booking</button>
+    <button class="primary" onclick="openBookingModal()">+ New Booking</button>
 
     <div class="title">Bookings</div>
     <div id="bookingList"></div>
@@ -228,6 +228,38 @@
         <div class="title">Select Customer</div>
         <div id="customerResults"></div>
         <button class="secondary" onclick="closeCustomerModal()">Close</button>
+    </div>
+</div>
+
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+
+        <div class="title">New Booking</div>
+
+        <div id="bookingStepSearch">
+            <input id="searchFirstName" placeholder="First Name">
+            <input id="searchLastName" placeholder="Last Name">
+            <input id="searchPhone" placeholder="Contact Number">
+            <input id="searchRego" placeholder="Rego">
+
+            <button class="primary" onclick="searchCustomers()">Search</button>
+        </div>
+
+        <div id="bookingStepResults"></div>
+
+        <div id="bookingStepDetails" style="display:none;">
+            <div id="selectedCustomer"></div>
+            <select id="bookingVehicle"></select>
+
+            <button class="secondary" onclick="setReason('Service')">Service</button>
+            <button class="secondary" onclick="setReason('Brakes')">Brakes</button>
+            <button class="secondary" onclick="setReason('Diagnostic')">Diagnostic</button>
+
+            <button class="primary" onclick="confirmBooking()">Create Booking</button>
+        </div>
+
+        <button class="secondary" onclick="closeBookingModal()">Close</button>
+
     </div>
 </div>
 
@@ -1146,7 +1178,7 @@ async function searchCustomers() {
         }
     });
 
-    renderCustomerResults(results);
+    renderBookingResults(results);
 }
 
 
@@ -1214,6 +1246,14 @@ function setReason(r) {
 
 function confirmBooking() {
     alert("Booking ready (next step)");
+}
+
+function openBookingModal() {
+    document.getElementById("bookingModal").style.display = "block";
+}
+
+function closeBookingModal() {
+    document.getElementById("bookingModal").style.display = "none";
 }
 
 </script>
