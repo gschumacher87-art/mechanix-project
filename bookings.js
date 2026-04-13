@@ -196,7 +196,6 @@ async function selectCustomer(id) {
     
     vehicles.forEach(v => {
     options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-});
         });
 
     document.getElementById("bookingVehicle").innerHTML = options;
