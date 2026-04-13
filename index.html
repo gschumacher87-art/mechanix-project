@@ -216,7 +216,6 @@ async function loadCustomers() {
 });
 
     customerList.innerHTML = html;
-    jobCustomer.innerHTML = options;
     bookingCustomer.innerHTML = options;
     vehicleCustomer.innerHTML = options;
 }
@@ -263,11 +262,8 @@ async function loadVehicles(customerId = null) {
     let options = "";
     data.forEach(v => {
         if (!customerId || v.customer === customerId) {
-            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-        }
-    });
-
-    jobVehicle.innerHTML = options;
+            options += `<option value="${v._id}">${v.make} ${v.model}</
+            
 bookingVehicle.innerHTML = options;
 }
 
