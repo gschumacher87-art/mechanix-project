@@ -229,8 +229,11 @@ async function confirmBooking() {
     await res.json(); 
 
     closeBookingModal();
-    show('bookings');
-    await loadBookings(); 
+show('bookings');
+
+setTimeout(() => {
+    loadBookings();
+}, 500);
     
 }
 
