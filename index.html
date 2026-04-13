@@ -97,22 +97,8 @@
 
 <div id="jobs" class="screen active">
 
-    <button class="primary" onclick="show('createJob')">+ New Job</button>
-
     <div class="title">Jobs</div>
     <div id="jobList"></div>
-</div>
-
-<div id="createJob" class="screen">
-    <div class="card">
-        <div class="title">New Job</div>
-        <input id="jobTitle" placeholder="Job Title">
-        <select id="jobCustomer" onchange="loadVehicles(this.value)"></select>
-        <select id="jobVehicle"></select>
-        <button class="primary" onclick="createJob()">Create Job</button>
-    </div>
-
-    <button class="secondary" onclick="show('jobs')">Back</button>
 </div>
 
 <div id="jobCard" class="screen">
