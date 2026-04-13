@@ -212,7 +212,9 @@ async function confirmBooking() {
     });
 
     closeBookingModal();
+    show('bookings');
     loadBookings();
+    
 }
 
 // ================= JOB UI =================
