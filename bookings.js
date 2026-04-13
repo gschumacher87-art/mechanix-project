@@ -102,6 +102,9 @@ async function convertBooking(id) {
 
 function openBookingModal() {
     document.getElementById("bookingModal").style.display = "block";
+
+    jobs = [];
+    addJob();
 }
 
 function closeBookingModal() {
