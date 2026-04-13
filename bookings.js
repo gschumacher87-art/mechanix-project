@@ -29,7 +29,7 @@ async function openBooking(id) {
     document.getElementById("jobCard").classList.add("active");
 
     currentJob = {
-        _id: booking._id, // ✅ FIXED
+        _id: booking._id,
         isBooking: true,
         title: booking.title,
         customer: booking.customer,
@@ -114,14 +114,12 @@ function closeBookingModal() {
 // ================= BOOKING CREATION FLOW =================
 
 let selectedCustomerId = null;
-let selectedReason = "";
 
 async function selectCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    // ENTER BOOKING MODE
     document.getElementById("bookingStepSearch").style.display = "none";
     document.getElementById("bookingStepResults").style.display = "none";
     document.getElementById("bookingStepDetails").style.display = "block";
@@ -133,7 +131,6 @@ async function selectCustomer(id) {
         ${customer.phone}
     `;
 
-    // LOAD VEHICLES
     const vRes = await fetch(API + "/vehicles");
     const vehicles = await vRes.json();
 
@@ -148,10 +145,6 @@ async function selectCustomer(id) {
     document.getElementById("bookingVehicle").innerHTML = options;
 }
 
-function setReason(r) {
-    selectedReason = r;
-}
-
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
@@ -159,8 +152,8 @@ async function confirmBooking() {
         return;
     }
 
-    if (!selectedReason) {
-        alert("Select job type");
+    if (!jobs.length || !jobs[0].mode) {
+        alert("Add at least 1 job");
         return;
     }
 
@@ -168,23 +161,23 @@ async function confirmBooking() {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: selectedReason,
+            title: jobs[0].description || "Booking",
             customer: selectedCustomerId,
             vehicle: document.getElementById("bookingVehicle").value,
-            status: "booked"
+            status: "booked",
+            jobs: jobs
         })
     });
 
     closeBookingModal();
     loadBookings();
 }
+
 // ================= JOB UI =================
 
 let jobs = [];
 
 function addJob() {
-    const index = jobs.length;
-
     jobs.push({
         mode: null,
         description: "",
