@@ -116,6 +116,23 @@
 
         <button class="secondary">+ Create New Customer</button>
     </div>
+    <div id="bookingStage" class="card" style="display:none;">
+
+    <div class="title">Booking Details</div>
+
+    <div id="selectedCustomer"></div>
+
+    <select id="bookingVehicle"></select>
+
+    <div style="margin-top:10px;">
+        <button class="secondary" onclick="setReason('Service')">Service</button>
+        <button class="secondary" onclick="setReason('Brakes')">Brakes</button>
+        <button class="secondary" onclick="setReason('Diagnostic')">Diagnostic</button>
+    </div>
+
+    <button class="primary" style="margin-top:10px;" onclick="confirmBooking()">Create Booking</button>
+
+</div>
 
     <button class="secondary" onclick="show('bookings')">Back</button>
 </div>
@@ -1162,8 +1179,41 @@ function closeCustomerModal() {
     document.getElementById("customerModal").style.display = "none";
 }
 
-function selectCustomer(id) {
+async function selectCustomer(id) {
+
     closeCustomerModal();
+
+    const res = await fetch(API + "/customers/" + id);
+    const customer = await res.json();
+
+    document.getElementById("bookingStage").style.display = "block";
+
+    document.getElementById("selectedCustomer").innerHTML = `
+        <b>${customer.firstName} ${customer.lastName}</b><br>
+        ${customer.phone}
+    `;
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let options = "";
+
+    vehicles
+        .filter(v => v.customer === id)
+        .forEach(v => {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        });
+
+    document.getElementById("bookingVehicle").innerHTML = options;
+}
+let selectedReason = "";
+
+function setReason(r) {
+    selectedReason = r;
+}
+
+function confirmBooking() {
+    alert("Booking ready (next step)");
 }
 
 </script>
