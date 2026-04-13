@@ -7,9 +7,20 @@ const Job = require("../models/Job");
 // CREATE booking
 router.post("/", async (req, res) => {
     try {
-        const booking = new Booking(req.body);
+        const booking = new Booking({
+            title: req.body.title,
+            customer: req.body.customer,
+            vehicle: req.body.vehicle,
+            status: req.body.status || "booked"
+        });
+
         await booking.save();
-        res.status(201).json(booking);
+
+        const populated = await Booking.findById(booking._id)
+            .populate("customer")
+            .populate("vehicle");
+
+        res.status(201).json(populated);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -19,8 +30,25 @@ router.post("/", async (req, res) => {
 // GET all bookings
 router.get("/", async (req, res) => {
     try {
-        const bookings = await Booking.find().populate("customerId");
+        const bookings = await Booking.find()
+            .populate("customer")
+            .populate("vehicle");
+
         res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+// GET single booking
+router.get("/:id", async (req, res) => {
+    try {
+        const booking = await Booking.findById(req.params.id)
+            .populate("customer")
+            .populate("vehicle");
+
+        res.json(booking);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -34,7 +62,10 @@ router.put("/:id", async (req, res) => {
             req.params.id,
             req.body,
             { new: true }
-        );
+        )
+        .populate("customer")
+        .populate("vehicle");
+
         res.json(booking);
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -53,7 +84,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-// 🔥 CONVERT BOOKING → JOB
+// CONVERT BOOKING → JOB
 router.post("/:id/convert", async (req, res) => {
     try {
         const booking = await Booking.findById(req.params.id);
@@ -62,20 +93,23 @@ router.post("/:id/convert", async (req, res) => {
             return res.status(404).json({ error: "Booking not found" });
         }
 
-        // create job from booking
         const job = new Job({
-            customer: booking.customerId, // ✅ FIXED
-            bookingId: booking._id,
-            status: "in-progress"
+            title: booking.title,
+            customer: booking.customer,
+            vehicle: booking.vehicle,
+            status: "booked",
+            checklist: []
         });
 
         await job.save();
 
-        // update booking status
-        booking.status = "arrived";
-        await booking.save();
+        await Booking.findByIdAndDelete(req.params.id);
 
-        res.json({ booking, job });
+        const populatedJob = await Job.findById(job._id)
+            .populate("customer")
+            .populate("vehicle");
+
+        res.json(populatedJob);
 
     } catch (err) {
         res.status(500).json({ error: err.message });
