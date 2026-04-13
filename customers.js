@@ -5,7 +5,7 @@ async function loadCustomers() {
     let html = "", options = "";
 
     data.forEach(c => {
-        html += `<div class="card" onclick="selectCustomer('${c._id}')">
+        html += `<div class="card" onclick="openCustomer('${c._id}')">
             ${c.firstName} ${c.lastName} - ${c.phone}
         </div>`;
         options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
@@ -160,3 +160,16 @@ async function selectCustomer(id) {
 }
 
 window.selectCustomer = selectCustomer;
+
+async function openCustomer(id) {
+
+    const res = await fetch(API + "/customers/" + id);
+    const customer = await res.json();
+
+    alert(
+        customer.firstName + " " + customer.lastName + "\n" +
+        customer.phone
+    );
+}
+
+window.openCustomer = openCustomer;
