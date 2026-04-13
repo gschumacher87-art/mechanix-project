@@ -111,6 +111,19 @@ function openBookingModal() {
 
 function closeBookingModal() {
     document.getElementById("bookingModal").style.display = "none";
+
+    // RESET STATE
+    selectedCustomerId = null;
+    jobs = [];
+
+    // RESET UI
+    document.getElementById("bookingStepSearch").style.display = "block";
+    document.getElementById("bookingStepResults").style.display = "block";
+    document.getElementById("bookingStepDetails").style.display = "none";
+
+    document.getElementById("selectedCustomer").innerHTML = "";
+    document.getElementById("bookingVehicle").innerHTML = "";
+    document.getElementById("jobsContainer").innerHTML = "";
 }
 
 async function arrivedBooking(id) {
@@ -211,13 +224,13 @@ async function confirmBooking() {
     })
 });
 
-console.log(res.status);
+    console.log(res.status);
 
-await res.json(); 
+    await res.json(); 
 
-closeBookingModal();
-show('bookings');
-await loadBookings(); 
+    closeBookingModal();
+    show('bookings');
+    await loadBookings(); 
     
 }
 
