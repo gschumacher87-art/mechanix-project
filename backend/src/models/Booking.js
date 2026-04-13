@@ -18,7 +18,14 @@ const BookingSchema = new mongoose.Schema({
     status: {
         type: String,
         default: "booked"
-    }
+    },
+
+    checklist: [
+        {
+            text: String,
+            done: { type: Boolean, default: false }
+        }
+    ]
 
 }, { timestamps: true });
 
