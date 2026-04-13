@@ -124,6 +124,7 @@ function renderBookingResults(results) {
     });
 
     document.getElementById("bookingStepResults").innerHTML = html;
+    document.getElementById("bookingStepResults").style.display = "block";
 }
 
 async function selectCustomer(id) {
@@ -131,6 +132,9 @@ async function selectCustomer(id) {
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
+    // ✅ SWITCH UI PROPERLY
+    document.getElementById("bookingStepSearch").style.display = "none";
+    document.getElementById("bookingStepResults").style.display = "none";
     document.getElementById("bookingStepDetails").style.display = "block";
 
     document.getElementById("selectedCustomer").innerHTML = `
