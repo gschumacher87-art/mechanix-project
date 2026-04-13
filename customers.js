@@ -3,14 +3,14 @@ async function loadCustomers() {
     const data = await res.json();
 
     let html = "", options = "";
-        
+
     data.forEach(c => {
         html += `<div class="card">${c.firstName} ${c.lastName} - ${c.phone}</div>`;
         options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
     });
 
-    customerList.innerHTML = html;
-    vehicleCustomer.innerHTML = options;
+    document.getElementById("customerList").innerHTML = html;
+    document.getElementById("vehicleCustomer").innerHTML = options;
 }
 
 async function addCustomer() {
@@ -60,5 +60,90 @@ async function loadVehicles(customerId = null) {
         }
     });
 
-    bookingVehicle.innerHTML = options;
+    document.getElementById("bookingVehicle").innerHTML = options;
+}
+
+async function searchCustomers() {
+
+    const first = searchFirstName.value.toLowerCase();
+    const last = searchLastName.value.toLowerCase();
+    const phone = searchPhone.value;
+    const rego = searchRego.value.toLowerCase();
+
+    const res = await fetch(API + "/customers");
+    const customers = await res.json();
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let results = [];
+
+    customers.forEach(c => {
+
+        const matchCustomer =
+            (!first || c.firstName.toLowerCase().includes(first)) &&
+            (!last || c.lastName.toLowerCase().includes(last)) &&
+            (!phone || c.phone.includes(phone));
+
+        let matchVehicle = false;
+
+        if (rego) {
+            const v = vehicles.find(v =>
+                v.customer === c._id &&
+                v.rego?.toLowerCase().includes(rego)
+            );
+            if (v) matchVehicle = true;
+        }
+
+        if (matchCustomer || matchVehicle) {
+            results.push(c);
+        }
+    });
+
+    renderBookingResults(results);
+}
+
+function renderBookingResults(results) {
+
+    let html = "";
+
+    if (!results.length) {
+        html = "<div class='card'>No matches found</div>";
+    }
+
+    results.forEach(c => {
+        html += `
+        <div class="card" onclick="selectCustomer('${c._id}')">
+            <b>${c.firstName} ${c.lastName}</b><br>
+            ${c.phone}
+        </div>`;
+    });
+
+    document.getElementById("bookingStepResults").innerHTML = html;
+}
+
+async function selectCustomer(id) {
+
+    const res = await fetch(API + "/customers/" + id);
+    const customer = await res.json();
+
+    document.getElementById("bookingStepDetails").style.display = "block";
+
+    document.getElementById("selectedCustomer").innerHTML = `
+        <b>${customer.firstName} ${customer.lastName}</b><br>
+        ${customer.phone}
+    `;
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let options = "";
+
+    vehicles
+        .filter(v => v.customer === id)
+        .forEach(v => {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        });
+
+    document.getElementById("bookingVehicle").innerHTML = options;
 }
