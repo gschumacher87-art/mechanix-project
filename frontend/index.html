@@ -1,1 +1,1242 @@
-.keep
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mechanix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body { margin:0; font-family: Arial; background:#f0f2f5; }
+
+        .nav { display:flex; background:#111; }
+        .nav button {
+            flex:1; padding:18px; font-size:18px;
+            color:white; background:none; border:none;
+        }
+        .nav button.active { background:#007bff; }
+
+        .screen { display:none; padding:15px; }
+        .screen.active { display:block; }
+
+        .card {
+            background:white;
+            padding:18px;
+            margin-bottom:12px;
+            border-radius:10px;
+        }
+
+        .title { font-size:20px; font-weight:bold; }
+
+        input, select {
+            width:100%;
+            padding:14px;
+            margin-bottom:12px;
+        }
+
+        button.primary {
+            width:100%;
+            padding:18px;
+            background:#007bff;
+            color:white;
+            border:none;
+            border-radius:10px;
+            margin-bottom:8px;
+        }
+
+        button.secondary {
+            width:100%;
+            padding:16px;
+            background:#ddd;
+            border:none;
+            border-radius:10px;
+        }
+
+        .status {
+            padding:6px 10px;
+            border-radius:6px;
+            display:inline-block;
+        }
+
+        .booked { background:#ccc; }
+        .arrived { background:orange; color:white; }
+        .in-progress { background:#007bff; color:white; }
+        .pending-invoice { background:purple; color:white; }
+        .completed { background:green; color:white; }
+
+        img { width:100%; border-radius:8px; margin-top:10px; }
+        /* MODAL */
+.modal {
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:1000;
+}
+
+.modal-content {
+    background:white;
+    margin:10% auto;
+    padding:15px;
+    width:90%;
+    max-height:70%;
+    overflow:auto;
+    border-radius:10px;
+}
+        
+    </style>
+</head>
+
+<body>
+
+<div class="nav">
+    <button class="active" onclick="show('bookings', this)">Bookings</button>
+    <button onclick="show('jobs', this)">Jobs</button>
+    <button onclick="show('customers', this)">Customers</button>
+    <button onclick="show('invoices', this)">Invoices</button>
+</div>
+
+<div id="bookings" class="screen active">
+
+    <button class="primary" onclick="openBookingModal()">+ New Booking</button>
+
+    <div class="title">Bookings</div>
+    <div id="bookingList"></div>
+</div>
+
+
+<div id="jobs" class="screen">
+
+    <div class="title">Jobs</div>
+    <div id="jobList"></div>
+</div>
+
+<div id="jobCard" class="screen">
+    <div id="jobCardInfo"></div>
+
+    <div class="card">
+        <div class="title">Checklist</div>
+        <div id="jobCardChecklist"></div>
+    </div>
+
+   <div class="card">
+    <div class="title">Actions</div>
+    <div id="jobCardActions"></div>
+</div>
+
+<button class="secondary" onclick="show('jobs')">Back</button>
+</div>
+
+
+<div id="jobDetail" class="screen">
+    <div id="jobInfo"></div>
+
+    <div class="card">
+    <div class="title">Quick Actions</div>
+    <div id="quickActions"></div>
+</div>
+
+    <div class="card">
+        <div class="title">Status</div>
+        <button class="primary" onclick="setStatus('arrived')">Arrived</button>
+        <button class="primary" onclick="setStatus('completed')">Completed</button>
+    </div>
+
+    <div class="card">
+        <div class="title">Photos</div>
+        <input type="file" accept="image/*" onchange="uploadPhoto(event)">
+        <div id="photoList"></div>
+    </div>
+
+    <div class="card">
+        <div class="title">Notes</div>
+        <textarea id="jobNotes" placeholder="Technician notes..." style="width:100%;height:100px;margin-bottom:10px;"></textarea>
+        <button class="primary" onclick="saveNotes()">Save Notes</button>
+    </div>
+
+    <div class="card">
+    <div class="title">Finish</div>
+    <button class="primary" onclick="printJob()">Print Job Card</button>
+</div>
+
+    <button class="secondary" onclick="deleteJob()">Delete Job</button>
+<button class="secondary" onclick="show('jobs')">Back</button>
+</div>
+
+<div id="customers" class="screen">
+
+    <div class="card">
+        <div class="title">Add Customer</div>
+        <input id="custFirstName" placeholder="First Name">
+        <input id="custLastName" placeholder="Last Name">
+        <input id="custPhone" placeholder="Phone">
+        <button class="primary" onclick="addCustomer()">Add Customer</button>
+        <button class="primary" onclick="addTechnician()">Add Technician</button>
+    </div>
+
+    <div class="card">
+        <div class="title">Add Vehicle</div>
+        <select id="vehicleCustomer"></select>
+        <input id="vehicleMake" placeholder="Make">
+        <input id="vehicleModel" placeholder="Model">
+        <button class="primary" onclick="addVehicle()">Add Vehicle</button>
+    </div>
+
+    <div id="customerList"></div>
+
+</div>
+
+<div id="invoices" class="screen">
+    <div class="title">Invoices</div>
+    <div id="invoiceList"></div>
+</div>
+
+<div id="customerModal" class="modal">
+    <div class="modal-content">
+        <div class="title">Select Customer</div>
+        <div id="customerResults"></div>
+        <button class="secondary" onclick="closeCustomerModal()">Close</button>
+    </div>
+</div>
+
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+
+        <div class="title">New Booking</div>
+
+        <div id="bookingStepSearch">
+            <input id="searchFirstName" placeholder="First Name">
+            <input id="searchLastName" placeholder="Last Name">
+            <input id="searchPhone" placeholder="Contact Number">
+            <input id="searchRego" placeholder="Rego">
+
+            <button class="primary" onclick="searchCustomers()">Search</button>
+        </div>
+
+        <div id="bookingStepResults"></div>
+
+        <div id="bookingStepDetails" style="display:none;">
+            <div id="selectedCustomer"></div>
+            <select id="bookingVehicle"></select>
+
+            <button class="secondary" onclick="setReason('Service')">Service</button>
+            <button class="secondary" onclick="setReason('Brakes')">Brakes</button>
+            <button class="secondary" onclick="setReason('Diagnostic')">Diagnostic</button>
+
+            <button class="primary" onclick="confirmBooking()">Create Booking</button>
+        </div>
+
+        <button class="secondary" onclick="closeBookingModal()">Close</button>
+
+    </div>
+</div>
+
+<script>
+
+const API = "https://mechanix-api-87.onrender.com/api";
+let currentJob = null;
+let bookings = [];
+
+async function show(id, btn) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+
+    if(id === "bookings") loadBookings();
+    if(id === "jobs") loadJobs();
+    if(id === "customers") loadCustomers();
+    if(id === "invoices") loadInvoices();
+
+    }
+
+async function loadCustomers() {
+    const res = await fetch(API + "/customers");
+    const data = await res.json();
+
+    let html = "", options = "";
+        
+        data.forEach(c => {
+    html += `<div class="card">${c.firstName} ${c.lastName} - ${c.phone}</div>`;
+    options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
+});
+
+    customerList.innerHTML = html;
+    vehicleCustomer.innerHTML = options;
+}
+
+async function addCustomer() {
+    await fetch(API + "/customers", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            firstName: custFirstName.value,
+            lastName: custLastName.value,
+            phone: custPhone.value
+        })
+    });
+
+    custFirstName.value = "";
+    custLastName.value = "";
+    custPhone.value = "";
+
+    loadCustomers();
+}
+    async function addVehicle() {
+    await fetch(API + "/vehicles", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            customer: vehicleCustomer.value,
+            make: vehicleMake.value,
+            model: vehicleModel.value
+        })
+    });
+
+    vehicleMake.value = "";
+    vehicleModel.value = "";
+
+    loadVehicles(vehicleCustomer.value);
+}
+    
+
+async function loadVehicles(customerId = null) {
+    const res = await fetch(API + "/vehicles");
+    const data = await res.json();
+
+    let options = "";
+
+    data.forEach(v => {
+        if (!customerId || v.customer === customerId) {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        }
+    });
+
+    bookingVehicle.innerHTML = options;
+}
+
+async function loadJobs() {
+    const res = await fetch(API + "/jobs");
+    const data = await res.json();
+
+    let booked = "", active = "", pending = "", completed = "";
+
+    data.forEach(j => {
+
+        // SAFETY NORMALISATION (prevents undefined UI issues)
+        const customerName =
+            j.customer && typeof j.customer === "object"
+                ? j.customer.firstName + " " + j.customer.lastName
+                : "No customer";
+
+        const vehicleName =
+            j.vehicle && typeof j.vehicle === "object"
+                ? j.vehicle.make + " " + j.vehicle.model
+                : "";
+
+        let color = "#ccc";
+        if (j.status === "arrived") color = "orange";
+        if (j.status === "in-progress") color = "#007bff";
+        if (j.status === "pending-invoice") color = "purple";
+        if (j.status === "completed") color = "green";
+
+        const card = `
+<div class="card" onclick="openJobCard('${j._id}')" style="border-left:6px solid ${color}">
+    <div class="title">${j.title}</div>
+    <span class="status ${j.status}">${j.status}</span><br><br>
+    <b>${customerName}</b><br>
+    ${vehicleName}
+</div>`;
+
+        if (j.status === "booked") booked += card;
+        else if (j.status === "arrived" || j.status === "in-progress") active += card;
+        else if (j.status === "pending-invoice") pending += card;
+        else if (j.status === "completed") completed += card;
+        else booked += card;
+    });
+
+    jobList.innerHTML = `
+        <div class="title">Booked</div>
+        ${booked || "<div class='card'>No bookings</div>"}
+
+        <div class="title">In Workshop</div>
+        ${active || "<div class='card'>No active jobs</div>"}
+
+        <div class="title">Pending</div>
+        ${pending || "<div class='card'>No pending jobs</div>"}
+
+        <div class="title">Completed</div>
+        ${completed || "<div class='card'>No completed jobs</div>"}
+    `;
+}
+
+async function openJob(id) {
+    const res = await fetch(API + "/jobs/" + id);
+    currentJob = await res.json();
+
+    currentJob.customer ??= null;
+    currentJob.vehicle ??= null;
+    currentJob.checklist ??= [];
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+
+    document.getElementById("jobDetail").classList.add("active");
+
+    renderJob();
+}
+
+async function renderJob() {
+
+    let techName = "Unassigned";
+
+    if (currentJob.technician) {
+        const res = await fetch(API + "/users");
+        const users = await res.json();
+
+        const tech = users.find(u => u._id === currentJob.technician);
+
+        if (tech) techName = tech.name;
+    }
+
+    currentJob.checklist ??= [];
+
+    let checklistHtml = "";
+
+    currentJob.checklist.forEach((item, i) => {
+        checklistHtml += `
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleChecklist(${i})">
+            <span>${item.text}</span>
+        </div>`;
+    });
+
+    jobInfo.innerHTML = `
+        <div class="card">
+            <div class="title">${currentJob.title}</div>
+            <span class="status ${currentJob.status}">${currentJob.status}</span><br><br>
+
+            <b>Customer:</b> ${currentJob.customer ? currentJob.customer.firstName + " " + currentJob.customer.lastName : "N/A"}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
+            <b>Technician:</b> ${techName}
+        </div>
+
+        <div class="card">
+            <div class="title">Checklist</div>
+            ${checklistHtml || "<div style='color:#777;'>No checklist items</div>"}
+            <button class="primary" onclick="addChecklist()">+ Add Item</button>
+        </div>
+    `;
+
+    let actions = "";
+
+    if (currentJob.status === "booked") {
+        actions += `<button class="primary" onclick="setStatus('arrived')">Arrived</button>`;
+        actions += `<button class="primary" onclick="assignTech()">👷 Assign Technician</button>`;
+    }
+
+    if (currentJob.status === "arrived") {
+        actions += `<button class="primary" onclick="startJob()">▶ Start Job</button>`;
+        actions += `<button class="primary" onclick="assignTech()">👷 Assign Technician</button>`;
+    }
+
+    if (currentJob.status === "in-progress") {
+
+        if (!currentJob.clockIn || currentJob.clockOut) {
+            actions += `<button class="primary" onclick="startJob()">▶ Resume Job</button>`;
+        }
+
+        if (currentJob.clockIn && !currentJob.clockOut) {
+            actions += `<button class="primary" onclick="pauseJob()">⏸ Clock Off</button>`;
+        }
+
+        actions += `<button class="primary" onclick="finishJob()">✔ Finish Job</button>`;
+    }
+
+    document.getElementById("quickActions").innerHTML = actions;
+
+    let photos = "";
+    currentJob.photos?.other?.forEach(p => photos += `<img src="${p}">`);
+    photoList.innerHTML = photos;
+
+    jobNotes.value = currentJob.notes || "";
+}
+
+function uploadPhoto(e) {
+    const reader = new FileReader();
+    reader.onload = async x => {
+        currentJob.photos ??= {};
+        currentJob.photos.other ??= [];
+        currentJob.photos.other.push(x.target.result);
+
+        await fetch(API + "/jobs/" + currentJob._id, {
+            method:"PUT",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify(currentJob)
+        });
+
+        renderJob();
+    };
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+async function setStatus(s) {
+
+    if (s === "completed") {
+
+        const invoiceTemplate = {
+            items: (currentJob.checklist || [])
+                .filter(c => c.done)
+                .map(c => ({
+                    name: c.text,
+                    price: 0
+                })),
+            labour: [],
+            notes: ""
+        };
+
+        const res = await fetch(API + "/invoices", {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({
+                job: currentJob._id,
+                customer: currentJob.customer,
+                vehicle: currentJob.vehicle,
+                totalCost: 0,
+                template: invoiceTemplate
+            })
+        });
+
+        const newInvoice = await res.json();
+
+        currentJob.invoice = newInvoice;
+        currentJob.status = "completed";
+
+        await saveJob();
+        await loadInvoices();
+        show("invoices");
+        await openInvoice(newInvoice._id);
+
+        return;
+    }
+
+    currentJob.status = s;
+    await saveJob();
+}
+
+async function startJob() {
+    currentJob.status = "in-progress";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    renderJob();
+}
+
+async function pauseJob() {
+    currentJob.clockOut = new Date();
+    await saveJob();
+}
+
+async function finishJob() {
+
+    const invoiceTemplate = {
+        items: (currentJob.checklist || [])
+            .filter(c => c.done)
+            .map(c => ({
+                name: c.text,
+                price: 0
+            })),
+        labour: [],
+        notes: ""
+    };
+
+    const res = await fetch(API + "/invoices", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            job: currentJob._id,
+            customer: currentJob.customer,
+            vehicle: currentJob.vehicle,
+            totalCost: 0,
+            template: invoiceTemplate
+        })
+    });
+
+    const newInvoice = await res.json();
+
+    currentJob.invoice = newInvoice;
+    currentJob.status = "completed";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    show("invoices");
+    await openInvoice(newInvoice._id);
+}
+
+async function saveJob() {
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    loadJobs()
+}
+
+async function createInvoice() {
+
+    const invoiceTemplate = {
+        items: [],
+        labour: [],
+        notes: ""
+    };
+
+    const res = await fetch(API + "/invoices", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            job: currentJob._id,
+            customer: currentJob.customer,
+            vehicle: currentJob.vehicle,
+            totalCost: 0,
+            template: invoiceTemplate
+        })
+    });
+
+    const newInvoice = await res.json();
+
+    currentJob.invoice = newInvoice;
+
+    await saveJob();
+    await loadInvoices();
+    show("invoices");
+    await openInvoice(newInvoice._id);
+}
+
+async function loadInvoices() {
+    const res = await fetch(API + "/invoices");
+    const data = await res.json();
+
+    invoiceList.innerHTML = data.map(i => `
+        <div class="card" onclick="openInvoice('${i._id}')">
+            <div class="title">$${i.totalCost}</div>
+            <div>Tap to view</div>
+        </div>
+    `).join("");
+}
+
+async function openInvoice(id) {
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    const template = invoice.template || { items: [], labour: [], notes: "" };
+
+    let itemsHtml = "";
+    let labourHtml = "";
+
+    (template.items || []).forEach(i => {
+        itemsHtml += `
+        <div style="display:flex; justify-content:space-between; padding:6px 0;">
+            <span>${i.name}</span>
+            <span>$${i.price}</span>
+        </div>`;
+    });
+
+    (template.labour || []).forEach(l => {
+        labourHtml += `
+        <div style="display:flex; justify-content:space-between; padding:6px 0;">
+            <span>${l.name}</span>
+            <span>$${l.price}</span>
+        </div>`;
+    });
+
+    invoiceList.innerHTML = `
+        <div class="card">
+
+            <div style="text-align:center; font-size:22px; font-weight:bold;">
+                INVOICE
+            </div>
+
+            <hr>
+
+            <div style="margin-bottom:10px;">
+                <b>Items</b>
+                ${itemsHtml || "<div style='color:#777;'>No items</div>"}
+            </div>
+
+            <div style="margin-bottom:10px;">
+                <b>Labour</b>
+                ${labourHtml || "<div style='color:#777;'>No labour</div>"}
+            </div>
+
+            <div style="margin-bottom:10px;">
+                <b>Notes</b><br>
+                <div style="color:#555;">
+                    ${template.notes || "No notes"}
+                </div>
+            </div>
+
+            <hr>
+
+            <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:bold;">
+                <span>Total</span>
+                <span>$${invoice.totalCost}</span>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
+            <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
+            <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
+
+            <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
+                Finalise Invoice
+            </button>
+
+            <button class="secondary" onclick="deleteInvoice('${invoice._id}')">
+                Delete Invoice
+            </button>
+
+            <button class="secondary" onclick="loadInvoices()">Back</button>
+        </div>
+    `;
+}
+
+async function assignTech() {
+
+    const res = await fetch(API + "/users");
+    const users = await res.json();
+
+    let list = users.map((u, i) => `${i + 1}. ${u.name}`).join("\n");
+
+    const choice = prompt("Select technician:\n" + list);
+
+    const index = Number(choice) - 1;
+
+    if (!users[index]) return;
+
+    currentJob.technician = users[index]._id;
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    await openJob(currentJob._id);
+}
+
+async function addTechnician() {
+    const name = prompt("Technician name:");
+    if (!name) return;
+
+    const email = prompt("Email:");
+    if (!email) return;
+
+    const password = prompt("Password:");
+    if (!password) return;
+
+    await fetch(API + "/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name,
+            email,
+            password,
+            role: "staff"
+        })
+    });
+
+    alert("Technician created");
+}
+
+async function saveNotes() {
+    currentJob.notes = jobNotes.value;
+    await saveJob();
+}
+
+async function deleteJob() {
+
+    const confirmDelete = confirm("Delete this job?");
+    if (!confirmDelete) return;
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "DELETE"
+    });
+
+    currentJob = null;
+
+    show("jobs");
+    loadJobs();
+}
+
+loadCustomers();
+loadVehicles();
+loadJobs();
+loadInvoices();
+
+async function finaliseInvoice(id) {
+
+    const confirmDone = confirm("Finalise invoice? This cannot be edited.");
+    if (!confirmDone) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    const jobRes = await fetch(API + "/jobs/" + invoice.job);
+    const job = await jobRes.json();
+
+    job.status = "completed";
+
+    await fetch(API + "/jobs/" + job._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(job)
+    });
+
+    loadInvoices();
+}
+
+function printJob() {
+    const w = window.open("", "_blank");
+
+    w.document.write(`
+    <html>
+    <head>
+        <title>Job Card</title>
+    </head>
+    <body>
+        <h1>${currentJob.title}</h1>
+    </body>
+    </html>
+    `);
+
+    w.document.close();
+    w.print();
+}
+
+async function addItem(id) {
+
+    const name = prompt("Item name:");
+    if (!name) return;
+
+    const price = Number(prompt("Price:"));
+    if (!price) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    const template = {
+        items: [...(invoice.template?.items || [])],
+        labour: [...(invoice.template?.labour || [])],
+        notes: invoice.template?.notes || ""
+    };
+
+    template.items.push({ name, price });
+
+    const updatedInvoice = {
+        ...invoice,
+        template: template,
+        totalCost: (invoice.totalCost || 0) + price
+    };
+
+    await fetch(API + "/invoices/" + id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(updatedInvoice)
+    });
+
+    openInvoice(id);
+}
+
+async function addLabour(id) {
+
+    const name = prompt("Labour description:");
+    if (!name) return;
+
+    const price = Number(prompt("Price:"));
+    if (!price) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    const template = {
+        items: [...(invoice.template?.items || [])],
+        labour: [...(invoice.template?.labour || [])],
+        notes: invoice.template?.notes || ""
+    };
+
+    template.labour.push({ name, price });
+
+    invoice.template = template;
+    invoice.totalCost += price;
+
+    await fetch(API + "/invoices/" + id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            template: invoice.template,
+            totalCost: invoice.totalCost
+        })
+    });
+
+    openInvoice(id);
+}
+
+async function addNote(id) {
+
+    const note = prompt("Note:");
+    if (!note) return;
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    invoice.template ??= { items: [], labour: [], notes: "" };
+
+    invoice.template.notes = note;
+
+    await fetch(API + "/invoices/" + id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(invoice)
+    });
+
+    openInvoice(id);
+}
+
+async function deleteInvoice(id) {
+
+    const confirmDelete = confirm("Delete this invoice?");
+    if (!confirmDelete) return;
+
+    await fetch(API + "/invoices/" + id, {
+        method: "DELETE"
+    });
+
+    loadInvoices();
+}
+
+async function addChecklist() {
+    const text = prompt("Checklist item:");
+    if (!text) return;
+
+    currentJob.checklist ??= [];
+    currentJob.checklist.push({ text, done: false });
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    renderJob();
+}
+
+async function toggleChecklist(index) {
+    currentJob.checklist[index].done = !currentJob.checklist[index].done;
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    renderJob();
+}
+
+async function openJobCard(id) {
+    const res = await fetch(API + "/jobs/" + id);
+    currentJob = await res.json();
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobCard").classList.add("active");
+
+    renderJobCard();
+}
+
+function renderJobCard() {
+
+    let checklistHtml = "";
+
+    currentJob.checklist ??= [];
+
+    currentJob.checklist.forEach((item, i) => {
+        checklistHtml += `
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleChecklist(${i})">
+            <span>${item.text}</span>
+        </div>`;
+    });
+
+    document.getElementById("jobCardInfo").innerHTML = `
+        <div class="card">
+            <div class="title">${currentJob.title}</div>
+            <b>Status:</b> ${currentJob.status}<br>
+            <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
+        </div>
+    `;
+
+    document.getElementById("jobCardChecklist").innerHTML = `
+        ${checklistHtml || "<div style='color:#777;'>No tasks</div>"}
+    `;
+
+    if (currentJob.isBooking) {
+    document.getElementById("jobCardActions").innerHTML = `
+        <button class="primary" onclick="convertBooking('${currentJob._id}')">Convert to Job</button>
+        <button class="secondary" onclick="show('bookings')">Back</button>
+    `;
+} else {
+    document.getElementById("jobCardActions").innerHTML = `
+        <button class="primary" onclick="startJobFromCard()">Start Job</button>
+        <button class="primary" onclick="finishJob()">Finish Job</button>
+        <button class="secondary" onclick="show('jobs')">Back</button>
+    `;
+    }
+}
+
+async function startJobFromCard() {
+    currentJob.status = "in-progress";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    show("jobs");
+    loadJobs();
+}
+
+async function loadBookings() {
+    const res = await fetch(API + "/bookings");
+    const data = await res.json();
+
+    bookings = data;
+
+    let html = "";
+
+    data.forEach(b => {
+        html += `
+         <div class="card" onclick="openBooking('${b._id}')">
+        <div class="title">${b.title}</div>
+        <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
+        ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
+    </div>`;
+    
+    });
+
+    bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
+}
+
+async function openBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobCard").classList.add("active");
+
+    currentJob = {
+        _id: null, // IMPORTANT: prevents job API calls
+        isBooking: true, // flag so we know it's NOT a job
+        title: booking.title,
+        customer: booking.customer,
+        vehicle: booking.vehicle,
+        status: booking.status,
+        checklist: booking.checklist || []
+    };
+
+    renderJobCard();
+}
+
+async function createBooking() {
+    if (!bookingTitle.value || !bookingCustomer.value || !bookingVehicle.value) return;
+
+    await fetch(API + "/bookings", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: bookingTitle.value,
+            customer: bookingCustomer.value,
+            vehicle: bookingVehicle.value,
+            status: "booked"
+        })
+    });
+
+    bookingTitle.value = "";
+
+    loadBookings();
+    show("bookings");
+}
+
+async function convertBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    const jobRes = await fetch(API + "/jobs", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: booking.title,
+            customer: booking.customer,
+            vehicle: booking.vehicle,
+            status: "booked",
+            checklist: booking.checklist || []
+        })
+    });
+
+    const job = await jobRes.json();
+
+    await fetch(API + "/bookings/" + id, {
+        method:"DELETE"
+    });
+
+    openJobCard(job._id);
+}
+
+async function searchCustomers() {
+
+    const first = searchFirstName.value.toLowerCase();
+    const last = searchLastName.value.toLowerCase();
+    const phone = searchPhone.value;
+    const rego = searchRego.value.toLowerCase();
+
+    const res = await fetch(API + "/customers");
+    const customers = await res.json();
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let results = [];
+
+    customers.forEach(c => {
+
+        const matchCustomer =
+            (!first || c.firstName.toLowerCase().includes(first)) &&
+            (!last || c.lastName.toLowerCase().includes(last)) &&
+            (!phone || c.phone.includes(phone));
+
+        let matchVehicle = false;
+
+        if (rego) {
+            const v = vehicles.find(v =>
+                v.customer === c._id &&
+                v.rego?.toLowerCase().includes(rego)
+            );
+            if (v) matchVehicle = true;
+        }
+
+        if (matchCustomer || matchVehicle) {
+            results.push(c);
+        }
+    });
+
+    renderBookingResultsModal(results);
+}
+
+function renderBookingResultsModal(results) {
+
+    let html = "";
+
+    if (!results.length) {
+        html = "<div class='card'>No matches found</div>";
+    }
+
+    results.forEach(c => {
+        html += `
+        <div class="card" onclick="selectCustomer('${c._id}')">
+            <b>${c.firstName} ${c.lastName}</b><br>
+            ${c.phone}
+        </div>`;
+    });
+
+    document.getElementById("bookingStepResults").innerHTML = html;
+}
+
+
+function renderCustomerResults(results) {
+
+    let html = "";
+
+    if (!results.length) {
+        html = "<div class='card'>No matches found</div>";
+    }
+
+    results.forEach(c => {
+        html += `
+        <div class="card" onclick="selectCustomer('${c._id}')">
+            <b>${c.firstName} ${c.lastName}</b><br>
+            ${c.phone}
+        </div>`;
+    });
+
+    document.getElementById("customerResults").innerHTML = html;
+
+    openCustomerModal();
+}
+
+function openCustomerModal() {
+    document.getElementById("customerModal").style.display = "block";
+}
+
+function closeCustomerModal() {
+    document.getElementById("customerModal").style.display = "none";
+}
+
+async function selectCustomer(id) {
+
+    const res = await fetch(API + "/customers/" + id);
+    const customer = await res.json();
+
+    document.getElementById("bookingStepDetails").style.display = "block";
+
+    document.getElementById("selectedCustomer").innerHTML = `
+        <b>${customer.firstName} ${customer.lastName}</b><br>
+        ${customer.phone}
+    `;
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let options = "";
+
+    vehicles
+        .filter(v => v.customer === id)
+        .forEach(v => {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        });
+
+    document.getElementById("bookingVehicle").innerHTML = options;
+}
+let selectedReason = "";
+
+function setReason(r) {
+    selectedReason = r;
+}
+
+function confirmBooking() {
+    alert("Booking ready (next step)");
+}
+
+function openBookingModal() {
+    document.getElementById("bookingModal").style.display = "block";
+}
+
+function closeBookingModal() {
+    document.getElementById("bookingModal").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
