@@ -212,8 +212,12 @@ async function show(id, btn) {
     if(id === "jobs") loadJobs();
     if(id === "customers") loadCustomers();
     if(id === "invoices") loadInvoices();
-}
 
+    if(id === "createBooking") {
+        await loadCustomers();
+        await loadVehicles();
+    }
+}
 async function loadCustomers() {
     const res = await fetch(API + "/customers");
     const data = await res.json();
