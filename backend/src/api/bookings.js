@@ -7,11 +7,18 @@ const Job = require("../models/Job");
 // CREATE booking
 router.post("/", async (req, res) => {
     try {
+
+        const checklist = (req.body.jobs || []).map(j => ({
+            text: j.description || "Task",
+            done: false
+        }));
+
         const booking = new Booking({
             title: req.body.title,
             customer: req.body.customer,
             vehicle: req.body.vehicle,
-            status: req.body.status || "booked"
+            status: req.body.status || "booked",
+            checklist: checklist
         });
 
         await booking.save();
@@ -21,6 +28,7 @@ router.post("/", async (req, res) => {
             .populate("vehicle");
 
         res.status(201).json(populated);
+
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
