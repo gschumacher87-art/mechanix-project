@@ -1017,7 +1017,7 @@ async function convertBooking(id) {
             customer: booking.customer,
             vehicle: booking.vehicle,
             status: "booked",
-            checklist: []
+            checklist: booking.checklist || []
         })
     });
 
