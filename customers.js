@@ -65,10 +65,10 @@ async function loadVehicles(customerId = null) {
 
 async function searchCustomers() {
 
-    const first = searchFirstName.value.toLowerCase();
-    const last = searchLastName.value.toLowerCase();
-    const phone = searchPhone.value;
-    const rego = searchRego.value.toLowerCase();
+    const first = (searchFirstName.value || "").toLowerCase();
+    const last = (searchLastName.value || "").toLowerCase();
+    const phone = searchPhone.value || "";
+    const rego = (searchRego.value || "").toLowerCase();
 
     const res = await fetch(API + "/customers");
     const customers = await res.json();
@@ -80,17 +80,21 @@ async function searchCustomers() {
 
     customers.forEach(c => {
 
+        const cFirst = (c.firstName || "").toLowerCase();
+        const cLast = (c.lastName || "").toLowerCase();
+        const cPhone = c.phone || "";
+
         const matchCustomer =
-            (!first || c.firstName.toLowerCase().includes(first)) &&
-            (!last || c.lastName.toLowerCase().includes(last)) &&
-            (!phone || c.phone.includes(phone));
+            (!first || cFirst.includes(first)) &&
+            (!last || cLast.includes(last)) &&
+            (!phone || cPhone.includes(phone));
 
         let matchVehicle = false;
 
         if (rego) {
             const v = vehicles.find(v =>
                 v.customer === c._id &&
-                v.rego?.toLowerCase().includes(rego)
+                (v.rego || "").toLowerCase().includes(rego)
             );
             if (v) matchVehicle = true;
         }
