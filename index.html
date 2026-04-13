@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mechanix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="nav">
+    <button class="active" onclick="show('bookings', this)">Bookings</button>
+    <button onclick="show('jobs', this)">Jobs</button>
+    <button onclick="show('customers', this)">Customers</button>
+    <button onclick="show('invoices', this)">Invoices</button>
+</div>
+
+<div id="bookings" class="screen active">
+    <button class="primary" onclick="openBookingModal()">+ New Booking</button>
+    <div class="title">Bookings</div>
+    <div id="bookingList"></div>
+</div>
+
+<div id="jobs" class="screen">
+    <div class="title">Jobs</div>
+    <div id="jobList"></div>
+</div>
+
+<div id="jobCard" class="screen">
+    <div id="jobCardInfo"></div>
+
+    <div class="card">
+        <div class="title">Checklist</div>
+        <div id="jobCardChecklist"></div>
+    </div>
+
+    <div class="card">
+        <div class="title">Actions</div>
+        <div id="jobCardActions"></div>
+    </div>
+
+    <button class="secondary" onclick="show('jobs')">Back</button>
+</div>
+
+<div id="jobDetail" class="screen">
+    <div id="jobInfo"></div>
+
+    <div class="card">
+        <div class="title">Quick Actions</div>
+        <div id="quickActions"></div>
+    </div>
+
+    <div class="card">
+        <div class="title">Status</div>
+        <button class="primary" onclick="setStatus('arrived')">Arrived</button>
+        <button class="primary" onclick="setStatus('completed')">Completed</button>
+    </div>
+
+    <div class="card">
+        <div class="title">Photos</div>
+        <input type="file" accept="image/*" onchange="uploadPhoto(event)">
+        <div id="photoList"></div>
+    </div>
+
+    <div class="card">
+        <div class="title">Notes</div>
+        <textarea id="jobNotes"></textarea>
+        <button class="primary" onclick="saveNotes()">Save Notes</button>
+    </div>
+
+    <button class="secondary" onclick="show('jobs')">Back</button>
+</div>
+
+<div id="customers" class="screen">
+    <div class="card">
+        <div class="title">Add Customer</div>
+        <input id="custFirstName" placeholder="First Name">
+        <input id="custLastName" placeholder="Last Name">
+        <input id="custPhone" placeholder="Phone">
+        <button class="primary" onclick="addCustomer()">Add Customer</button>
+    </div>
+
+    <div class="card">
+        <div class="title">Add Vehicle</div>
+        <select id="vehicleCustomer"></select>
+        <input id="vehicleMake" placeholder="Make">
+        <input id="vehicleModel" placeholder="Model">
+        <button class="primary" onclick="addVehicle()">Add Vehicle</button>
+    </div>
+
+    <div id="customerList"></div>
+</div>
+
+<div id="invoices" class="screen">
+    <div class="title">Invoices</div>
+    <div id="invoiceList"></div>
+</div>
+
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <div class="title">New Booking</div>
+
+        <input id="searchFirstName" placeholder="First Name">
+        <input id="searchLastName" placeholder="Last Name">
+        <input id="searchPhone" placeholder="Contact Number">
+        <input id="searchRego" placeholder="Rego">
+
+        <button class="primary" onclick="searchCustomers()">Search</button>
+
+        <div id="bookingStepResults"></div>
+
+        <div id="bookingStepDetails" style="display:none;">
+            <div id="selectedCustomer"></div>
+            <select id="bookingVehicle"></select>
+
+            <button class="primary" onclick="confirmBooking()">Create Booking</button>
+        </div>
+
+        <button class="secondary" onclick="closeBookingModal()">Close</button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+<script src="customers.js"></script>
+<script src="jobs.js"></script>
+<script src="bookings.js"></script>
+<script src="invoices.js"></script>
+
+</body>
+</html>
