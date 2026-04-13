@@ -217,27 +217,29 @@ async function confirmBooking() {
     }
 
     const res = await fetch(API + "/bookings", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-        title: jobs[0].description || "Booking",
-        customer: selectedCustomerId,
-        vehicle: document.getElementById("bookingVehicle").value,
-        status: "booked",
-        jobs: jobs
-    })
-});
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: jobs[0].description || "Booking",
+            customer: selectedCustomerId,
+            vehicle: document.getElementById("bookingVehicle").value,
+            status: "booked",
+            jobs: jobs
+        })
+    });
 
-    console.log(res.status);
+    console.log("POST STATUS:", res.status);
 
-    await res.json(); 
+    const data = await res.json();
+
+    if (!res.ok) {
+        alert(data.error || "Booking failed");
+        return;
+    }
 
     closeBookingModal();
-show('bookings');
-
-setTimeout(() => {
+    show('bookings');
     loadBookings();
-}, 500);
     
 }
 
