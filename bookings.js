@@ -188,15 +188,15 @@ async function selectCustomer(id) {
         ${customer.phone}
     `;
 
-    const vRes = await fetch(API + "/vehicles");
+    const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
     let options = `<option value="">Select vehicle</option>`;
 
-    vehicles
-        .filter(v => String(v.customer?._id || v.customer) === String(id))
-        .forEach(v => {
-            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+    
+    vehicles.forEach(v => {
+    options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+});
         });
 
     document.getElementById("bookingVehicle").innerHTML = options;
