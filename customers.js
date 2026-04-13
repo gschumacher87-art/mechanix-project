@@ -5,9 +5,11 @@ async function loadCustomers() {
     let html = "", options = "";
 
     data.forEach(c => {
-        html += `<div class="card">${c.firstName} ${c.lastName} - ${c.phone}</div>`;
-        options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
-    });
+    html += `<div class="card" onclick="selectCustomer('${c._id}')">
+        ${c.firstName} ${c.lastName} - ${c.phone}
+    </div>`;
+    options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
+});
 
     document.getElementById("customerList").innerHTML = html;
     document.getElementById("vehicleCustomer").innerHTML = options;
@@ -55,12 +57,14 @@ async function loadVehicles(customerId = null) {
     let options = "";
 
     data.forEach(v => {
-        if (!customerId || v.customer === customerId) {
+        if (!customerId || String(v.customer) === String(customerId)) {
+        
             options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
         }
     });
 
     document.getElementById("bookingVehicle").innerHTML = options;
+    loadVehicles(id);
 }
 
 async function searchCustomers() {
@@ -148,7 +152,7 @@ async function selectCustomer(id) {
     let options = "";
 
     vehicles
-        .filter(v => v.customer === id)
+        .filter(v => String(v.customer) === String(id))
         .forEach(v => {
             options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
         });
