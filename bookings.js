@@ -1,0 +1,109 @@
+let bookings = [];
+
+async function loadBookings() {
+    const res = await fetch(API + "/bookings");
+    const data = await res.json();
+
+    bookings = data;
+
+    let html = "";
+
+    data.forEach(b => {
+        html += `
+        <div class="card" onclick="openBooking('${b._id}')">
+            <div class="title">${b.title}</div>
+            <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
+            ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
+        </div>`;
+    });
+
+    bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
+}
+
+async function openBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobCard").classList.add("active");
+
+    currentJob = {
+        _id: null, // IMPORTANT: prevents job API calls
+        isBooking: true,
+        title: booking.title,
+        customer: booking.customer,
+        vehicle: booking.vehicle,
+        status: booking.status,
+        checklist: booking.checklist || []
+    };
+
+    renderBookingCard();
+}
+
+function renderBookingCard() {
+
+    let checklistHtml = "";
+
+    currentJob.checklist ??= [];
+
+    currentJob.checklist.forEach((item, i) => {
+        checklistHtml += `
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <input type="checkbox" ${item.done ? "checked" : ""}>
+            <span>${item.text}</span>
+        </div>`;
+    });
+
+    document.getElementById("jobCardInfo").innerHTML = `
+        <div class="card">
+            <div class="title">${currentJob.title}</div>
+            <b>Status:</b> BOOKING<br>
+            <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
+        </div>
+    `;
+
+    document.getElementById("jobCardChecklist").innerHTML = `
+        ${checklistHtml || "<div style='color:#777;'>No tasks</div>"}
+    `;
+
+    document.getElementById("jobCardActions").innerHTML = `
+        <button class="primary" onclick="convertBooking('${currentJob._id}')">Convert to Job</button>
+        <button class="secondary" onclick="show('bookings')">Back</button>
+    `;
+}
+
+async function convertBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    const jobRes = await fetch(API + "/jobs", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: booking.title,
+            customer: booking.customer,
+            vehicle: booking.vehicle,
+            status: "booked",
+            checklist: booking.checklist || []
+        })
+    });
+
+    const job = await jobRes.json();
+
+    await fetch(API + "/bookings/" + id, {
+        method:"DELETE"
+    });
+
+    openJobCard(job._id);
+}
+
+function openBookingModal() {
+    document.getElementById("bookingModal").style.display = "block";
+}
+
+function closeBookingModal() {
+    document.getElementById("bookingModal").style.display = "none";
+}
