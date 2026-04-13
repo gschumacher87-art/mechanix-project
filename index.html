@@ -104,7 +104,7 @@
 </div>
 
 
-<div id="jobs" class="screen active">
+<div id="jobs" class="screen">
 
     <div class="title">Jobs</div>
     <div id="jobList"></div>
@@ -248,9 +248,6 @@ async function show(id, btn) {
     if(id === "customers") loadCustomers();
     if(id === "invoices") loadInvoices();
 
-    if(id === "createBooking") {
-        await loadCustomers();
-        await loadVehicles();
     }
 }
 async function loadCustomers() {
