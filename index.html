@@ -1064,6 +1064,46 @@ async function convertBooking(id) {
     openJobCard(job._id);
 }
 
+async function searchCustomers() {
+
+    const first = searchFirstName.value.toLowerCase();
+    const last = searchLastName.value.toLowerCase();
+    const phone = searchPhone.value;
+    const rego = searchRego.value.toLowerCase();
+
+    const res = await fetch(API + "/customers");
+    const customers = await res.json();
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let results = [];
+
+    customers.forEach(c => {
+
+        const matchCustomer =
+            (!first || c.firstName.toLowerCase().includes(first)) &&
+            (!last || c.lastName.toLowerCase().includes(last)) &&
+            (!phone || c.phone.includes(phone));
+
+        let matchVehicle = false;
+
+        if (rego) {
+            const v = vehicles.find(v =>
+                v.customer === c._id &&
+                v.rego?.toLowerCase().includes(rego)
+            );
+            if (v) matchVehicle = true;
+        }
+
+        if (matchCustomer || matchVehicle) {
+            results.push(c);
+        }
+    });
+
+    renderCustomerResults(results);
+}
+
 </script>
 
 </body>
