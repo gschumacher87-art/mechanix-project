@@ -69,9 +69,30 @@
 <body>
 
 <div class="nav">
-    <button class="active" onclick="show('jobs', this)">Jobs</button>
+    <button class="active" onclick="show('bookings', this)">Bookings</button>
+    <button onclick="show('jobs', this)">Jobs</button>
     <button onclick="show('customers', this)">Customers</button>
     <button onclick="show('invoices', this)">Invoices</button>
+</div>
+
+<div id="bookings" class="screen active">
+
+    <button class="primary" onclick="show('createBooking')">+ New Booking</button>
+
+    <div class="title">Bookings</div>
+    <div id="bookingList"></div>
+</div>
+
+<div id="createBooking" class="screen">
+    <div class="card">
+        <div class="title">New Booking</div>
+        <input id="bookingTitle" placeholder="Booking Title">
+        <select id="bookingCustomer" onchange="loadVehicles(this.value)"></select>
+        <select id="bookingVehicle"></select>
+        <button class="primary" onclick="createBooking()">Create Booking</button>
+    </div>
+
+    <button class="secondary" onclick="show('bookings')">Back</button>
 </div>
 
 <div id="jobs" class="screen active">
@@ -178,6 +199,7 @@
 
 const API = "https://mechanix-api-87.onrender.com/api";
 let currentJob = null;
+let bookings = [];
 
 function show(id, btn) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
@@ -954,6 +976,72 @@ async function startJobFromCard() {
 
     show("jobs");
     loadJobs();
+}
+
+async function loadBookings() {
+    const res = await fetch(API + "/bookings");
+    const data = await res.json();
+
+    bookings = data;
+
+    let html = "";
+
+    data.forEach(b => {
+        html += `
+        <div class="card" onclick="convertBooking('${b._id}')">
+            <div class="title">${b.title}</div>
+            <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
+            ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
+        </div>`;
+    });
+
+    bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
+}
+
+async function createBooking() {
+    if (!bookingTitle.value || !bookingCustomer.value || !bookingVehicle.value) return;
+
+    await fetch(API + "/bookings", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: bookingTitle.value,
+            customer: bookingCustomer.value,
+            vehicle: bookingVehicle.value,
+            status: "booked"
+        })
+    });
+
+    bookingTitle.value = "";
+
+    loadBookings();
+    show("bookings");
+}
+
+async function convertBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    const jobRes = await fetch(API + "/jobs", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: booking.title,
+            customer: booking.customer,
+            vehicle: booking.vehicle,
+            status: "booked",
+            checklist: []
+        })
+    });
+
+    const job = await jobRes.json();
+
+    await fetch(API + "/bookings/" + id, {
+        method:"DELETE"
+    });
+
+    openJob(job._id);
 }
 
 </script>
