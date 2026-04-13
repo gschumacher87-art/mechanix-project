@@ -169,8 +169,7 @@ async function deleteBooking(id) {
     show('bookings');
     loadBookings();
 }
-console.log(data);
-alert(JSON.stringify(data));
+
 // ================= BOOKING CREATION FLOW =================
 
 let selectedCustomerId = null;
