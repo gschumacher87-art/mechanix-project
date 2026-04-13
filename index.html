@@ -974,7 +974,7 @@ async function loadBookings() {
 
     data.forEach(b => {
         html += `
-        <div class="card" onclick="convertBooking('${b._id}')">
+        onclick="openBooking('${b._id}')"
             <div class="title">${b.title}</div>
             <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
             ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
@@ -982,6 +982,25 @@ async function loadBookings() {
     });
 
     bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
+}
+
+async function openBooking(id) {
+
+    const res = await fetch(API + "/bookings/" + id);
+    const booking = await res.json();
+
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("jobDetail").classList.add("active");
+
+    currentJob = {
+        title: booking.title,
+        customer: booking.customer,
+        vehicle: booking.vehicle,
+        status: booking.status,
+        checklist: booking.checklist || []
+    };
+
+    renderJob();
 }
 
 async function createBooking() {
