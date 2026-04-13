@@ -107,3 +107,71 @@ function openBookingModal() {
 function closeBookingModal() {
     document.getElementById("bookingModal").style.display = "none";
 }
+
+// ================= BOOKING CREATION FLOW =================
+
+let selectedCustomerId = null;
+let selectedReason = "";
+
+async function selectCustomer(id) {
+
+    const res = await fetch(API + "/customers/" + id);
+    const customer = await res.json();
+
+    // ENTER BOOKING MODE
+    document.getElementById("bookingStepSearch").style.display = "none";
+    document.getElementById("bookingStepResults").style.display = "none";
+    document.getElementById("bookingStepDetails").style.display = "block";
+
+    selectedCustomerId = customer._id;
+
+    document.getElementById("selectedCustomer").innerHTML = `
+        <b>${customer.firstName} ${customer.lastName}</b><br>
+        ${customer.phone}
+    `;
+
+    // LOAD VEHICLES
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    let options = "";
+
+    vehicles
+        .filter(v => v.customer === id)
+        .forEach(v => {
+            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        });
+
+    document.getElementById("bookingVehicle").innerHTML = options;
+}
+
+function setReason(r) {
+    selectedReason = r;
+}
+
+async function confirmBooking() {
+
+    if (!selectedCustomerId) {
+        alert("Select customer");
+        return;
+    }
+
+    if (!selectedReason) {
+        alert("Select job type");
+        return;
+    }
+
+    await fetch(API + "/bookings", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: selectedReason,
+            customer: selectedCustomerId,
+            vehicle: document.getElementById("bookingVehicle").value,
+            status: "booked"
+        })
+    });
+
+    closeBookingModal();
+    loadBookings();
+}
