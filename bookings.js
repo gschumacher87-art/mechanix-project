@@ -4,7 +4,7 @@ async function loadBookings() {
     const res = await fetch(API + "/bookings");
     const data = await res.json();
 
-    console.log(data); // 👈 keep this for now
+    console.log(data);
 
     bookings = data;
 
@@ -19,7 +19,7 @@ async function loadBookings() {
         </div>`;
     });
 
-    const bookingList = document.getElementById("bookingList"); // 👈 THIS WAS MISSING
+    const bookingList = document.getElementById("bookingList");
 
     bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
 }
@@ -90,8 +90,8 @@ async function convertBooking(id) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: booking.title,
-            customer: booking.customer,
-            vehicle: booking.vehicle,
+            customer: booking.customer?._id || booking.customer,
+            vehicle: booking.vehicle?._id || booking.vehicle,
             status: "booked",
             checklist: booking.checklist || []
         })
@@ -116,11 +116,9 @@ function openBookingModal() {
 function closeBookingModal() {
     document.getElementById("bookingModal").style.display = "none";
 
-    // RESET STATE
     selectedCustomerId = null;
     jobs = [];
 
-    // RESET UI
     document.getElementById("bookingStepSearch").style.display = "block";
     document.getElementById("bookingStepResults").style.display = "block";
     document.getElementById("bookingStepDetails").style.display = "none";
@@ -140,8 +138,8 @@ async function arrivedBooking(id) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: booking.title,
-            customer: booking.customer,
-            vehicle: booking.vehicle,
+            customer: booking.customer?._id || booking.customer,
+            vehicle: booking.vehicle?._id || booking.vehicle,
             status: "in-progress",
             checklist: booking.checklist || []
         })
@@ -193,7 +191,7 @@ async function selectCustomer(id) {
     const vRes = await fetch(API + "/vehicles");
     const vehicles = await vRes.json();
 
-    let options = "";
+    let options = `<option value="">Select vehicle</option>`;
 
     vehicles
         .filter(v => String(v.customer) === String(id))
@@ -216,13 +214,20 @@ async function confirmBooking() {
         return;
     }
 
+    const vehicleId = document.getElementById("bookingVehicle").value;
+
+    if (!vehicleId) {
+        alert("Select vehicle");
+        return;
+    }
+
     const res = await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: jobs[0].description || "Booking",
             customer: selectedCustomerId,
-            vehicle: document.getElementById("bookingVehicle").value,
+            vehicle: vehicleId,
             status: "booked",
             jobs: jobs
         })
@@ -240,7 +245,6 @@ async function confirmBooking() {
     closeBookingModal();
     show('bookings');
     loadBookings();
-    
 }
 
 // ================= JOB UI =================
@@ -297,4 +301,3 @@ function renderJobs() {
 
     document.getElementById("jobsContainer").innerHTML = html;
 }
-    
