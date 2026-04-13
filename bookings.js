@@ -199,21 +199,23 @@ async function confirmBooking() {
         return;
     }
 
-    await fetch(API + "/bookings", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            title: jobs[0].description || "Booking",
-            customer: selectedCustomerId,
-            vehicle: document.getElementById("bookingVehicle").value,
-            status: "booked",
-            jobs: jobs
-        })
-    });
+    const res = await fetch(API + "/bookings", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+        title: jobs[0].description || "Booking",
+        customer: selectedCustomerId,
+        vehicle: document.getElementById("bookingVehicle").value,
+        status: "booked",
+        jobs: jobs
+    })
+});
 
-    closeBookingModal();
-    show('bookings');
-    loadBookings();
+await res.json(); 
+
+closeBookingModal();
+show('bookings');
+await loadBookings(); 
     
 }
 
