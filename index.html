@@ -85,11 +85,16 @@
 
 <div id="createBooking" class="screen">
     <div class="card">
-        <div class="title">New Booking</div>
-        <input id="bookingTitle" placeholder="Booking Title">
-        <select id="bookingCustomer" onchange="loadVehicles(this.value)"></select>
-        <select id="bookingVehicle"></select>
-        <button class="primary" onclick="createBooking()">Create Booking</button>
+        <div class="title">Find Customer</div>
+
+        <input id="searchFirstName" placeholder="First Name">
+        <input id="searchLastName" placeholder="Last Name">
+        <input id="searchPhone" placeholder="Contact Number">
+        <input id="searchRego" placeholder="Rego">
+
+        <button class="primary">Search</button>
+
+        <button class="secondary">+ Create New Customer</button>
     </div>
 
     <button class="secondary" onclick="show('bookings')">Back</button>
