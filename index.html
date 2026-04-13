@@ -974,11 +974,12 @@ async function loadBookings() {
 
     data.forEach(b => {
         html += `
-        onclick="openBooking('${b._id}')"
-            <div class="title">${b.title}</div>
-            <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
-            ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
-        </div>`;
+         <div class="card" onclick="openBooking('${b._id}')">
+        <div class="title">${b.title}</div>
+        <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
+        ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
+    </div>`;
+    
     });
 
     bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
