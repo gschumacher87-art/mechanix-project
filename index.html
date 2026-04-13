@@ -63,6 +63,26 @@
         .completed { background:green; color:white; }
 
         img { width:100%; border-radius:8px; margin-top:10px; }
+        /* MODAL */
+.modal {
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:1000;
+}
+
+.modal-content {
+    background:white;
+    margin:10% auto;
+    padding:15px;
+    width:90%;
+    max-height:70%;
+    overflow:auto;
+    border-radius:10px;
+}
+        
     </style>
 </head>
 
@@ -184,6 +204,14 @@
 <div id="invoices" class="screen">
     <div class="title">Invoices</div>
     <div id="invoiceList"></div>
+</div>
+
+<div id="customerModal" class="modal">
+    <div class="modal-content">
+        <div class="title">Select Customer</div>
+        <div id="customerResults"></div>
+        <button class="secondary" onclick="closeCustomerModal()">Close</button>
+    </div>
 </div>
 
 <script>
@@ -1102,6 +1130,40 @@ async function searchCustomers() {
     });
 
     renderCustomerResults(results);
+}
+
+
+function renderCustomerResults(results) {
+
+    let html = "";
+
+    if (!results.length) {
+        html = "<div class='card'>No matches found</div>";
+    }
+
+    results.forEach(c => {
+        html += `
+        <div class="card" onclick="selectCustomer('${c._id}')">
+            <b>${c.firstName} ${c.lastName}</b><br>
+            ${c.phone}
+        </div>`;
+    });
+
+    document.getElementById("customerResults").innerHTML = html;
+
+    openCustomerModal();
+}
+
+function openCustomerModal() {
+    document.getElementById("customerModal").style.display = "block";
+}
+
+function closeCustomerModal() {
+    document.getElementById("customerModal").style.display = "none";
+}
+
+function selectCustomer(id) {
+    closeCustomerModal();
 }
 
 function renderCustomerResults(results) {
