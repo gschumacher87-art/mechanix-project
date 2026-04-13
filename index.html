@@ -208,6 +208,7 @@ function show(id, btn) {
     document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
     if(btn) btn.classList.add("active");
 
+    if(id === "bookings") loadBookings();
     if(id === "jobs") loadJobs();
     if(id === "customers") loadCustomers();
     if(id === "invoices") loadInvoices();
