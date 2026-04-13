@@ -991,9 +991,11 @@ async function openBooking(id) {
     const booking = await res.json();
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobDetail").classList.add("active");
+    document.getElementById("jobCard").classList.add("active");
 
     currentJob = {
+        _id: null, // IMPORTANT: prevents job API calls
+        isBooking: true, // flag so we know it's NOT a job
         title: booking.title,
         customer: booking.customer,
         vehicle: booking.vehicle,
@@ -1001,7 +1003,7 @@ async function openBooking(id) {
         checklist: booking.checklist || []
     };
 
-    renderJob();
+    renderJobCard();
 }
 
 async function createBooking() {
