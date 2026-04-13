@@ -1213,12 +1213,10 @@ function closeCustomerModal() {
 
 async function selectCustomer(id) {
 
-    closeCustomerModal();
-
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    document.getElementById("bookingStage").style.display = "block";
+    document.getElementById("bookingStepDetails").style.display = "block";
 
     document.getElementById("selectedCustomer").innerHTML = `
         <b>${customer.firstName} ${customer.lastName}</b><br>
