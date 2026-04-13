@@ -201,7 +201,7 @@ const API = "https://mechanix-api-87.onrender.com/api";
 let currentJob = null;
 let bookings = [];
 
-function show(id, btn) {
+async function show(id, btn) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
 
