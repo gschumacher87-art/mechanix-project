@@ -196,7 +196,7 @@ async function selectCustomer(id) {
     let options = "";
 
     vehicles
-        .filter(v => v.customer === id)
+        .filter(v => String(v.customer) === String(id))
         .forEach(v => {
             options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
         });
