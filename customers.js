@@ -155,3 +155,4 @@ async function selectCustomer(id) {
 
     document.getElementById("bookingVehicle").innerHTML = options;
 }
+window.selectCustomer = selectCustomer;
