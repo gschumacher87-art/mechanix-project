@@ -249,7 +249,7 @@ async function show(id, btn) {
     if(id === "invoices") loadInvoices();
 
     }
-}
+
 async function loadCustomers() {
     const res = await fetch(API + "/customers");
     const data = await res.json();
