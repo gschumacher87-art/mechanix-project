@@ -103,39 +103,6 @@
     <div id="bookingList"></div>
 </div>
 
-<div id="createBooking" class="screen">
-    <div class="card">
-        <div class="title">Find Customer</div>
-
-        <input id="searchFirstName" placeholder="First Name">
-        <input id="searchLastName" placeholder="Last Name">
-        <input id="searchPhone" placeholder="Contact Number">
-        <input id="searchRego" placeholder="Rego">
-
-        <button class="primary" onclick="searchCustomers()">Search</button>
-
-        <button class="secondary">+ Create New Customer</button>
-    </div>
-    <div id="bookingStage" class="card" style="display:none;">
-
-    <div class="title">Booking Details</div>
-
-    <div id="selectedCustomer"></div>
-
-    <select id="bookingVehicle"></select>
-
-    <div style="margin-top:10px;">
-        <button class="secondary" onclick="setReason('Service')">Service</button>
-        <button class="secondary" onclick="setReason('Brakes')">Brakes</button>
-        <button class="secondary" onclick="setReason('Diagnostic')">Diagnostic</button>
-    </div>
-
-    <button class="primary" style="margin-top:10px;" onclick="confirmBooking()">Create Booking</button>
-
-</div>
-
-    <button class="secondary" onclick="show('bookings')">Back</button>
-</div>
 
 <div id="jobs" class="screen active">
 
