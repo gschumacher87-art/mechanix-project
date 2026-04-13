@@ -175,3 +175,59 @@ async function confirmBooking() {
     closeBookingModal();
     loadBookings();
 }
+// ================= JOB UI =================
+
+let jobs = [];
+
+function addJob() {
+    const index = jobs.length;
+
+    jobs.push({
+        mode: null,
+        description: "",
+        time: ""
+    });
+
+    renderJobs();
+}
+
+function setJobMode(i, mode) {
+    jobs[i].mode = mode;
+    renderJobs();
+}
+
+function updateJobField(i, field, value) {
+    jobs[i][field] = value;
+}
+
+function renderJobs() {
+
+    let html = "";
+
+    jobs.forEach((job, i) => {
+
+        html += `
+        <div class="card">
+            <div class="title">Job ${i + 1}</div>
+
+            ${!job.mode ? `
+                <button class="secondary" onclick="setJobMode(${i}, 'template')">Template</button>
+                <button class="secondary" onclick="setJobMode(${i}, 'manual')">Manual</button>
+            ` : ""}
+
+            ${job.mode === "manual" ? `
+                <input placeholder="Description"
+                    oninput="updateJobField(${i}, 'description', this.value)">
+                <input placeholder="Time (hours)"
+                    oninput="updateJobField(${i}, 'time', this.value)">
+            ` : ""}
+
+            ${job.mode === "template" ? `
+                <div style="color:#777;">Template (coming later)</div>
+            ` : ""}
+        </div>
+        `;
+    });
+
+    document.getElementById("jobsContainer").innerHTML = html;
+}
