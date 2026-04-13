@@ -227,6 +227,7 @@ async function loadCustomers() {
 
     customerList.innerHTML = html;
     jobCustomer.innerHTML = options;
+    bookingCustomer.innerHTML = options;
     vehicleCustomer.innerHTML = options;
 }
 
@@ -277,6 +278,7 @@ async function loadVehicles(customerId = null) {
     });
 
     jobVehicle.innerHTML = options;
+bookingVehicle.innerHTML = options;
 }
 
 async function createJob() {
