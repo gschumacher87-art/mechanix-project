@@ -1104,6 +1104,23 @@ async function searchCustomers() {
     renderCustomerResults(results);
 }
 
+function renderCustomerResults(results) {
+
+    let html = "";
+
+    results.forEach(c => {
+        html += `
+        <div class="card">
+            <b>${c.firstName} ${c.lastName}</b><br>
+            ${c.phone}
+        </div>`;
+    });
+
+    html += `<div id="customerResults"></div>`;
+
+    document.querySelector("#createBooking .card").innerHTML += html;
+}
+
 </script>
 
 </body>
