@@ -115,6 +115,8 @@ async function startJobFromCard() {
 
 async function finishJob() {
 
+    alert("finish clicked"); // 👈 STEP 1 HERE
+
     if (!currentJob) return;
 
     // prevent duplicate trigger
@@ -128,6 +130,8 @@ async function finishJob() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(currentJob)
     });
+
+    alert("job update sent"); // 👈 STEP 2
 
     // 2. create invoice linked to job
     await fetch(API + "/invoices", {
