@@ -113,6 +113,40 @@ async function startJobFromCard() {
     loadJobs();
 }
 
+async function finishJob() {
+
+    if (!currentJob) return;
+
+    // prevent duplicate trigger
+    if (currentJob.status === "pending-invoice") return;
+
+    // 1. move job → pending invoice
+    currentJob.status = "pending-invoice";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+
+    // 2. create invoice linked to job
+    await fetch(API + "/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            jobId: currentJob._id,
+            customer: currentJob.customer,
+            vehicle: currentJob.vehicle,
+            title: currentJob.title,
+            status: "draft"
+        })
+    });
+
+    // 3. refresh
+    show("jobs");
+    loadJobs();
+}
+
 async function toggleChecklist(index) {
     currentJob.checklist[index].done = !currentJob.checklist[index].done;
 
