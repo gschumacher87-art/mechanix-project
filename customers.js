@@ -206,9 +206,17 @@ async function openCustomer(id) {
     </div>
 
     <div class="card">
-        <div class="title">Vehicles</div>
-        ${vehicleHtml}
-    </div>
+    <div class="title">Vehicles</div>
+
+    ${vehicleHtml}
+
+    <input id="newVehicleMake" placeholder="Make">
+    <input id="newVehicleModel" placeholder="Model">
+
+    <button class="primary" onclick="addVehicleToCustomer('${customer._id}')">
+        + Add Vehicle
+    </button>
+</div>
 
     <div class="card" onclick="loadCustomers()">
         ← Back
