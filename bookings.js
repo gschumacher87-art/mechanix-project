@@ -101,6 +101,7 @@ async function arrivedBooking(id) {
     });
 
     const job = await jobRes.json();
+    console.log("CREATED JOB:", job);
 
     await fetch(API + "/bookings/" + id, { method:"DELETE" });
 
