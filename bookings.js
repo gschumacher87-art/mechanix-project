@@ -243,12 +243,13 @@ async function confirmBooking() {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: jobs[0].description || "Booking",
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
-            status: "booked",
-            checklist: []
-        })
+    title: jobs[0].description || "Booking",
+    customer: selectedCustomerId,
+    vehicle: vehicleId,
+    status: "booked",
+    date: document.getElementById("bookingDate").value,
+    checklist: []
+})
     });
 
     const data = await res.json();
