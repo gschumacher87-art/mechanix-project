@@ -27,7 +27,7 @@ async function loadVehicles(customerId = null) {
     let options = "";
 
     data.forEach(v => {
-        if (!customerId || (v.customer && v.customer.toString() === customerId.toString())) {
+        if (!customerId || (v.customer && (v.customer._id || v.customer).toString() === customerId.toString())) {
             options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
         }
     });
