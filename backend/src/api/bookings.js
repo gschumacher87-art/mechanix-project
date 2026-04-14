@@ -14,12 +14,13 @@ router.post("/", async (req, res) => {
         }));
 
         const booking = new Booking({
-            title: req.body.title,
-            customer: req.body.customer,
-            vehicle: req.body.vehicle,
-            status: req.body.status || "booked",
-            checklist: checklist
-        });
+    title: req.body.title,
+    customer: req.body.customer,
+    vehicle: req.body.vehicle,
+    status: req.body.status || "booked",
+    date: req.body.date,
+    checklist: checklist
+});
 
         await booking.save();
 
