@@ -143,7 +143,7 @@ async function openCustomer(id) {
     let vehicleHtml = "";
 
     vehicles
-        .filter(v => v.customer && v.customer.toString() === id.toString())
+        .filter(v => v.customer && (v.customer._id || v.customer).toString() === id.toString())
         .forEach(v => {
             vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
         });
