@@ -3,13 +3,13 @@ async function loadCustomers() {
     const res = await fetch(API + "/customers");
     const data = await res.json();
 
-    let html = "", options = "";
+    let html = "";
 
     data.forEach(c => {
         html += `<div class="card" onclick="openCustomer('${c._id}')">
             ${c.firstName} ${c.lastName} - ${c.phone}
         </div>`;
-        options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
+        
     });
 
     document.getElementById("customerList").innerHTML = html;
