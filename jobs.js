@@ -133,14 +133,14 @@ async function finishJob() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            job: currentJob._id,
-            customer: currentJob.customer?._id,
-            vehicle: currentJob.vehicle?._id,
-            title: currentJob.title,
-            status: "draft",
-            totalCost: 0,
-            template: { items: [], labour: [], notes: "" }
-        })
+    job: currentJob._id,
+    customer: currentJob.customer?._id || currentJob.customer,
+    vehicle: currentJob.vehicle?._id || currentJob.vehicle,
+    title: currentJob.title,
+    status: "draft",
+    totalCost: 0,
+    template: { items: [], labour: [], notes: "" }
+})
     });
 
     alert(res2.status);
