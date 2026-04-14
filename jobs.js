@@ -123,29 +123,32 @@ async function finishJob() {
 
     // UPDATE JOB STATUS
     await fetch(API + "/jobs/" + currentJob._id, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status: "pending-invoice" })
-});
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "pending-invoice" })
+    });
 
-// CREATE INVOICE
-await fetch(API + "/invoices", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-        job: currentJob._id,
-        customer: currentJob.customer?._id,
-        vehicle: currentJob.vehicle?._id,
-        title: currentJob.title,
-        status: "draft",
-        totalCost: 0,
-        template: { items: [], labour: [], notes: "" }
-    })
-});
+    // CREATE INVOICE
+    const res2 = await fetch(API + "/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            job: currentJob._id,
+            customer: currentJob.customer?._id,
+            vehicle: currentJob.vehicle?._id,
+            title: currentJob.title,
+            status: "draft",
+            totalCost: 0,
+            template: { items: [], labour: [], notes: "" }
+        })
+    });
 
-show("invoices");
-loadInvoices();
+    alert(res2.status);
+
+    show("invoices");
+    loadInvoices();
 }
+
 async function toggleChecklist(index) {
     currentJob.checklist[index].done = !currentJob.checklist[index].done;
 
