@@ -14,6 +14,10 @@ async function loadCustomers() {
 
     document.getElementById("customerList").innerHTML = html;
     document.getElementById("vehicleCustomer").innerHTML = options;
+
+    // ensure list visible
+    document.getElementById("customerList").style.display = "block";
+    document.getElementById("customerDetail").style.display = "none";
 }
 
 // ===== ADD CUSTOMER =====
@@ -156,20 +160,45 @@ async function selectCustomer(id) {
 window.selectCustomer = selectCustomer;
 
 
-// ===== OPEN CUSTOMER (SAFE VERSION) =====
+// ===== OPEN CUSTOMER (PROPER DETAIL VIEW) =====
 async function openCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    // KEEP UI — just show info
-    alert(
-        customer.firstName + " " + customer.lastName + "\n" +
-        customer.phone
-    );
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
 
-    // still load vehicles into system
-    loadVehicles(id);
+    let vehicleHtml = "";
+
+    vehicles
+        .filter(v => String(v.customer) === String(id))
+        .forEach(v => {
+            vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
+        });
+
+    if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
+
+    // switch views
+    document.getElementById("customerList").style.display = "none";
+    document.getElementById("customerDetail").style.display = "block";
+
+    document.getElementById("customerDetail").innerHTML = `
+        <div class="card">
+            <b>${customer.firstName} ${customer.lastName}</b><br>
+            ${customer.phone}
+        </div>
+
+        <div class="card">
+            <b>Vehicles</b>
+        </div>
+
+        ${vehicleHtml}
+
+        <div class="card" onclick="loadCustomers()">
+            ← Back
+        </div>
+    `;
 }
 
 window.openCustomer = openCustomer;
