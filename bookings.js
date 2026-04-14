@@ -25,7 +25,7 @@ async function loadBookings() {
             ${v.make || ""} ${v.model || ""}
         </div>`;
 
-        if (b.date === today) {
+        if (b.date && b.date.startsWith(today)) {
             todayHtml += card;
         } else {
             futureHtml += card;
