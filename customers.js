@@ -9,33 +9,14 @@ async function loadCustomers() {
         html += `<div class="card" onclick="openCustomer('${c._id}')">
             ${c.firstName} ${c.lastName} - ${c.phone}
         </div>`;
-        
     });
 
     document.getElementById("customerList").innerHTML = html;
-
-    // ensure list visible
     document.getElementById("customerList").style.display = "block";
     document.getElementById("customerDetail").style.display = "none";
 }
 
-// ===== LOAD VEHICLES =====
-async function loadVehicles(customerId = null) {
-    const res = await fetch(API + "/vehicles");
-    const data = await res.json();
-
-    let options = "";
-
-    data.forEach(v => {
-        if (!customerId || (v.customer && (v.customer._id || v.customer).toString() === customerId.toString())) {
-            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-        }
-    });
-
-    document.getElementById("bookingVehicle").innerHTML = options;
-}
-
-// ===== SEARCH CUSTOMERS =====
+// ===== SEARCH CUSTOMERS (CUSTOMERS ONLY) =====
 async function searchCustomers() {
 
     const first = (searchFirstName.value || "").toLowerCase();
@@ -49,7 +30,7 @@ async function searchCustomers() {
     const vRes = await fetch(API + "/vehicles");
     const vehicles = await vRes.json();
 
-    let results = [];
+    let html = "";
 
     customers.forEach(c => {
 
@@ -66,91 +47,42 @@ async function searchCustomers() {
 
         if (rego) {
             const v = vehicles.find(v =>
-        v.customer && (v.customer._id || v.customer).toString() === c._id.toString() &&
+                v.customer && (v.customer._id || v.customer).toString() === c._id.toString() &&
                 (v.rego || "").toLowerCase().includes(rego)
             );
             if (v) matchVehicle = true;
         }
 
         if (matchCustomer || matchVehicle) {
-            results.push(c);
+            html += `
+            <div class="card" onclick="openCustomer('${c._id}')">
+                <b>${c.firstName} ${c.lastName}</b><br>
+                ${c.phone}
+            </div>`;
         }
     });
 
-    renderBookingResults(results, "customer");
+    document.getElementById("customerList").innerHTML =
+        html || "<div class='card'>No matches found</div>";
 }
 
-// ===== RENDER BOOKING RESULTS =====//
-function renderBookingResults(results, mode = "booking") {
-
-    let html = "";
-
-    if (!results.length) {
-        html = "<div class='card'>No matches found</div>";
-    }
-
-    results.forEach(c => {
-
-        let click = "";
-
-        if (mode === "booking") {
-            click = `selectCustomer('${c._id}')`;
-        } else {
-            click = `openCustomer('${c._id}')`;
-        }
-
-        html += `
-        <div class="card" onclick="${click}">
-            <b>${c.firstName} ${c.lastName}</b><br>
-            ${c.phone}
-        </div>`;
-    });
-
-    document.getElementById("bookingStepResults").innerHTML = html;
-    document.getElementById("bookingStepResults").style.display = "block";
-}
-
-// ===== SELECT CUSTOMER (BOOKING FLOW) =====
-async function selectCustomer(id) {
-
-    const res = await fetch(API + "/customers/" + id);
-    const customer = await res.json();
-
-    document.getElementById("bookingStepSearch").style.display = "none";
-    document.getElementById("bookingStepResults").style.display = "none";
-    document.getElementById("bookingStepDetails").style.display = "block";
-
-    document.getElementById("selectedCustomer").innerHTML = `
-        <b>${customer.firstName} ${customer.lastName}</b><br>
-        ${customer.phone}
-    `;
-
-    loadVehicles(id);
-}
-
-window.selectCustomer = selectCustomer;
-
-
-// ===== OPEN CUSTOMER (PROPER DETAIL VIEW) =====
+// ===== OPEN CUSTOMER =====
 async function openCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    const vRes = await fetch(API + "/vehicles");
+    const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
     let vehicleHtml = "";
 
-    vehicles
-        .filter(v => v.customer && (v.customer._id || v.customer).toString() === id.toString())
-        .forEach(v => {
-            vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
-        });
+    vehicles.forEach(v => {
+        vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
+    });
 
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
 
-    // switch views
     document.getElementById("customerList").style.display = "none";
     document.getElementById("customerDetail").style.display = "block";
 
@@ -168,17 +100,17 @@ async function openCustomer(id) {
     </div>
 
     <div class="card">
-    <div class="title">Vehicles</div>
+        <div class="title">Vehicles</div>
 
-    ${vehicleHtml}
+        ${vehicleHtml}
 
-    <input id="newVehicleMake" placeholder="Make">
-    <input id="newVehicleModel" placeholder="Model">
+        <input id="newVehicleMake" placeholder="Make">
+        <input id="newVehicleModel" placeholder="Model">
 
-    <button class="primary" onclick="addVehicleToCustomer('${customer._id}')">
-        + Add Vehicle
-    </button>
-</div>
+        <button class="primary" onclick="addVehicleToCustomer('${customer._id}')">
+            + Add Vehicle
+        </button>
+    </div>
 
     <div class="card" onclick="loadCustomers()">
         ← Back
@@ -188,6 +120,7 @@ async function openCustomer(id) {
 
 window.openCustomer = openCustomer;
 
+// ===== SAVE CUSTOMER =====
 async function saveCustomer(id) {
 
     await fetch(API + "/customers/" + id, {
@@ -200,30 +133,13 @@ async function saveCustomer(id) {
         })
     });
 
-    openCustomer(id); // reload updated view
+    openCustomer(id);
 }
 
-// ===== OPEN CUSTOMER SEARCH =====
-function openCustomerSearch() {
-
-    // reuse booking modal search
-    document.getElementById("bookingModal").style.display = "block";
-
-    document.getElementById("bookingStepSearch").style.display = "block";
-    document.getElementById("bookingStepResults").style.display = "none";
-    document.getElementById("bookingStepDetails").style.display = "none";
-}
-
-// =// ===== SHOW ADD CUSTOMER =====
-function showAddCustomer() {
-
-    // scroll to form (simple + safe)
-    document.getElementById("custFirstName").focus();
-}
-
+// ===== ADD VEHICLE =====
 async function addVehicleToCustomer(customerId) {
 
-    const res = await fetch(API + "/vehicles", {
+    await fetch(API + "/vehicles", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
@@ -233,12 +149,33 @@ async function addVehicleToCustomer(customerId) {
         })
     });
 
+    openCustomer(customerId);
+}
+
+// ===== LOAD VEHICLES (USED BY BOOKINGS ONLY UI ELEMENT) =====
+async function loadVehicles(customerId = null) {
+    const res = await fetch(API + "/vehicles?customer=" + customerId);
     const data = await res.json();
-    console.log("CREATED VEHICLE:", data); // 👈 debug
 
-    // force fresh reload (no cache issue)
-    setTimeout(() => {
-        openCustomer(customerId);
-    }, 200);
+    let options = "";
 
+    data.forEach(v => {
+        options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+    });
+
+    document.getElementById("bookingVehicle").innerHTML = options;
+}
+
+// ===== OPEN CUSTOMER SEARCH (UI ONLY) =====
+function openCustomerSearch() {
+    document.getElementById("bookingModal").style.display = "block";
+
+    document.getElementById("bookingStepSearch").style.display = "block";
+    document.getElementById("bookingStepResults").style.display = "none";
+    document.getElementById("bookingStepDetails").style.display = "none";
+}
+
+// ===== SHOW ADD CUSTOMER =====
+function showAddCustomer() {
+    document.getElementById("custFirstName").focus();
 }
