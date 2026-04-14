@@ -13,14 +13,14 @@ async function loadBookings() {
 
     data.forEach(b => {
 
-        const customer = b.customer || {};
-        const vehicle = b.vehicle || {};
+        const c = b.customer || {};
+        const v = b.vehicle || {};
 
         html += `
         <div class="card" onclick="openBooking('${b._id}')">
             <div class="title">${b.title || "Booking"}</div>
-            <b>${customer.firstName || "No"} ${customer.lastName || "Customer"}</b><br>
-            ${vehicle.make || ""} ${vehicle.model || ""}
+            <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
+            ${v.make || ""} ${v.model || ""}
         </div>`;
     });
 
@@ -39,19 +39,20 @@ async function openBooking(id) {
 
     currentJob = {
         _id: booking._id,
-        isBooking: true,
         title: booking.title,
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
-        status: booking.status,
         checklist: booking.checklist || []
     };
 
     renderBookingCard();
 }
 
-// ================= RENDER BOOKING =================
+// ================= RENDER =================
 function renderBookingCard() {
+
+    const c = currentJob.customer || {};
+    const v = currentJob.vehicle || {};
 
     let checklistHtml = "";
 
@@ -62,9 +63,6 @@ function renderBookingCard() {
             <span>${item.text}</span>
         </div>`;
     });
-
-    const c = currentJob.customer || {};
-    const v = currentJob.vehicle || {};
 
     document.getElementById("jobCardInfo").innerHTML = `
         <div class="card">
@@ -85,7 +83,7 @@ function renderBookingCard() {
     `;
 }
 
-// ================= ARRIVED → JOB =================
+// ================= ARRIVED =================
 async function arrivedBooking(id) {
 
     const res = await fetch(API + "/bookings/" + id);
@@ -120,12 +118,6 @@ async function deleteBooking(id) {
 // ================= MODAL =================
 function openBookingModal() {
     document.getElementById("bookingModal").style.display = "block";
-    jobs = [];
-    addJob();
-}
-
-function closeBookingModal() {
-    document.getElementById("bookingModal").style.display = "none";
 
     selectedCustomerId = null;
     jobs = [];
@@ -136,7 +128,12 @@ function closeBookingModal() {
 
     document.getElementById("selectedCustomer").innerHTML = "";
     document.getElementById("bookingVehicle").innerHTML = "";
-    document.getElementById("jobsContainer").innerHTML = "";
+
+    addJob();
+}
+
+function closeBookingModal() {
+    document.getElementById("bookingModal").style.display = "none";
 }
 
 // ================= SELECT CUSTOMER =================
@@ -156,7 +153,7 @@ async function selectCustomer(id) {
         ${customer.phone}
     `;
 
-    // 🔥 CRITICAL FIX: USE QUERY FILTER
+    // ✅ CORRECT: backend filter
     const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
@@ -178,7 +175,7 @@ async function confirmBooking() {
     }
 
     if (!jobs.length || !jobs[0].mode) {
-        alert("Add at least 1 job");
+        alert("Add job");
         return;
     }
 
@@ -194,8 +191,8 @@ async function confirmBooking() {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: jobs[0].description || "Booking",
-            customer: String(selectedCustomerId),
-            vehicle: String(vehicleId),
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
             status: "booked",
             checklist: []
         })
@@ -215,7 +212,7 @@ async function confirmBooking() {
 
 // ================= JOB UI =================
 function addJob() {
-    jobs.push({ mode: null, description: "", time: "" });
+    jobs.push({ mode: null, description: "" });
     renderJobs();
 }
 
