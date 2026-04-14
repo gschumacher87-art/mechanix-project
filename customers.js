@@ -118,9 +118,8 @@ async function searchCustomers() {
     renderBookingResults(results);
 }
 
-// ===== RENDER BOOKING RESULTS =====
-function renderBookingResults(results, mode = "booking") {
-
+// ===== RENDER BOOKING RESULTS =====//
+renderBookingResults(results, "customer");  {
     let html = "";
 
     if (!results.length) {
