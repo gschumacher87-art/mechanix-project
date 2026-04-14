@@ -152,7 +152,7 @@ async function finishJob() {
             customer: customerId,
             vehicle: vehicleId,
             title: currentJob.title || "Job Invoice",
-            status: "draft",
+            status: "pending",
             totalCost: 0,
             template: { items: [], labour: [], notes: "" }
         })
