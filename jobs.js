@@ -119,16 +119,7 @@ async function finishJob() {
 
     if (currentJob.status === "pending-invoice") return;
 
-    currentJob.status = "pending-invoice";
-
-    // UPDATE JOB STATUS
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "pending-invoice" })
-    });
-
-    // SAFE ID EXTRACTION
+    // SAFE ID EXTRACTION (STRICT)
     const customerId =
         currentJob.customer && typeof currentJob.customer === "object"
             ? currentJob.customer._id
@@ -139,20 +130,39 @@ async function finishJob() {
             ? currentJob.vehicle._id
             : currentJob.vehicle;
 
-    // CREATE INVOICE (FORCED VALID)
-    await fetch(API + "/invoices", {
+    // HARD VALIDATION (NO FALLBACKS)
+    if (!customerId || !vehicleId) {
+        alert("Missing customer or vehicle on job");
+        return;
+    }
+
+    // UPDATE JOB STATUS FIRST
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "pending-invoice" })
+    });
+
+    // CREATE INVOICE
+    const res = await fetch(API + "/invoices", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             job: currentJob._id,
-            customer: customerId || currentJob._id,
-            vehicle: vehicleId || currentJob._id,
+            customer: customerId,
+            vehicle: vehicleId,
             title: currentJob.title || "Job Invoice",
             status: "draft",
             totalCost: 0,
             template: { items: [], labour: [], notes: "" }
         })
     });
+
+    if (!res.ok) {
+        const err = await res.text();
+        alert("Invoice error: " + err);
+        return;
+    }
 
     show("invoices");
     loadInvoices();
