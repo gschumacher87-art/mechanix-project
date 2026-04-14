@@ -134,15 +134,14 @@ async function finishJob() {
     alert("job update sent"); // 👈 STEP 2
 
     // 2. create invoice linked to job
-    await fetch(API + "/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            jobId: currentJob._id,
-            customer: currentJob.customer,
-            vehicle: currentJob.vehicle,
-            title: currentJob.title,
-            status: "draft"
+    body: JSON.stringify({
+    jobId: currentJob._id,
+    customer: currentJob.customer,
+    vehicle: currentJob.vehicle,
+    title: currentJob.title,
+    status: "draft",
+    totalCost: 0,
+    template: { items: [], labour: [], notes: "" }
         })
     });
     
