@@ -19,24 +19,6 @@ async function loadCustomers() {
     document.getElementById("customerDetail").style.display = "none";
 }
 
-// ===== ADD VEHICLE =====
-async function addVehicle() {
-    await fetch(API + "/vehicles", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            customer: vehicleCustomer.value,
-            make: vehicleMake.value,
-            model: vehicleModel.value
-        })
-    });
-
-    vehicleMake.value = "";
-    vehicleModel.value = "";
-
-    loadVehicles(vehicleCustomer.value);
-}
-
 // ===== LOAD VEHICLES =====
 async function loadVehicles(customerId = null) {
     const res = await fetch(API + "/vehicles");
