@@ -28,11 +28,13 @@ const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
             ${v.make || ""} ${v.model || ""}
         </div>`;
 
-        if (b.date && b.date.startsWith(today)) {
-            todayHtml += card;
-        } else {
-            futureHtml += card;
-        }
+        const bookingDate = new Date(b.date).toISOString().split("T")[0];
+
+if (bookingDate === today) {
+    todayHtml += card;
+} else {
+    futureHtml += card;
+}
     });
 
     document.getElementById("bookingList").innerHTML = `
