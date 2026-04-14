@@ -215,7 +215,6 @@ function openCustomerSearch() {
 }
 
 // ===== SHOW ADD CUSTOMER =====
-function showAddCustomer() {
 
     // scroll to form (simple + safe)
     document.getElementById("custFirstName").focus();
