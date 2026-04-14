@@ -119,7 +119,7 @@ async function searchCustomers() {
 }
 
 // ===== RENDER BOOKING RESULTS =====
-function renderBookingResults(results) {
+function renderBookingResults(results, mode = "booking") {
 
     let html = "";
 
@@ -128,8 +128,17 @@ function renderBookingResults(results) {
     }
 
     results.forEach(c => {
+
+        let click = "";
+
+        if (mode === "booking") {
+            click = `selectCustomer('${c._id}')`;
+        } else {
+            click = `openCustomer('${c._id}')`;
+        }
+
         html += `
-        <div class="card" onclick="openCustomer('${c._id}')">
+        <div class="card" onclick="${click}">
             <b>${c.firstName} ${c.lastName}</b><br>
             ${c.phone}
         </div>`;
