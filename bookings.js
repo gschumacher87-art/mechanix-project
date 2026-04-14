@@ -28,7 +28,9 @@ const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
             ${v.make || ""} ${v.model || ""}
         </div>`;
 
-        const bookingDate = new Date(b.date).toISOString().split("T")[0];
+        const bookingDate = b.date
+    ? new Date(b.date).toISOString().split("T")[0]
+    : null;
 
 if (bookingDate === today) {
     todayHtml += card;
