@@ -149,8 +149,9 @@ async function finishJob() {
     alert("invoice sent");
 
     // 3. refresh
-    show("jobs");
-    loadJobs();
+    show("invoices");
+    loadInvoices();
+    
 }
 
 async function toggleChecklist(index) {
