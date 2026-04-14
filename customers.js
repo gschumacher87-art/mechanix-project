@@ -214,7 +214,8 @@ function openCustomerSearch() {
     document.getElementById("bookingStepDetails").style.display = "none";
 }
 
-// ===== SHOW ADD CUSTOMER =====
+// =// ===== SHOW ADD CUSTOMER =====
+function showAddCustomer() {
 
     // scroll to form (simple + safe)
     document.getElementById("custFirstName").focus();
