@@ -33,7 +33,8 @@ async function loadJobs() {
 </div>`;
 
         if (j.status === "booked") booked += card;
-        else if (j.status === "arrived" || j.status === "in-progress") active += card;
+        else if (j.status === "arrived") booked += card;
+        else if (j.status === "in-progress") active += card;
         else if (j.status === "pending-invoice") pending += card;
         else if (j.status === "completed") completed += card;
         else booked += card;
