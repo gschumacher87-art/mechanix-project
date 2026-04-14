@@ -134,8 +134,12 @@ async function finishJob() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
     job: currentJob._id,
-    customer: currentJob.customer?._id || currentJob.customer,
-    vehicle: currentJob.vehicle?._id || currentJob.vehicle,
+    customer: typeof currentJob.customer === "object"
+        ? currentJob.customer._id
+        : currentJob.customer,
+    vehicle: typeof currentJob.vehicle === "object"
+        ? currentJob.vehicle._id
+        : currentJob.vehicle,
     title: currentJob.title,
     status: "draft",
     totalCost: 0,
