@@ -66,7 +66,7 @@ async function searchCustomers() {
 
         if (rego) {
             const v = vehicles.find(v =>
-            v.customer && v.customer.toString() === c._id.toString() &&
+        v.customer && (v.customer._id || v.customer).toString() === c._id.toString() &&
                 (v.rego || "").toLowerCase().includes(rego)
             );
             if (v) matchVehicle = true;
