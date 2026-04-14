@@ -1,29 +1,34 @@
 let bookings = [];
+let selectedCustomerId = null;
+let jobs = [];
 
+// ================= LOAD BOOKINGS =================
 async function loadBookings() {
     const res = await fetch(API + "/bookings");
     const data = await res.json();
-
-    console.log(data);
 
     bookings = data;
 
     let html = "";
 
     data.forEach(b => {
+
+        const customer = b.customer || {};
+        const vehicle = b.vehicle || {};
+
         html += `
         <div class="card" onclick="openBooking('${b._id}')">
             <div class="title">${b.title || "Booking"}</div>
-            <b>${b.customer?.firstName || "No"} ${b.customer?.lastName || "Customer"}</b><br>
-            ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
+            <b>${customer.firstName || "No"} ${customer.lastName || "Customer"}</b><br>
+            ${vehicle.make || ""} ${vehicle.model || ""}
         </div>`;
     });
 
-    const bookingList = document.getElementById("bookingList");
-
-    bookingList.innerHTML = html || "<div class='card'>No bookings</div>";
+    document.getElementById("bookingList").innerHTML =
+        html || "<div class='card'>No bookings</div>";
 }
 
+// ================= OPEN BOOKING =================
 async function openBooking(id) {
 
     const res = await fetch(API + "/bookings/" + id);
@@ -36,8 +41,8 @@ async function openBooking(id) {
         _id: booking._id,
         isBooking: true,
         title: booking.title,
-        customer: booking.customer,
-        vehicle: booking.vehicle,
+        customer: booking.customer || {},
+        vehicle: booking.vehicle || {},
         status: booking.status,
         checklist: booking.checklist || []
     };
@@ -45,89 +50,42 @@ async function openBooking(id) {
     renderBookingCard();
 }
 
+// ================= RENDER BOOKING =================
 function renderBookingCard() {
 
     let checklistHtml = "";
 
-    currentJob.checklist ??= [];
-
-    currentJob.checklist.forEach((item, i) => {
+    (currentJob.checklist || []).forEach(item => {
         checklistHtml += `
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <div style="display:flex; gap:10px; margin-bottom:6px;">
             <input type="checkbox" ${item.done ? "checked" : ""}>
             <span>${item.text}</span>
         </div>`;
     });
 
+    const c = currentJob.customer || {};
+    const v = currentJob.vehicle || {};
+
     document.getElementById("jobCardInfo").innerHTML = `
         <div class="card">
             <div class="title">${currentJob.title}</div>
             <b>Status:</b> BOOKING<br>
-            <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
-            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
+            <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
+            <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
         </div>
     `;
 
-    document.getElementById("jobCardChecklist").innerHTML = `
-        ${checklistHtml || "<div style='color:#777;'>No tasks</div>"}
-    `;
+    document.getElementById("jobCardChecklist").innerHTML =
+        checklistHtml || "<div style='color:#777;'>No tasks</div>";
 
     document.getElementById("jobCardActions").innerHTML = `
-    <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
-    <button class="secondary" onclick="rebookBooking()">Rebook</button>
-    <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete Booking</button>
-    <button class="secondary" onclick="show('bookings')">Back</button>
+        <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
+        <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete</button>
+        <button class="secondary" onclick="show('bookings')">Back</button>
     `;
 }
 
-async function convertBooking(id) {
-
-    const res = await fetch(API + "/bookings/" + id);
-    const booking = await res.json();
-
-    const jobRes = await fetch(API + "/jobs", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            title: booking.title,
-            customer: booking.customer?._id || booking.customer,
-            vehicle: booking.vehicle?._id || booking.vehicle,
-            status: "booked",
-            checklist: booking.checklist || []
-        })
-    });
-
-    const job = await jobRes.json();
-
-    await fetch(API + "/bookings/" + id, {
-        method:"DELETE"
-    });
-
-    openJobCard(job._id);
-}
-
-function openBookingModal() {
-    document.getElementById("bookingModal").style.display = "block";
-
-    jobs = [];
-    addJob();
-}
-
-function closeBookingModal() {
-    document.getElementById("bookingModal").style.display = "none";
-
-    selectedCustomerId = null;
-    jobs = [];
-
-    document.getElementById("bookingStepSearch").style.display = "block";
-    document.getElementById("bookingStepResults").style.display = "block";
-    document.getElementById("bookingStepDetails").style.display = "none";
-
-    document.getElementById("selectedCustomer").innerHTML = "";
-    document.getElementById("bookingVehicle").innerHTML = "";
-    document.getElementById("jobsContainer").innerHTML = "";
-}
-
+// ================= ARRIVED → JOB =================
 async function arrivedBooking(id) {
 
     const res = await fetch(API + "/bookings/" + id);
@@ -147,32 +105,44 @@ async function arrivedBooking(id) {
 
     const job = await jobRes.json();
 
-    await fetch(API + "/bookings/" + id, {
-        method:"DELETE"
-    });
+    await fetch(API + "/bookings/" + id, { method:"DELETE" });
 
     openJobCard(job._id);
 }
 
-function rebookBooking() {
-    alert("Rebook coming later");
-}
-
+// ================= DELETE =================
 async function deleteBooking(id) {
-
-    await fetch(API + "/bookings/" + id, {
-        method:"DELETE"
-    });
-
+    await fetch(API + "/bookings/" + id, { method:"DELETE" });
     show('bookings');
     loadBookings();
 }
 
-// ================= BOOKING CREATION FLOW =================
+// ================= MODAL =================
+function openBookingModal() {
+    document.getElementById("bookingModal").style.display = "block";
+    jobs = [];
+    addJob();
+}
 
-let selectedCustomerId = null;
+function closeBookingModal() {
+    document.getElementById("bookingModal").style.display = "none";
 
+    selectedCustomerId = null;
+    jobs = [];
+
+    document.getElementById("bookingStepSearch").style.display = "block";
+    document.getElementById("bookingStepResults").style.display = "none";
+    document.getElementById("bookingStepDetails").style.display = "none";
+
+    document.getElementById("selectedCustomer").innerHTML = "";
+    document.getElementById("bookingVehicle").innerHTML = "";
+    document.getElementById("jobsContainer").innerHTML = "";
+}
+
+// ================= SELECT CUSTOMER =================
 async function selectCustomer(id) {
+
+    selectedCustomerId = id;
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
@@ -181,26 +151,25 @@ async function selectCustomer(id) {
     document.getElementById("bookingStepResults").style.display = "none";
     document.getElementById("bookingStepDetails").style.display = "block";
 
-    selectedCustomerId = customer._id;
-
     document.getElementById("selectedCustomer").innerHTML = `
         <b>${customer.firstName} ${customer.lastName}</b><br>
         ${customer.phone}
     `;
 
+    // 🔥 CRITICAL FIX: USE QUERY FILTER
     const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
     let options = `<option value="">Select vehicle</option>`;
 
-    
     vehicles.forEach(v => {
-    options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-        });
+        options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+    });
 
     document.getElementById("bookingVehicle").innerHTML = options;
 }
 
+// ================= CREATE BOOKING =================
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
@@ -225,14 +194,12 @@ async function confirmBooking() {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: jobs[0].description || "Booking",
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
+            customer: String(selectedCustomerId),
+            vehicle: String(vehicleId),
             status: "booked",
-            jobs: jobs
+            checklist: []
         })
     });
-
-    console.log("POST STATUS:", res.status);
 
     const data = await res.json();
 
@@ -247,16 +214,8 @@ async function confirmBooking() {
 }
 
 // ================= JOB UI =================
-
-let jobs = [];
-
 function addJob() {
-    jobs.push({
-        mode: null,
-        description: "",
-        time: ""
-    });
-
+    jobs.push({ mode: null, description: "", time: "" });
     renderJobs();
 }
 
@@ -280,19 +239,12 @@ function renderJobs() {
             <div class="title">Job ${i + 1}</div>
 
             ${!job.mode ? `
-                <button class="secondary" onclick="setJobMode(${i}, 'template')">Template</button>
-                <button class="secondary" onclick="setJobMode(${i}, 'manual')">Manual</button>
+                <button onclick="setJobMode(${i}, 'manual')">Manual</button>
             ` : ""}
 
             ${job.mode === "manual" ? `
                 <input placeholder="Description"
                     oninput="updateJobField(${i}, 'description', this.value)">
-                <input placeholder="Time (hours)"
-                    oninput="updateJobField(${i}, 'time', this.value)">
-            ` : ""}
-
-            ${job.mode === "template" ? `
-                <div style="color:#777;">Template (coming later)</div>
             ` : ""}
         </div>
         `;
