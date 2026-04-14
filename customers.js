@@ -119,7 +119,9 @@ async function searchCustomers() {
 }
 
 // ===== RENDER BOOKING RESULTS =====//
-renderBookingResults(results, "customer");  {
+// ===== RENDER BOOKING RESULTS =====
+function renderBookingResults(results, mode = "booking") {
+
     let html = "";
 
     if (!results.length) {
