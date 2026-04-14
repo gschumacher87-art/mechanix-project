@@ -223,7 +223,7 @@ function showAddCustomer() {
 
 async function addVehicleToCustomer(customerId) {
 
-    await fetch(API + "/vehicles", {
+    const res = await fetch(API + "/vehicles", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
@@ -233,5 +233,12 @@ async function addVehicleToCustomer(customerId) {
         })
     });
 
-    openCustomer(customerId); // reload with new vehicle
+    const data = await res.json();
+    console.log("CREATED VEHICLE:", data); // 👈 debug
+
+    // force fresh reload (no cache issue)
+    setTimeout(() => {
+        openCustomer(customerId);
+    }, 200);
+
 }
