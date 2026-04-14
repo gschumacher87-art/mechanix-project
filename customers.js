@@ -19,25 +19,6 @@ async function loadCustomers() {
     document.getElementById("customerDetail").style.display = "none";
 }
 
-// ===== ADD CUSTOMER =====
-async function addCustomer() {
-    await fetch(API + "/customers", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            firstName: custFirstName.value,
-            lastName: custLastName.value,
-            phone: custPhone.value
-        })
-    });
-
-    custFirstName.value = "";
-    custLastName.value = "";
-    custPhone.value = "";
-
-    loadCustomers();
-}
-
 // ===== ADD VEHICLE =====
 async function addVehicle() {
     await fetch(API + "/vehicles", {
