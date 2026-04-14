@@ -115,11 +115,10 @@ async function searchCustomers() {
         }
     });
 
-    renderBookingResults(results);
+    renderBookingResults(results, "customer");
 }
 
 // ===== RENDER BOOKING RESULTS =====//
-// ===== RENDER BOOKING RESULTS =====
 function renderBookingResults(results, mode = "booking") {
 
     let html = "";
