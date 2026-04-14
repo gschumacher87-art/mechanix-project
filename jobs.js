@@ -171,3 +171,4 @@ async function deleteJob(id) {
     show("jobs");
     loadJobs();
 }
+window.finishJob = finishJob;
