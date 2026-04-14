@@ -129,7 +129,7 @@ function renderBookingResults(results) {
 
     results.forEach(c => {
         html += `
-        <div class="card" onclick="selectCustomer('${c._id}')">
+        <div class="card" onclick="openCustomer('${c._id}')">
             <b>${c.firstName} ${c.lastName}</b><br>
             ${c.phone}
         </div>`;
