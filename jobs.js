@@ -163,7 +163,7 @@ async function finishJob() {
         alert("Invoice error: " + err);
         return;
     }
-
+await loadJobs();
     show("invoices");
     loadInvoices();
 }
