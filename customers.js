@@ -6,12 +6,9 @@ async function loadCustomers() {
     let html = "", options = "";
 
     data.forEach(c => {
-        html += `
-        <div class="card" onclick="openCustomer('${c._id}')">
-            <b>${c.firstName} ${c.lastName}</b><br>
-            ${c.phone}
+        html += `<div class="card" onclick="openCustomer('${c._id}')">
+            ${c.firstName} ${c.lastName} - ${c.phone}
         </div>`;
-        
         options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
     });
 
@@ -53,7 +50,6 @@ async function addVehicle() {
     vehicleMake.value = "";
     vehicleModel.value = "";
 
-    // refresh vehicle list for selected customer
     loadVehicles(vehicleCustomer.value);
 }
 
@@ -73,7 +69,7 @@ async function loadVehicles(customerId = null) {
     document.getElementById("bookingVehicle").innerHTML = options;
 }
 
-// ===== SEARCH CUSTOMERS (BOOKING FLOW) =====
+// ===== SEARCH CUSTOMERS =====
 async function searchCustomers() {
 
     const first = (searchFirstName.value || "").toLowerCase();
@@ -139,7 +135,7 @@ function renderBookingResults(results) {
     document.getElementById("bookingStepResults").style.display = "block";
 }
 
-// ===== SELECT CUSTOMER (BOOKING FLOW ONLY) =====
+// ===== SELECT CUSTOMER (BOOKING FLOW) =====
 async function selectCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
@@ -160,43 +156,20 @@ async function selectCustomer(id) {
 window.selectCustomer = selectCustomer;
 
 
-// ===== OPEN CUSTOMER (CUSTOMER TAB FLOW) =====
+// ===== OPEN CUSTOMER (SAFE VERSION) =====
 async function openCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    const vRes = await fetch(API + "/vehicles");
-    const vehicles = await vRes.json();
+    // KEEP UI — just show info
+    alert(
+        customer.firstName + " " + customer.lastName + "\n" +
+        customer.phone
+    );
 
-    const customerVehicles = vehicles.filter(v => String(v.customer) === String(id));
-
-    let vehicleHtml = "";
-
-    if (!customerVehicles.length) {
-        vehicleHtml = "<div>No vehicles</div>";
-    } else {
-        customerVehicles.forEach(v => {
-            vehicleHtml += `<div>${v.make} ${v.model}</div>`;
-        });
-    }
-
-    // TEMP simple detail render (replace later with panel)
-    document.getElementById("customerList").innerHTML = `
-        <div class="card">
-            <b>${customer.firstName} ${customer.lastName}</b><br>
-            ${customer.phone}
-        </div>
-
-        <div class="card">
-            <b>Vehicles</b><br>
-            ${vehicleHtml}
-        </div>
-
-        <div class="card" onclick="loadCustomers()">
-            ← Back
-        </div>
-    `;
+    // still load vehicles into system
+    loadVehicles(id);
 }
 
 window.openCustomer = openCustomer;
