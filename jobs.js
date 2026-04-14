@@ -93,10 +93,11 @@ function renderJobCard() {
     `;
 
     document.getElementById("jobCardActions").innerHTML = `
-        <button class="primary" onclick="startJobFromCard()">Start Job</button>
-        <button class="primary" onclick="finishJob()">Finish Job</button>
-        <button class="secondary" onclick="show('jobs')">Back</button>
-    `;
+    <button class="primary" onclick="startJobFromCard()">Start Job</button>
+    <button class="primary" onclick="finishJob()">Finish Job</button>
+    <button class="secondary" onclick="deleteJob('${currentJob._id}')">Delete Job</button>
+    <button class="secondary" onclick="show('jobs')">Back</button>
+`;
 }
 
 async function startJobFromCard() {
@@ -122,4 +123,13 @@ async function toggleChecklist(index) {
     });
 
     renderJobCard();
+}
+
+async function deleteJob(id) {
+    if (!confirm("Delete this job?")) return;
+
+    await fetch(API + "/jobs/" + id, { method: "DELETE" });
+
+    show("jobs");
+    loadJobs();
 }
