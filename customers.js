@@ -66,7 +66,7 @@ async function searchCustomers() {
 
         if (rego) {
             const v = vehicles.find(v =>
-                String(v.customer) === String(c._id) &&
+            v.customer && v.customer.toString() === c._id.toString() &&
                 (v.rego || "").toLowerCase().includes(rego)
             );
             if (v) matchVehicle = true;
@@ -143,7 +143,7 @@ async function openCustomer(id) {
     let vehicleHtml = "";
 
     vehicles
-        .filter(v => String(v.customer) === String(id))
+        .filter(v => v.customer && v.customer.toString() === id.toString())
         .forEach(v => {
             vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
         });
