@@ -258,3 +258,18 @@ function showAddCustomer() {
     // scroll to form (simple + safe)
     document.getElementById("custFirstName").focus();
 }
+
+async function addVehicleToCustomer(customerId) {
+
+    await fetch(API + "/vehicles", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            customer: customerId,
+            make: document.getElementById("newVehicleMake").value,
+            model: document.getElementById("newVehicleModel").value
+        })
+    });
+
+    openCustomer(customerId); // reload with new vehicle
+}
