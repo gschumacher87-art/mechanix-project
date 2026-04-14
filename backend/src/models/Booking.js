@@ -16,9 +16,14 @@ const BookingSchema = new mongoose.Schema({
     },
 
     status: {
-        type: String,
-        default: "booked"
-    },
+    type: String,
+    default: "booked"
+},
+
+date: {
+    type: String,
+    required: true
+},
 
     checklist: [
         {
