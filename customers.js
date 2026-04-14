@@ -170,6 +170,8 @@ async function openCustomer(id) {
         customer.firstName + " " + customer.lastName + "\n" +
         customer.phone
     );
+
+    loadVehicles(id);
 }
 
 window.openCustomer = openCustomer;
