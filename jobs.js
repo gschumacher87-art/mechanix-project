@@ -115,8 +115,6 @@ async function startJobFromCard() {
 
 async function finishJob() {
 
-    alert("finish clicked"); 
-
     if (!currentJob) return;
 
     if (currentJob.status === "pending-invoice") return;
