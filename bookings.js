@@ -276,7 +276,7 @@ if (!bookingDate) {
     customer: selectedCustomerId,
     vehicle: vehicleId,
     status: "booked",
-    date: document.getElementById("bookingDate").value,
+    date: bookingDate,
     checklist: []
 })
     });
