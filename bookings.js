@@ -9,22 +9,36 @@ async function loadBookings() {
 
     bookings = data;
 
-    let html = "";
+    let todayHtml = "";
+    let futureHtml = "";
+
+    const today = new Date().toISOString().split("T")[0];
 
     data.forEach(b => {
         const c = b.customer || {};
         const v = b.vehicle || {};
 
-        html += `
+        const card = `
         <div class="card" onclick="openBooking('${b._id}')">
             <div class="title">${b.title || "Booking"}</div>
             <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
             ${v.make || ""} ${v.model || ""}
         </div>`;
+
+        if (b.date === today) {
+            todayHtml += card;
+        } else {
+            futureHtml += card;
+        }
     });
 
-    document.getElementById("bookingList").innerHTML =
-        html || "<div class='card'>No bookings</div>";
+    document.getElementById("bookingList").innerHTML = `
+        <div class="title">Today</div>
+        ${todayHtml || "<div class='card'>No bookings today</div>"}
+
+        <div class="title">Upcoming</div>
+        ${futureHtml || "<div class='card'>No future bookings</div>"}
+    `;
 }
 
 // ================= OPEN BOOKING =================
