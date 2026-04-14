@@ -202,7 +202,10 @@ async function bookingSearchCustomers() {
     });
 
     document.getElementById("bookingStepResults").innerHTML =
-        html || "<div class='card'>No matches found</div>";
+    html || `
+    <div class='card'>No matches found</div>
+    <button class="primary" onclick="createCustomerFromSearch()">Create New Customer</button>
+`;
 
     document.getElementById("bookingStepResults").style.display = "block";
 }
@@ -326,4 +329,35 @@ function renderJobs() {
     });
 
     document.getElementById("jobsContainer").innerHTML = html;
+}
+
+async function createCustomerFromSearch() {
+
+    const first = searchFirstName.value;
+    const last = searchLastName.value;
+    const phone = searchPhone.value;
+
+    if (!first || !last) {
+        alert("Enter name");
+        return;
+    }
+
+    const res = await fetch(API + "/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            firstName: first,
+            lastName: last,
+            phone: phone
+        })
+    });
+
+    const customer = await res.json();
+
+    if (!res.ok) {
+        alert(customer.error || "Failed");
+        return;
+    }
+
+    selectCustomer(customer._id);
 }
