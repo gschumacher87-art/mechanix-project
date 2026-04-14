@@ -184,21 +184,42 @@ async function openCustomer(id) {
     document.getElementById("customerDetail").style.display = "block";
 
     document.getElementById("customerDetail").innerHTML = `
-        <div class="card">
-            <b>${customer.firstName} ${customer.lastName}</b><br>
-            ${customer.phone}
-        </div>
+    <div class="card">
+        <div class="title">Customer</div>
 
-        <div class="card">
-            <b>Vehicles</b>
-        </div>
+        <input id="editFirstName" value="${customer.firstName}">
+        <input id="editLastName" value="${customer.lastName}">
+        <input id="editPhone" value="${customer.phone}">
 
+        <button class="primary" onclick="saveCustomer('${customer._id}')">
+            Save
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="title">Vehicles</div>
         ${vehicleHtml}
+    </div>
 
-        <div class="card" onclick="loadCustomers()">
-            ← Back
-        </div>
-    `;
+    <div class="card" onclick="loadCustomers()">
+        ← Back
+    </div>
+`;
 }
 
 window.openCustomer = openCustomer;
+
+async function saveCustomer(id) {
+
+    await fetch(API + "/customers/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            firstName: document.getElementById("editFirstName").value,
+            lastName: document.getElementById("editLastName").value,
+            phone: document.getElementById("editPhone").value
+        })
+    });
+
+    openCustomer(id); // reload updated view
+}
