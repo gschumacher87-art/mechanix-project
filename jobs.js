@@ -145,6 +145,8 @@ async function finishJob() {
             status: "draft"
         })
     });
+    
+    alert("invoice sent");
 
     // 3. refresh
     show("jobs");
