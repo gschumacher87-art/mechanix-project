@@ -106,7 +106,7 @@ async function startJobFromCard() {
     await fetch(API + "/jobs/" + currentJob._id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ status: "pending-invoice" })
+        body: JSON.stringify({ status: "in-progress" })
     });
 
     show("jobs");
@@ -128,7 +128,7 @@ async function finishJob() {
     await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentJob)
+        body: JSON.stringify({ status: "pending-invoice" })
     });
 
     alert("job update sent"); // 👈 STEP 2
