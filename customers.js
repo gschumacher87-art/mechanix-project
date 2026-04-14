@@ -13,7 +13,6 @@ async function loadCustomers() {
     });
 
     document.getElementById("customerList").innerHTML = html;
-    document.getElementById("vehicleCustomer").innerHTML = options;
 
     // ensure list visible
     document.getElementById("customerList").style.display = "block";
