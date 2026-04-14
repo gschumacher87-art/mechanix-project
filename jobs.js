@@ -106,7 +106,7 @@ async function startJobFromCard() {
     await fetch(API + "/jobs/" + currentJob._id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(currentJob)
+        body: JSON.stringify({ status: "pending-invoice" })
     });
 
     show("jobs");
