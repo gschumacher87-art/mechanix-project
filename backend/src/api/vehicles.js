@@ -3,6 +3,27 @@ const router = express.Router();
 const Vehicle = require("../models/Vehicle");
 
 // CREATE vehicle
+router.post("/", async (req, res) => {
+    try {
+        const vehicle = new Vehicle({
+            customer: req.body.customer,
+            make: req.body.make,
+            model: req.body.model,
+            year: req.body.year,
+            rego: req.body.rego,
+            vin: req.body.vin,
+            notes: req.body.notes
+        });
+
+        await vehicle.save();
+
+        res.status(201).json(vehicle);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// GET vehicles
 router.get("/", async (req, res) => {
     try {
         const { customer } = req.query;
