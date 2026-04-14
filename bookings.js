@@ -247,6 +247,11 @@ async function confirmBooking() {
     }
 
     const vehicleId = document.getElementById("bookingVehicle").value;
+    const bookingDate = document.getElementById("bookingDate").value;
+if (!bookingDate) {
+    alert("Select date");
+    return;
+}
 
     if (!vehicleId) {
         alert("Select vehicle");
