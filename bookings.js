@@ -149,6 +149,9 @@ function openBookingModal() {
 
     document.getElementById("selectedCustomer").innerHTML = "";
     document.getElementById("bookingVehicle").innerHTML = "";
+    
+    document.getElementById("bookingDate").value =
+    new Date().toISOString().split("T")[0];
 
     addJob();
 }
