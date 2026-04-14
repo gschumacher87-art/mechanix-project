@@ -223,3 +223,21 @@ async function saveCustomer(id) {
 
     openCustomer(id); // reload updated view
 }
+
+// ===== OPEN CUSTOMER SEARCH =====
+function openCustomerSearch() {
+
+    // reuse booking modal search
+    document.getElementById("bookingModal").style.display = "block";
+
+    document.getElementById("bookingStepSearch").style.display = "block";
+    document.getElementById("bookingStepResults").style.display = "none";
+    document.getElementById("bookingStepDetails").style.display = "none";
+}
+
+// ===== SHOW ADD CUSTOMER =====
+function showAddCustomer() {
+
+    // scroll to form (simple + safe)
+    document.getElementById("custFirstName").focus();
+}
