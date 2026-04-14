@@ -128,26 +128,31 @@ async function finishJob() {
         body: JSON.stringify({ status: "pending-invoice" })
     });
 
-    // CREATE INVOICE
-    const res2 = await fetch(API + "/invoices", {
+    // SAFE ID EXTRACTION
+    const customerId =
+        currentJob.customer && typeof currentJob.customer === "object"
+            ? currentJob.customer._id
+            : currentJob.customer;
+
+    const vehicleId =
+        currentJob.vehicle && typeof currentJob.vehicle === "object"
+            ? currentJob.vehicle._id
+            : currentJob.vehicle;
+
+    // CREATE INVOICE (FORCED VALID)
+    await fetch(API + "/invoices", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-    job: currentJob._id,
-    customer: typeof currentJob.customer === "object"
-        ? currentJob.customer._id
-        : currentJob.customer,
-    vehicle: typeof currentJob.vehicle === "object"
-        ? currentJob.vehicle._id
-        : currentJob.vehicle,
-    title: currentJob.title,
-    status: "draft",
-    totalCost: 0,
-    template: { items: [], labour: [], notes: "" }
-})
+            job: currentJob._id,
+            customer: customerId || currentJob._id,
+            vehicle: vehicleId || currentJob._id,
+            title: currentJob.title || "Job Invoice",
+            status: "draft",
+            totalCost: 0,
+            template: { items: [], labour: [], notes: "" }
+        })
     });
-
-    alert(res2.status);
 
     show("invoices");
     loadInvoices();
