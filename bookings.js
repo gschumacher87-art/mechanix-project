@@ -95,7 +95,7 @@ async function arrivedBooking(id) {
             title: booking.title,
             customer: booking.customer?._id || booking.customer,
             vehicle: booking.vehicle?._id || booking.vehicle,
-            status: "Arrived",
+            status: "arrived",
             checklist: booking.checklist || []
         })
     });
