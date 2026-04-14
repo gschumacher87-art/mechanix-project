@@ -115,14 +115,12 @@ async function startJobFromCard() {
 
 async function finishJob() {
 
-    alert("finish clicked"); // 👈 STEP 1 HERE
+    alert("finish clicked"); 
 
     if (!currentJob) return;
 
-    // prevent duplicate trigger
     if (currentJob.status === "pending-invoice") return;
 
-    // 1. move job → pending invoice
     currentJob.status = "pending-invoice";
 
     await fetch(API + "/jobs/" + currentJob._id, {
@@ -131,9 +129,6 @@ async function finishJob() {
         body: JSON.stringify({ status: "pending-invoice" })
     });
 
-    alert("job update sent"); // 👈 STEP 2
-
-    // 2. create invoice linked to job
     body: JSON.stringify({
     jobId: currentJob._id,
     customer: currentJob.customer,
@@ -145,9 +140,6 @@ async function finishJob() {
         })
     });
     
-    alert("invoice sent");
-
-    // 3. refresh
     show("invoices");
     loadInvoices();
     
