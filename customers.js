@@ -1,3 +1,4 @@
+// ===== LOAD CUSTOMERS =====
 async function loadCustomers() {
     const res = await fetch(API + "/customers");
     const data = await res.json();
@@ -5,9 +6,12 @@ async function loadCustomers() {
     let html = "", options = "";
 
     data.forEach(c => {
-        html += `<div class="card" onclick="openCustomer('${c._id}')">
-            ${c.firstName} ${c.lastName} - ${c.phone}
+        html += `
+        <div class="card" onclick="openCustomer('${c._id}')">
+            <b>${c.firstName} ${c.lastName}</b><br>
+            ${c.phone}
         </div>`;
+        
         options += `<option value="${c._id}">${c.firstName} ${c.lastName}</option>`;
     });
 
@@ -15,6 +19,7 @@ async function loadCustomers() {
     document.getElementById("vehicleCustomer").innerHTML = options;
 }
 
+// ===== ADD CUSTOMER =====
 async function addCustomer() {
     await fetch(API + "/customers", {
         method:"POST",
@@ -33,6 +38,7 @@ async function addCustomer() {
     loadCustomers();
 }
 
+// ===== ADD VEHICLE =====
 async function addVehicle() {
     await fetch(API + "/vehicles", {
         method:"POST",
@@ -47,9 +53,11 @@ async function addVehicle() {
     vehicleMake.value = "";
     vehicleModel.value = "";
 
+    // refresh vehicle list for selected customer
     loadVehicles(vehicleCustomer.value);
 }
 
+// ===== LOAD VEHICLES =====
 async function loadVehicles(customerId = null) {
     const res = await fetch(API + "/vehicles");
     const data = await res.json();
@@ -65,6 +73,7 @@ async function loadVehicles(customerId = null) {
     document.getElementById("bookingVehicle").innerHTML = options;
 }
 
+// ===== SEARCH CUSTOMERS (BOOKING FLOW) =====
 async function searchCustomers() {
 
     const first = (searchFirstName.value || "").toLowerCase();
@@ -109,6 +118,7 @@ async function searchCustomers() {
     renderBookingResults(results);
 }
 
+// ===== RENDER BOOKING RESULTS =====
 function renderBookingResults(results) {
 
     let html = "";
@@ -129,6 +139,7 @@ function renderBookingResults(results) {
     document.getElementById("bookingStepResults").style.display = "block";
 }
 
+// ===== SELECT CUSTOMER (BOOKING FLOW ONLY) =====
 async function selectCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
@@ -143,35 +154,49 @@ async function selectCustomer(id) {
         ${customer.phone}
     `;
 
-    const vRes = await fetch(API + "/vehicles");
-    const vehicles = await vRes.json();
-
-    let options = "";
-
-    vehicles
-        .filter(v => String(v.customer) === String(id))
-        .forEach(v => {
-            options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
-        });
-
-    document.getElementById("bookingVehicle").innerHTML = options;
-
     loadVehicles(id);
 }
 
 window.selectCustomer = selectCustomer;
 
+
+// ===== OPEN CUSTOMER (CUSTOMER TAB FLOW) =====
 async function openCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    alert(
-        customer.firstName + " " + customer.lastName + "\n" +
-        customer.phone
-    );
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
 
-    loadVehicles(id);
+    const customerVehicles = vehicles.filter(v => String(v.customer) === String(id));
+
+    let vehicleHtml = "";
+
+    if (!customerVehicles.length) {
+        vehicleHtml = "<div>No vehicles</div>";
+    } else {
+        customerVehicles.forEach(v => {
+            vehicleHtml += `<div>${v.make} ${v.model}</div>`;
+        });
+    }
+
+    // TEMP simple detail render (replace later with panel)
+    document.getElementById("customerList").innerHTML = `
+        <div class="card">
+            <b>${customer.firstName} ${customer.lastName}</b><br>
+            ${customer.phone}
+        </div>
+
+        <div class="card">
+            <b>Vehicles</b><br>
+            ${vehicleHtml}
+        </div>
+
+        <div class="card" onclick="loadCustomers()">
+            ← Back
+        </div>
+    `;
 }
 
 window.openCustomer = openCustomer;
