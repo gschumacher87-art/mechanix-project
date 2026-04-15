@@ -198,3 +198,17 @@ async function finaliseInvoice(id) {
 
     loadInvoices();
 }
+
+async function deleteInvoice(id) {
+
+    const confirmDelete = confirm("Delete invoice?");
+    if (!confirmDelete) return;
+
+    const res = await fetch(API + "/invoices/" + id, {
+        method: "DELETE"
+    });
+
+    alert(res.status);
+
+    loadInvoices();
+}
