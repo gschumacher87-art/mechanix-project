@@ -168,8 +168,8 @@ async function loadVehicles(customerId = null) {
 
 // ===== OPEN CUSTOMER SEARCH (UI ONLY) =====
 function openCustomerSearch() {
-    // Customers system should NOT open booking modal
-    // Leave empty for now or build separate customer search UI later
+    document.getElementById("customerPopup").style.display = "block";
+    document.getElementById("customerPopupList").innerHTML = "";
 }
 
 // ===== SHOW ADD CUSTOMER =====
