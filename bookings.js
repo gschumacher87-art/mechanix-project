@@ -139,6 +139,10 @@ function openBookingModal() {
     jobs = [];
 
     document.getElementById("bookingVehicle").innerHTML = "";
+    document.getElementById("displayFirstName").value = "";
+document.getElementById("displayLastName").value = "";
+document.getElementById("displayPhone").value = "";
+document.getElementById("displayRego").value = "";
 
     document.getElementById("bookingDate").value =
         new Date().toISOString().split("T")[0];
