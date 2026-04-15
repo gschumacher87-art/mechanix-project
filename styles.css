@@ -10,43 +10,58 @@ body { margin:0; font-family: Arial; background:#f0f2f5; }
 .screen { display:none; padding:15px; }
 .screen.active { display:block; }
 
+/* === CARDS (tighter + cleaner) === */
 .card {
     background:white;
-    padding:18px;
-    margin-bottom:12px;
-    border-radius:10px;
-}
-
-.title { font-size:20px; font-weight:bold; }
-
-input, select {
-    width:100%;
     padding:14px;
     margin-bottom:12px;
+    border-radius:8px;
+    border:1px solid #e3e6ea;
 }
 
+/* Titles more subtle */
+.title {
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+/* Inputs cleaner + tighter */
+input, select, textarea {
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    font-size:14px;
+}
+
+/* Buttons less bulky */
 button.primary {
     width:100%;
-    padding:18px;
+    padding:14px;
     background:#007bff;
     color:white;
     border:none;
-    border-radius:10px;
-    margin-bottom:8px;
+    border-radius:8px;
+    margin-top:8px;
 }
 
 button.secondary {
     width:100%;
-    padding:16px;
-    background:#ddd;
+    padding:12px;
+    background:#eee;
     border:none;
-    border-radius:10px;
+    border-radius:8px;
+    margin-top:6px;
 }
 
+/* Status */
 .status {
     padding:6px 10px;
     border-radius:6px;
     display:inline-block;
+    font-size:12px;
 }
 
 .booked { background:#ccc; }
@@ -63,64 +78,53 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     position:fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:rgba(0,0,0,0.5);
+    background:rgba(0,0,0,0.4);
     z-index:1000;
 }
 
 .modal-content {
     background:white;
-    margin:5% auto;
-    padding:15px;
-    width:90%;
-    max-height:85%;
+    margin:3% auto;
+    padding:12px;
+    width:95%;
+    max-height:90%;
     overflow:auto;
     border-radius:10px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* Section spacing */
-.modal .card {
-    margin-bottom:16px;
-}
-
-/* Titles inside modal */
-.modal .title {
-    margin-bottom:10px;
-}
-
-/* Selected customer highlight */
-#selectedCustomer {
-    padding:10px;
-    background:#f7f7f7;
-    border-radius:8px;
-}
-
-/* Search results spacing */
-#bookingStepResults .card {
-    padding:12px;
-}
-
-/* Make modal feel less cramped */
-.modal input,
-.modal select {
-    margin-bottom:10px;
-}
-
-/* Better button spacing inside modal */
-.modal button {
-    margin-top:6px;
-}
-
-/* === STEP 1: GRID LAYOUT === */
+/* Grid layout */
 .booking-grid {
     display:grid;
     grid-template-columns: 1fr 1fr;
-    gap:12px;
+    gap:10px;
 }
 
-/* Mobile fallback */
+/* Mobile */
 @media (max-width: 700px) {
     .booking-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Customer highlight */
+#selectedCustomer {
+    padding:8px;
+    background:#f7f7f7;
+    border-radius:6px;
+    font-size:14px;
+}
+
+/* Search results tighter */
+#bookingStepResults .card {
+    padding:10px;
+}
+
+/* Reduce spacing noise */
+.modal .card {
+    margin-bottom:10px;
+}
+
+.modal .title {
+    font-size:15px;
 }
