@@ -17,53 +17,16 @@ async function loadCustomers() {
 }
 
 // ===== SEARCH CUSTOMERS (CUSTOMERS ONLY) =====
-async function searchCustomers() {
+function searchCustomers() {
 
-    const first = (searchFirstName.value || "").toLowerCase();
-    const last = (searchLastName.value || "").toLowerCase();
-    const phone = searchPhone.value || "";
-    const rego = (searchRego.value || "").toLowerCase();
+    const q = (document.getElementById("customerSearchInput").value || "").toLowerCase();
 
-    const res = await fetch(API + "/customers");
-    const customers = await res.json();
+    const cards = document.querySelectorAll("#customerList .card");
 
-    const vRes = await fetch(API + "/vehicles");
-    const vehicles = await vRes.json();
-
-    let html = "";
-
-    customers.forEach(c => {
-
-        const cFirst = (c.firstName || "").toLowerCase();
-        const cLast = (c.lastName || "").toLowerCase();
-        const cPhone = c.phone || "";
-
-        const matchCustomer =
-            (!first || cFirst.includes(first)) &&
-            (!last || cLast.includes(last)) &&
-            (!phone || cPhone.includes(phone));
-
-        let matchVehicle = false;
-
-        if (rego) {
-            const v = vehicles.find(v =>
-                v.customer && (v.customer._id || v.customer).toString() === c._id.toString() &&
-                (v.rego || "").toLowerCase().includes(rego)
-            );
-            if (v) matchVehicle = true;
-        }
-
-        if (matchCustomer || matchVehicle) {
-            html += `
-            <div class="card" onclick="openCustomer('${c._id}')">
-                <b>${c.firstName} ${c.lastName}</b><br>
-                ${c.phone}
-            </div>`;
-        }
+    cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? "block" : "none";
     });
-
-    document.getElementById("customerList").innerHTML =
-        html || "<div class='card'>No matches found</div>";
 }
 
 // ===== OPEN CUSTOMER =====
