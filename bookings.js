@@ -229,9 +229,13 @@ async function selectCustomer(id) {
     const customer = await res.json();
 
     document.getElementById("selectedCustomer").innerHTML = `
-        <b>${customer.firstName} ${customer.lastName}</b><br>
+    <div style="font-weight:bold;">
+        ${customer.firstName} ${customer.lastName}
+    </div>
+    <div style="color:#555;">
         ${customer.phone}
-    `;
+    </div>
+`;
 
     const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
