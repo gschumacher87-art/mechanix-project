@@ -138,15 +138,12 @@ function openBookingModal() {
     selectedCustomerId = null;
     jobs = [];
 
-    document.getElementById("bookingStepSearch").style.display = "block";
-    document.getElementById("bookingStepResults").style.display = "none";
-    document.getElementById("bookingStepDetails").style.display = "none";
-
+    document.getElementById("bookingStepResults").innerHTML = "";
     document.getElementById("selectedCustomer").innerHTML = "";
     document.getElementById("bookingVehicle").innerHTML = "";
-    
+
     document.getElementById("bookingDate").value =
-    new Date().toISOString().split("T")[0];
+        new Date().toISOString().split("T")[0];
 
     addJob();
 }
@@ -217,10 +214,6 @@ async function selectCustomer(id) {
 
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
-
-    document.getElementById("bookingStepSearch").style.display = "none";
-    document.getElementById("bookingStepResults").style.display = "none";
-    document.getElementById("bookingStepDetails").style.display = "block";
 
     document.getElementById("selectedCustomer").innerHTML = `
         <b>${customer.firstName} ${customer.lastName}</b><br>
