@@ -191,20 +191,20 @@ async function bookingSearchCustomers() {
 
         if (matchCustomer || matchVehicle) {
             html += `
-            <div class="card" onclick="selectCustomer('${c._id}')">
+            <div class="card" onclick="selectCustomerFromPopup('${c._id}')">
                 <b>${c.firstName} ${c.lastName}</b><br>
                 ${c.phone}
             </div>`;
         }
     });
 
-    document.getElementById("bookingStepResults").innerHTML =
-    html || `
-    <div class='card'>No matches found</div>
-    <button class="primary" onclick="createCustomerFromSearch()">Create New Customer</button>
-`;
+    document.getElementById("customerPopupList").innerHTML =
+        html || `
+        <div class='card'>No matches</div>
+        <button class="primary" onclick="createCustomerFromSearch()">Create New Customer</button>
+        `;
 
-    document.getElementById("bookingStepResults").style.display = "block";
+    document.getElementById("customerPopup").style.display = "block";
 }
 
 // ================= SELECT CUSTOMER =================
@@ -233,6 +233,17 @@ async function selectCustomer(id) {
 }
 
 window.selectCustomer = selectCustomer;
+
+function closeCustomerPopup() {
+    document.getElementById("customerPopup").style.display = "none";
+}
+
+async function selectCustomerFromPopup(id) {
+
+    closeCustomerPopup();
+
+    await selectCustomer(id);
+}
 
 // ================= CREATE BOOKING =================
 async function confirmBooking() {
