@@ -13,7 +13,7 @@ async function loadBookings() {
     let futureHtml = "";
     let availableHtml = "";
 
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = new Date().toISOString().split("T")[0];
 
     data.forEach(b => {
         const c = b.customer || {};
@@ -26,7 +26,7 @@ async function loadBookings() {
             ${v.make || ""} ${v.model || ""}
         </div>`;
 
-        const bookingDate = b.date;
+        const bookingDate = (b.date || "").split("T")[0];
 
         if (bookingDate === today) {
             todayHtml += card;
