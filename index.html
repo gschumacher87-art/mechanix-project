@@ -19,7 +19,25 @@
 <div id="bookings" class="screen active">
     <button class="primary" onclick="openBookingModal()">+ New Booking</button>
     <div class="title">Bookings</div>
-    <div id="bookingList"></div>
+
+    <div class="booking-columns">
+
+        <div class="booking-column">
+            <div class="title">Today</div>
+            <div id="todayList"></div>
+        </div>
+
+        <div class="booking-column">
+            <div class="title">Upcoming</div>
+            <div id="futureList"></div>
+        </div>
+
+        <div class="booking-column">
+            <div class="title">Available</div>
+            <div id="availableList"></div>
+        </div>
+
+    </div>
 </div>
 
 <div id="jobs" class="screen">
