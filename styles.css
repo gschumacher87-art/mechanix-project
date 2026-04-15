@@ -158,9 +158,11 @@ img { width:100%; border-radius:8px; margin-top:10px; }
 #customerList {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
 }
 
 #customerList .card {
+    flex: 0 0 auto;
+    margin-bottom: 0;
     width: auto;
 }
