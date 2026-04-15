@@ -138,7 +138,6 @@ function openBookingModal() {
     selectedCustomerId = null;
     jobs = [];
 
-    document.getElementById("bookingStepResults").innerHTML = "";
     document.getElementById("bookingVehicle").innerHTML = "";
 
     document.getElementById("bookingDate").value =
