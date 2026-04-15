@@ -192,9 +192,10 @@ async function bookingSearchCustomers() {
         if (matchCustomer || matchVehicle) {
             html += `
             <div class="card" onclick="selectCustomerFromPopup('${c._id}')">
-                <b>${c.firstName} ${c.lastName}</b><br>
-                ${c.phone}
-            </div>`;
+    <b>${c.firstName} ${c.lastName}</b><br>
+    ${c.phone}
+    ${vehicleLine}
+</div>`;
         }
     });
 
