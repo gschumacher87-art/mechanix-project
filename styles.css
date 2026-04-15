@@ -154,3 +154,13 @@ img { width:100%; border-radius:8px; margin-top:10px; }
         grid-template-columns: 1fr;
     }
 }
+
+#customerList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#customerList .card {
+    width: auto;
+}
