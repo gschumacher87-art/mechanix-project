@@ -112,7 +112,7 @@ async function arrivedBooking(id) {
             customer: booking.customer?._id || booking.customer,
             vehicle: booking.vehicle?._id || booking.vehicle,
             status: "arrived",
-            checklist: booking.checklist || []
+            checklist: generateChecklistFromServices(booking.services || [])
         })
     });
 
