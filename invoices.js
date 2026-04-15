@@ -76,10 +76,14 @@ async function openInvoice(id) {
             <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
 
             <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
-                Finalise Invoice
-            </button>
+    Finalise Invoice
+</button>
 
-            <button class="secondary" onclick="loadInvoices()">Back</button>
+<button class="secondary" onclick="deleteInvoice('${invoice._id}')">
+    Delete Invoice
+</button>
+
+<button class="secondary" onclick="loadInvoices()">Back</button>
         </div>
     `;
 }
