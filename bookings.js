@@ -190,13 +190,25 @@ async function bookingSearchCustomers() {
         }
 
         if (matchCustomer || matchVehicle) {
-            html += `
-            <div class="card" onclick="selectCustomerFromPopup('${c._id}')">
-    <b>${c.firstName} ${c.lastName}</b><br>
-    ${c.phone}
-    ${vehicleLine}
-</div>`;
-        }
+
+    const customerVehicles = vehicles.filter(v =>
+        v.customer && (v.customer._id || v.customer).toString() === c._id.toString()
+    );
+
+    let vehicleLine = "";
+
+    if (customerVehicles.length) {
+        const v = customerVehicles[0];
+        vehicleLine = `<br><small>${v.make || ""} ${v.model || ""} (${v.rego || ""})</small>`;
+    }
+
+    html += `
+    <div class="card" onclick="selectCustomerFromPopup('${c._id}')">
+        <b>${c.firstName} ${c.lastName}</b><br>
+        ${c.phone}
+        ${vehicleLine}
+    </div>`;
+}
     });
 
     document.getElementById("customerPopupList").innerHTML =
