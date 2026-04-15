@@ -69,19 +69,13 @@ img { width:100%; border-radius:8px; margin-top:10px; }
 
 .modal-content {
     background:white;
-    margin:10% auto;
+    margin:5% auto;
     padding:15px;
     width:90%;
-    max-height:70%;
+    max-height:85%;
     overflow:auto;
     border-radius:10px;
-}
-
-/* === BOOKING MODAL LAYOUT IMPROVEMENTS === */
-
-.modal-content {
-    margin:5% auto;
-    max-height:85%;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 /* Section spacing */
@@ -117,7 +111,16 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     margin-top:6px;
 }
 
-/* Optional: softer look */
-.modal-content {
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+/* === STEP 1: GRID LAYOUT === */
+.booking-grid {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:12px;
+}
+
+/* Mobile fallback */
+@media (max-width: 700px) {
+    .booking-grid {
+        grid-template-columns: 1fr;
+    }
 }
