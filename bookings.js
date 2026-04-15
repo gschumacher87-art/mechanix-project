@@ -156,9 +156,9 @@ function closeBookingModal() {
 async function bookingSearchCustomers() {
 
     const first = (searchFirstName.value || "").toLowerCase();
-    const last = (searchLastName.value || "").toLowerCase();
-    const phone = searchPhone.value || "";
-    const rego = (searchRego.value || "").toLowerCase();
+const last = (searchLastName.value || "").toLowerCase();
+const phone = searchPhone.value || "";
+const rego = (searchRego.value || "").toLowerCase();
 
     const res = await fetch(API + "/customers");
     const customers = await res.json();
