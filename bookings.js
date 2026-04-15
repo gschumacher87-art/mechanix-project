@@ -155,10 +155,10 @@ function closeBookingModal() {
 // ================= 🔥 BOOKING SEARCH (NEW, INDEPENDENT) =================
 async function bookingSearchCustomers() {
 
-    const first = (searchFirstName.value || "").toLowerCase();
-const last = (searchLastName.value || "").toLowerCase();
-const phone = searchPhone.value || "";
-const rego = (searchRego.value || "").toLowerCase();
+    const first = (document.getElementById("searchFirstName").value || "").toLowerCase();
+const last = (document.getElementById("searchLastName").value || "").toLowerCase();
+const phone = document.getElementById("searchPhone").value || "";
+const rego = (document.getElementById("searchRego").value || "").toLowerCase();
 
     const res = await fetch(API + "/customers");
     const customers = await res.json();
