@@ -168,11 +168,8 @@ async function loadVehicles(customerId = null) {
 
 // ===== OPEN CUSTOMER SEARCH (UI ONLY) =====
 function openCustomerSearch() {
-    document.getElementById("bookingModal").style.display = "block";
-
-    document.getElementById("bookingStepSearch").style.display = "block";
-    document.getElementById("bookingStepResults").style.display = "none";
-    document.getElementById("bookingStepDetails").style.display = "none";
+    // Customers system should NOT open booking modal
+    // Leave empty for now or build separate customer search UI later
 }
 
 // ===== SHOW ADD CUSTOMER =====
