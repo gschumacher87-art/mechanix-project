@@ -426,5 +426,5 @@ function generateChecklistFromServices(services) {
 }
 
 function openBookingCustomerSearch() {
-    document.getElementById("customerPopup").style.display = "block";
+    bookingSearchCustomers();
 }
