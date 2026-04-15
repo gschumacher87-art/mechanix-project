@@ -39,10 +39,10 @@ const invoiceSchema = new mongoose.Schema(
     // INSERTED BLOCK END
 
     status: {
-        type: String,
-        enum: ["unpaid", "paid"],
-        default: "unpaid"
-    }
+    type: String,
+    enum: ["draft", "unpaid", "paid"],
+    default: "draft"
+}
 },
 {
     timestamps: true
