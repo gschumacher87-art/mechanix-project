@@ -250,6 +250,7 @@ async function selectCustomer(id) {
     });
 
     document.getElementById("bookingVehicle").innerHTML = options;
+    document.getElementById("bookingVehicle").value = vehicles[0]?._id || "";
 }
 window.selectCustomer = selectCustomer;
 
