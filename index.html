@@ -88,34 +88,46 @@
 
 <div id="bookingModal" class="modal">
     <div class="modal-content">
+
         <div class="title">New Booking</div>
-        
-<div id="bookingStepSearch">
-    <input id="searchFirstName" placeholder="First Name">
-    <input id="searchLastName" placeholder="Last Name">
-    <input id="searchPhone" placeholder="Contact Number">
-    <input id="searchRego" placeholder="Rego">
 
-    <button class="primary" onclick="bookingSearchCustomers()">Search</button>
-</div>
-        
-        
+        <!-- CUSTOMER SEARCH -->
+        <div class="card">
+            <div class="title">Customer</div>
 
-        <div id="bookingStepResults"></div>
+            <input id="searchFirstName" placeholder="First Name">
+            <input id="searchLastName" placeholder="Last Name">
+            <input id="searchPhone" placeholder="Contact Number">
+            <input id="searchRego" placeholder="Rego">
 
-        <div id="bookingStepDetails" style="display:none;">
-    <div id="selectedCustomer"></div>
-    <input type="date" id="bookingDate">
-<select id="bookingVehicle"></select>
+            <button class="primary" onclick="bookingSearchCustomers()">Search</button>
 
-    <div id="jobsContainer"></div>
+            <div id="bookingStepResults"></div>
 
-    <button class="secondary" onclick="addJob()">+ Add Job</button>
+            <div id="selectedCustomer" style="margin-top:10px;"></div>
+        </div>
 
-    <button class="primary" onclick="confirmBooking()">Create Booking</button>
-</div>
+        <!-- VEHICLE + DATE -->
+        <div class="card">
+            <div class="title">Booking Details</div>
 
+            <input type="date" id="bookingDate">
+            <select id="bookingVehicle"></select>
+        </div>
+
+        <!-- WORK / JOB -->
+        <div class="card">
+            <div class="title">Work</div>
+
+            <div id="jobsContainer"></div>
+
+            <button class="secondary" onclick="addJob()">+ Add Job</button>
+        </div>
+
+        <!-- ACTIONS -->
+        <button class="primary" onclick="confirmBooking()">Create Booking</button>
         <button class="secondary" onclick="closeBookingModal()">Close</button>
+
     </div>
 </div>
 
