@@ -5,13 +5,14 @@ async function loadCustomers() {
 
     let html = "";
 
-    `<div class="card" onclick="openCustomer('${c._id}')" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;">
-    <div>${c.firstName || ""}</div>
-    <div>${c.lastName || ""}</div>
-    <div>${c.phone || ""}</div>
-    <div>${c.rego || ""}</div>
-    <div>${c.vin || ""}</div>
-</div>`;
+    data.forEach(c => {
+        html += `<div class="card" onclick="openCustomer('${c._id}')" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;">
+            <div>${c.firstName || ""}</div>
+            <div>${c.lastName || ""}</div>
+            <div>${c.phone || ""}</div>
+            <div>${c.rego || ""}</div>
+            <div>${c.vin || ""}</div>
+        </div>`;
     });
 
     document.getElementById("customerList").innerHTML = html;
