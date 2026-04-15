@@ -89,42 +89,59 @@
 <div id="bookingModal" class="modal">
     <div class="modal-content">
 
-        <div class="title">New Booking</div>
+        <div class="title">Booking Request</div>
 
-        <!-- CUSTOMER SEARCH -->
-        <div class="card">
-            <div class="title">Customer</div>
+        <div class="booking-grid">
 
-            <input id="searchFirstName" placeholder="First Name">
-            <input id="searchLastName" placeholder="Last Name">
-            <input id="searchPhone" placeholder="Contact Number">
-            <input id="searchRego" placeholder="Rego">
+            <!-- LEFT COLUMN -->
+            <div>
 
-            <button class="primary" onclick="bookingSearchCustomers()">Search</button>
+                <div class="card">
+                    <div class="title">Appointment</div>
 
-            <div id="bookingStepResults"></div>
+                    <input type="date" id="bookingDate">
 
-            <div id="selectedCustomer" style="margin-top:10px;"></div>
+                    <div id="jobsContainer"></div>
+
+                    <button class="secondary" onclick="addJob()">+ Add Job</button>
+                </div>
+
+                <div class="card">
+                    <div class="title">Vehicle</div>
+
+                    <select id="bookingVehicle"></select>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+
+                <div class="card">
+                    <div class="title">Customer</div>
+
+                    <input id="searchFirstName" placeholder="First Name">
+                    <input id="searchLastName" placeholder="Last Name">
+                    <input id="searchPhone" placeholder="Contact Number">
+                    <input id="searchRego" placeholder="Rego">
+
+                    <button class="primary" onclick="bookingSearchCustomers()">Search</button>
+
+                    <div id="bookingStepResults"></div>
+
+                    <div id="selectedCustomer" style="margin-top:10px;"></div>
+                </div>
+
+                <div class="card">
+                    <div class="title">Notes</div>
+
+                    <textarea id="bookingNote" placeholder="Notes"></textarea>
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- VEHICLE + DATE -->
-        <div class="card">
-            <div class="title">Booking Details</div>
-
-            <input type="date" id="bookingDate">
-            <select id="bookingVehicle"></select>
-        </div>
-
-        <!-- WORK / JOB -->
-        <div class="card">
-            <div class="title">Work</div>
-
-            <div id="jobsContainer"></div>
-
-            <button class="secondary" onclick="addJob()">+ Add Job</button>
-        </div>
-
-        <!-- ACTIONS -->
         <button class="primary" onclick="confirmBooking()">Create Booking</button>
         <button class="secondary" onclick="closeBookingModal()">Close</button>
 
