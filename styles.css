@@ -156,13 +156,11 @@ img { width:100%; border-radius:8px; margin-top:10px; }
 }
 
 #customerList {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
 }
 
 #customerList .card {
-    flex: 0 0 auto;
-    margin-bottom: 0;
-    width: auto;
+    margin: 0 !important;
 }
