@@ -150,7 +150,16 @@
 <div id="customerPopup" class="modal">
     <div class="modal-content">
 
-        <div class="title">Select Customer</div>
+        <div class="title">Find Customer</div>
+
+        <input id="searchFirstName" placeholder="First Name">
+        <input id="searchLastName" placeholder="Last Name">
+        <input id="searchPhone" placeholder="Contact Number">
+        <input id="searchRego" placeholder="Rego">
+
+        <button class="primary" onclick="bookingSearchCustomers()">
+            Search
+        </button>
 
         <div id="customerPopupList"></div>
 
