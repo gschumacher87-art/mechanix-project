@@ -139,7 +139,6 @@ function openBookingModal() {
     jobs = [];
 
     document.getElementById("bookingStepResults").innerHTML = "";
-    document.getElementById("selectedCustomer").innerHTML = "";
     document.getElementById("bookingVehicle").innerHTML = "";
 
     document.getElementById("bookingDate").value =
@@ -228,18 +227,23 @@ async function selectCustomer(id) {
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    document.getElementById("selectedCustomer").innerHTML = `
-    <div style="font-weight:bold;">
-        ${customer.firstName} ${customer.lastName}
-    </div>
-    <div style="color:#555;">
-        ${customer.phone}
-    </div>
-`;
+    // ✅ FILL DISPLAY FIELDS
+    document.getElementById("displayFirstName").value = customer.firstName || "";
+    document.getElementById("displayLastName").value = customer.lastName || "";
+    document.getElementById("displayPhone").value = customer.phone || "";
 
+    // LOAD VEHICLES
     const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
+    // fill rego (first vehicle only)
+    if (vehicles.length) {
+        document.getElementById("displayRego").value = vehicles[0].rego || "";
+    } else {
+        document.getElementById("displayRego").value = "";
+    }
+
+    // populate dropdown
     let options = `<option value="">Select vehicle</option>`;
 
     vehicles.forEach(v => {
@@ -248,7 +252,6 @@ async function selectCustomer(id) {
 
     document.getElementById("bookingVehicle").innerHTML = options;
 }
-
 window.selectCustomer = selectCustomer;
 
 function closeCustomerPopup() {
