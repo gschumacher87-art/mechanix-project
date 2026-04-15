@@ -11,6 +11,7 @@ async function loadBookings() {
 
     let todayHtml = "";
     let futureHtml = "";
+    let availableHtml = "";
 
     const today = new Date().toLocaleDateString("en-CA");
 
@@ -27,20 +28,24 @@ async function loadBookings() {
 
         const bookingDate = b.date;
 
-if (bookingDate === today) {
-    todayHtml += card;
-} else {
-    futureHtml += card;
-}
+        if (bookingDate === today) {
+            todayHtml += card;
+        } else {
+            futureHtml += card;
+        }
     });
 
-    document.getElementById("bookingList").innerHTML = `
-        <div class="title">Today</div>
-        ${todayHtml || "<div class='card'>No bookings today</div>"}
+    // TEMP AVAILABLE (placeholder for now)
+    availableHtml = "<div class='card'>No slots yet</div>";
 
-        <div class="title">Upcoming</div>
-        ${futureHtml || "<div class='card'>No future bookings</div>"}
-    `;
+    document.getElementById("todayList").innerHTML =
+        todayHtml || "<div class='card'>No bookings today</div>";
+
+    document.getElementById("futureList").innerHTML =
+        futureHtml || "<div class='card'>No future bookings</div>";
+
+    document.getElementById("availableList").innerHTML =
+        availableHtml;
 }
 
 // ================= OPEN BOOKING =================
