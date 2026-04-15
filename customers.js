@@ -154,7 +154,13 @@ function showAddCustomer() {
 }
 
 document.addEventListener("input", function(e) {
-    if (e.target.id === "customerSearchInput") {
-        searchCustomers();
+    if (
+        e.target.id === "filterFirst" ||
+        e.target.id === "filterLast" ||
+        e.target.id === "filterPhone" ||
+        e.target.id === "filterRego" ||
+        e.target.id === "filterVin"
+    ) {
+        filterCustomers();
     }
 });
