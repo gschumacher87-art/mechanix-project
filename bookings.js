@@ -422,3 +422,7 @@ function generateChecklistFromServices(services) {
 
     return tasks;
 }
+
+function openBookingCustomerSearch() {
+    document.getElementById("customerPopup").style.display = "block";
+}
