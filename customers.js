@@ -17,15 +17,28 @@ async function loadCustomers() {
 }
 
 // ===== SEARCH CUSTOMERS (CUSTOMERS ONLY) =====
-function searchCustomers() {
+// ===== FILTER CUSTOMERS (GRID FILTERS) =====
+function filterCustomers() {
 
-    const q = (document.getElementById("customerSearchInput").value || "").toLowerCase();
+    const first = (document.getElementById("filterFirst")?.value || "").toLowerCase();
+    const last = (document.getElementById("filterLast")?.value || "").toLowerCase();
+    const phone = (document.getElementById("filterPhone")?.value || "").toLowerCase();
+    const rego = (document.getElementById("filterRego")?.value || "").toLowerCase();
+    const vin = (document.getElementById("filterVin")?.value || "").toLowerCase();
 
     const cards = document.querySelectorAll("#customerList .card");
 
     cards.forEach(card => {
         const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(q) ? "block" : "none";
+
+        const match =
+            (!first || text.includes(first)) &&
+            (!last || text.includes(last)) &&
+            (!phone || text.includes(phone)) &&
+            (!rego || text.includes(rego)) &&
+            (!vin || text.includes(vin));
+
+        card.style.display = match ? "block" : "none";
     });
 }
 
