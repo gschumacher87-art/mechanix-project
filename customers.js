@@ -139,3 +139,9 @@ function openCustomerSearch() {
 function showAddCustomer() {
     document.getElementById("custFirstName").focus();
 }
+
+document.addEventListener("input", function(e) {
+    if (e.target.id === "customerSearchInput") {
+        searchCustomers();
+    }
+});
