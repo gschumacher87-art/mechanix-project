@@ -128,3 +128,29 @@ img { width:100%; border-radius:8px; margin-top:10px; }
 .modal .title {
     font-size:15px;
 }
+
+/* === BOOKINGS COLUMNS === */
+.booking-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+/* each column */
+.booking-column {
+    background: #f9fafb;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* column titles */
+.booking-column .title {
+    margin-bottom: 10px;
+}
+
+/* MOBILE: stack */
+@media (max-width: 700px) {
+    .booking-columns {
+        grid-template-columns: 1fr;
+    }
+}
