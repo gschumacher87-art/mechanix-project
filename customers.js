@@ -20,31 +20,7 @@ async function loadCustomers() {
     document.getElementById("customerDetail").style.display = "none";
 }
 
-// ===== SEARCH CUSTOMERS (CUSTOMERS ONLY) =====
-// ===== FILTER CUSTOMERS (GRID FILTERS) =====
-function filterCustomers() {
 
-    const first = (document.getElementById("filterFirst")?.value || "").toLowerCase();
-    const last = (document.getElementById("filterLast")?.value || "").toLowerCase();
-    const phone = (document.getElementById("filterPhone")?.value || "").toLowerCase();
-    const rego = (document.getElementById("filterRego")?.value || "").toLowerCase();
-    const vin = (document.getElementById("filterVin")?.value || "").toLowerCase();
-
-    const cards = document.querySelectorAll("#customerList .card");
-
-    cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-
-        const match =
-            (!first || text.includes(first)) &&
-            (!last || text.includes(last)) &&
-            (!phone || text.includes(phone)) &&
-            (!rego || text.includes(rego)) &&
-            (!vin || text.includes(vin));
-
-        card.style.display = match ? "block" : "none";
-    });
-}
 
 // ===== OPEN CUSTOMER =====
 async function openCustomer(id) {
@@ -157,14 +133,31 @@ function showAddCustomer() {
     document.getElementById("custFirstName").focus();
 }
 
-document.addEventListener("input", function(e) {
-    if (
-        e.target.id === "filterFirst" ||
-        e.target.id === "filterLast" ||
-        e.target.id === "filterPhone" ||
-        e.target.id === "filterRego" ||
-        e.target.id === "filterVin"
-    ) {
-        filterCustomers();
-    }
-});
+// ===== SEARCH CUSTOMERS (SINGLE DROPDOWN SEARCH) =====
+async function searchCustomers() {
+
+    const value = (document.getElementById("customerSearchInput").value || "").toLowerCase();
+    const field = document.getElementById("customerSearchBy").value;
+
+    const res = await fetch(API + "/customers");
+    const data = await res.json();
+
+    const filtered = data.filter(c => {
+        const v = (c[field] || "").toLowerCase();
+        return v.includes(value);
+    });
+
+    let html = "";
+
+    filtered.forEach(c => {
+        html += `
+        <div class="card" onclick="openCustomer('${c._id}')">
+            ${c.firstName || ""} ${c.lastName || ""} • ${c.phone || ""}
+        </div>`;
+    });
+
+    document.getElementById("customerSearchResults").innerHTML = html;
+
+    // hide full list while searching
+    document.getElementById("customerList").style.display = value ? "none" : "block";
+}
