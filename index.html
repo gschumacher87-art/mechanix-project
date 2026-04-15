@@ -93,13 +93,28 @@
 <div id="customers" class="screen">
     <div class="card">
         <div class="filter-row">
-            <input id="filterFirst" placeholder="First">
-            <input id="filterLast" placeholder="Last">
-            <input id="filterPhone" placeholder="Phone">
-            <input id="filterRego" placeholder="Rego">
-            <input id="filterVin" placeholder="VIN">
+
+            <select id="customerSearchBy">
+                <option value="firstName">First</option>
+                <option value="lastName">Last</option>
+                <option value="phone">Phone</option>
+                <option value="rego">Rego</option>
+            </select>
+
+            <input id="customerSearchInput" placeholder="Search...">
+
+            <button class="primary" onclick="searchCustomers()">
+                Search
+            </button>
+
         </div>
+
+        <div id="customerSearchResults"></div>
     </div>
+
+    <div id="customerList"></div>
+    <div id="customerDetail" style="display:none;"></div>
+</div>
 
     <div id="customerList"></div>
     <div id="customerDetail" style="display:none;"></div>
