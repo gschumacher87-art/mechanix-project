@@ -76,3 +76,48 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     overflow:auto;
     border-radius:10px;
 }
+
+/* === BOOKING MODAL LAYOUT IMPROVEMENTS === */
+
+.modal-content {
+    margin:5% auto;
+    max-height:85%;
+}
+
+/* Section spacing */
+.modal .card {
+    margin-bottom:16px;
+}
+
+/* Titles inside modal */
+.modal .title {
+    margin-bottom:10px;
+}
+
+/* Selected customer highlight */
+#selectedCustomer {
+    padding:10px;
+    background:#f7f7f7;
+    border-radius:8px;
+}
+
+/* Search results spacing */
+#bookingStepResults .card {
+    padding:12px;
+}
+
+/* Make modal feel less cramped */
+.modal input,
+.modal select {
+    margin-bottom:10px;
+}
+
+/* Better button spacing inside modal */
+.modal button {
+    margin-top:6px;
+}
+
+/* Optional: softer look */
+.modal-content {
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
