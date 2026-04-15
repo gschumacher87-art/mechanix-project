@@ -204,11 +204,11 @@ async function deleteInvoice(id) {
     const confirmDelete = confirm("Delete invoice?");
     if (!confirmDelete) return;
 
-    const res = await fetch(API + "/invoices/" + id, {
-    method: "DELETE"
-});
+    document.getElementById("invoiceList").innerHTML = "Deleting...";
 
-const text = await res.text();
-alert(res.status + " - " + text);
+    await fetch(API + "/invoices/" + id, {
+        method: "DELETE"
+    });
 
-loadInvoices();
+    setTimeout(loadInvoices, 200);
+}
