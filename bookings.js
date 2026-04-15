@@ -57,7 +57,7 @@ async function openBooking(id) {
         title: booking.title,
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
-        checklist: booking.checklist || []
+        checklist: generateChecklistFromServices(booking.services || [])
     };
 
     renderBookingCard();
