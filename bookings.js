@@ -43,7 +43,7 @@ async function loadBookings() {
     document.getElementById("futureList").innerHTML =
         futureHtml || "<div class='card'>No future bookings</div>";
 
-    document.getElementById("calendar").innerHTML = "";
+    renderCalendar();
 }
 
 // ================= OPEN BOOKING =================
