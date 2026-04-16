@@ -46,7 +46,6 @@ async function testLogin() {
 localStorage.setItem("token", data.token);
 show('bookings');
 
-    alert("TOKEN SAVED");
 }
 
 async function testRegister() {
