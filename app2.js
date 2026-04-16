@@ -13,7 +13,7 @@ window.fetch = function(url, options = {}) {
 
     options.headers = {
         ...(options.headers || {}),
-        Authorization: "Bearer " + token
+        ...(token && { Authorization: "Bearer " + token })
     };
 
     return originalFetch(url, options);
