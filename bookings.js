@@ -11,7 +11,7 @@ async function loadBookings() {
 
     let todayHtml = "";
     let futureHtml = "";
-    let availableHtml = "";
+    
 
     const today = new Date().toISOString().split("T")[0];
 
@@ -35,8 +35,7 @@ async function loadBookings() {
         }
     });
 
-    // TEMP AVAILABLE (placeholder for now)
-    availableHtml = "<div class='card'>No slots yet</div>";
+    // calendar handled separately
 
     document.getElementById("todayList").innerHTML =
         todayHtml || "<div class='card'>No bookings today</div>";
@@ -44,8 +43,7 @@ async function loadBookings() {
     document.getElementById("futureList").innerHTML =
         futureHtml || "<div class='card'>No future bookings</div>";
 
-    document.getElementById("availableList").innerHTML =
-        availableHtml;
+    document.getElementById("calendar").innerHTML = "";
 }
 
 // ================= OPEN BOOKING =================
