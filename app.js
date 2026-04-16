@@ -1,3 +1,4 @@
+console.log("FETCH OVERRIDE LOADED");
 const API = "https://mechanix-api-87.onrender.com/api";
 
 // ===== GLOBAL FETCH AUTH (ADDED) =====
@@ -44,5 +45,3 @@ async function testLogin() {
 
     alert("TOKEN SAVED");
 }
-
-console.log("FETCH OVERRIDE LOADED");
