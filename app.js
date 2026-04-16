@@ -44,3 +44,5 @@ async function testLogin() {
 
     alert("TOKEN SAVED");
 }
+
+console.log("FETCH OVERRIDE LOADED");
