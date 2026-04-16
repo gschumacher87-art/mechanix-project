@@ -144,19 +144,10 @@ async function finishJob() {
     });
 
     // CREATE INVOICE
-    const res = await fetch(API + "/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            job: currentJob._id,
-            customer: customerId,
-            vehicle: vehicleId,
-            title: currentJob.title || "Job Invoice",
-            status: "unpaid",
-            totalCost: 0,
-            template: { items: [], labour: [], notes: "" }
-        })
-    });
+    // CREATE INVOICE FROM JOB (CORRECT FLOW)
+const res = await fetch(API + "/invoices/from-job/" + currentJob._id, {
+    method: "POST"
+});
 
     if (!res.ok) {
         const err = await res.text();
