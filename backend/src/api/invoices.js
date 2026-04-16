@@ -45,21 +45,32 @@ router.post("/from-job/:jobId", async (req, res) => {
     }
 });
 
-// GET all invoices
+// GET all invoices (WITH OPTIONAL FILTERS)
 router.get("/", async (req, res) => {
     try {
-        const invoices = await Invoice.find()
+
+        const query = {};
+
+        if (req.query.customer) {
+            query.customer = req.query.customer;
+        }
+
+        if (req.query.vehicle) {
+            query.vehicle = req.query.vehicle;
+        }
+
+        const invoices = await Invoice.find(query)
             .populate("job")
             .populate("customer")
             .populate("vehicle")
             .sort({ createdAt: -1 });
 
         res.json(invoices);
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
-
 // GET single invoice
 router.get("/:id", async (req, res) => {
     try {
