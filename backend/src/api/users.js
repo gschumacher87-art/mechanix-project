@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const auth = require("../middleware/auth");
 
 // CREATE user (technician)
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
         const user = new User(req.body);
         await user.save();
@@ -14,7 +15,7 @@ router.post("/", async (req, res) => {
 });
 
 // GET all users
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     const users = await User.find();
     res.json(users);
 });
