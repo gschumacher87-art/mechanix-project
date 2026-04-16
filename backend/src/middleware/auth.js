@@ -17,3 +17,5 @@ const auth = (req, res, next) => {
 };
 
 module.exports = auth;
+console.log("AUTH HEADER:", req.headers.authorization);
+
