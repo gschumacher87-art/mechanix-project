@@ -44,7 +44,7 @@ async function testLogin() {
 
     const data = await res.json();
     
-    console.log("LOGIN RESPONSE:", data);
+    alert(JSON.stringify(data));
 
     localStorage.removeItem("token");
 localStorage.setItem("token", data.token);
