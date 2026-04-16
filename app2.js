@@ -46,7 +46,7 @@ async function testLogin() {
 
     localStorage.removeItem("token");
 localStorage.setItem("token", data.token);
-loadBookings();
+show('bookings');
 
     alert("TOKEN SAVED");
 }
