@@ -5,6 +5,7 @@ let jobs = [];
 // ================= LOAD BOOKINGS =================
 async function loadBookings() {
     const res = await fetch(API + "/bookings");
+    alert(res.status);
     const data = await res.json();
 
     bookings = data;
