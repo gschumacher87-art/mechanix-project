@@ -50,4 +50,6 @@ loadBookings();
     alert("TOKEN SAVED");
 }
 
-window.onload = () => loadBookings();
+window.onload = () => {
+    if (localStorage.getItem("token")) loadBookings();
+};
