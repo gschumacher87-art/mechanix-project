@@ -6,7 +6,7 @@ let jobs = [];
 async function loadBookings() {
     const res = await fetch(API + "/bookings?test=" + Date.now(), {
     headers: {
-        Authorization: localStorage.getItem("token")
+        Authorization: "Bearer " + localStorage.getItem("token")
     }
 });
 alert(res.status);
