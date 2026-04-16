@@ -436,3 +436,30 @@ function generateChecklistFromServices(services) {
 function openBookingCustomerSearch() {
     bookingSearchCustomers();
 }
+
+function renderCalendar() {
+
+    const el = document.getElementById("calendar");
+    if (!el) return;
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let html = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>";
+
+    for (let i = 0; i < firstDay; i++) {
+        html += "<div></div>";
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        html += `<div class="card">${d}</div>`;
+    }
+
+    html += "</div>";
+
+    el.innerHTML = html;
+}
