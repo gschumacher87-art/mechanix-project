@@ -53,3 +53,5 @@ loadBookings();
 window.onload = () => {
     if (localStorage.getItem("token")) loadBookings();
 };
+
+show('bookings');
