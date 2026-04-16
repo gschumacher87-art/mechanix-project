@@ -31,13 +31,23 @@ async function openCustomer(id) {
     const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
+    const iRes = await fetch(API + "/invoices?customer=" + id);
+    const invoices = await iRes.json();
+
     let vehicleHtml = "";
+    let invoiceHtml = "";
 
     vehicles.forEach(v => {
         vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
     });
 
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
+
+    invoices.forEach(i => {
+        invoiceHtml += `<div class="card">$${i.totalCost || 0}</div>`;
+    });
+
+    if (!invoiceHtml) invoiceHtml = "<div>No invoices</div>";
 
     document.getElementById("customerList").style.display = "none";
     document.getElementById("customerDetail").style.display = "block";
@@ -66,6 +76,12 @@ async function openCustomer(id) {
         <button class="primary" onclick="addVehicleToCustomer('${customer._id}')">
             + Add Vehicle
         </button>
+    </div>
+
+    <div class="card">
+        <div class="title">Invoices</div>
+
+        ${invoiceHtml}
     </div>
 
     <div class="card" onclick="loadCustomers()">
