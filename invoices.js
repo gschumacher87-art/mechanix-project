@@ -196,7 +196,13 @@ async function finaliseInvoice(id) {
         body: JSON.stringify(job)
     });
 
-    loadInvoices();
+    // 👉 GO TO CUSTOMER HISTORY
+    show("customers");
+
+    // 👉 OPEN THAT CUSTOMER
+    if (invoice.customer) {
+        openCustomer(invoice.customer);
+    }
 }
 
 async function deleteInvoice(id) {
