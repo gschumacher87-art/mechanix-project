@@ -48,3 +48,5 @@ async function testLogin() {
 
     alert("TOKEN SAVED");
 }
+
+window.onload = () => loadBookings();
