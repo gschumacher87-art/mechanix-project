@@ -132,7 +132,6 @@ async function finishJob() {
 
     // HARD VALIDATION (NO FALLBACKS)
     if (!customerId || !vehicleId) {
-        alert("Missing customer or vehicle on job");
         return;
     }
 
@@ -151,7 +150,6 @@ const res = await fetch(API + "/invoices/from-job/" + currentJob._id, {
 
     if (!res.ok) {
         const err = await res.text();
-        alert("Invoice error: " + err);
         return;
     }
 await loadJobs();
