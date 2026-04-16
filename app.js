@@ -1,5 +1,20 @@
 const API = "https://mechanix-api-87.onrender.com/api";
 
+// ===== GLOBAL FETCH AUTH (ADDED) =====
+const originalFetch = window.fetch;
+
+window.fetch = function(url, options = {}) {
+    const token = localStorage.getItem("token");
+
+    options.headers = {
+        ...(options.headers || {}),
+        Authorization: token
+    };
+
+    return originalFetch(url, options);
+};
+// ===== END ADD =====
+
 async function show(id, btn) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
@@ -12,6 +27,7 @@ async function show(id, btn) {
     if (id === "customers" && typeof loadCustomers === "function") loadCustomers();
     if (id === "invoices" && typeof loadInvoices === "function") loadInvoices();
 }
+
 async function testLogin() {
     const res = await fetch(API + "/auth/login", {
         method: "POST",
