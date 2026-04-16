@@ -5,6 +5,9 @@ const API = "https://mechanix-api-87.onrender.com/api";
 const originalFetch = window.fetch;
 
 window.fetch = function(url, options = {}) {
+
+    console.log("FETCH HIT:", url); // 👈 THIS LINE
+
     const token = localStorage.getItem("token");
 
     options.headers = {
