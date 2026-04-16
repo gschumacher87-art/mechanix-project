@@ -13,7 +13,7 @@ async function loadBookings() {
     let futureHtml = "";
     
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
 
     data.forEach(b => {
         const c = b.customer || {};
@@ -148,7 +148,7 @@ document.getElementById("displayPhone").value = "";
 document.getElementById("displayRego").value = "";
 
     document.getElementById("bookingDate").value =
-        new Date().toISOString().split("T")[0];
+        new Date().toLocaleDateString("en-CA");
 
     addJob();
 }
@@ -449,7 +449,7 @@ function renderCalendar() {
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
 
     let html = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>";
 
@@ -460,7 +460,7 @@ function renderCalendar() {
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
+        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
         // check if this day has bookings
         const hasBooking = bookings.some(b =>
