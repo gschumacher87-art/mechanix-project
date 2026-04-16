@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     customer: req.body.customer,
     vehicle: req.body.vehicle,
     status: req.body.status || "booked",
-    date: req.body.date,
+    date: new Date(req.body.date + "T00:00:00"),
     checklist: checklist
 });
 
