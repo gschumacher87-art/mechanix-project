@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Vehicle = require("../models/Vehicle");
+const auth = require("../middleware/auth");
 
 // CREATE vehicle
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
         const vehicle = new Vehicle({
             customer: req.body.customer,
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
 });
 
 // GET vehicles
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
         const { customer } = req.query;
 
@@ -46,7 +47,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET single vehicle
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id).populate("customer");
         if (!vehicle) return res.status(404).json({ error: "Not found" });
@@ -57,7 +58,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE vehicle
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
     try {
         const vehicle = await Vehicle.findByIdAndUpdate(
             req.params.id,
@@ -71,7 +72,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE vehicle
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     try {
         await Vehicle.findByIdAndDelete(req.params.id);
         res.json({ message: "Vehicle deleted" });
