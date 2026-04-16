@@ -68,3 +68,4 @@ async function testRegister() {
 }
 
 show('bookings');
+testRegister();
