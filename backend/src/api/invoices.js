@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Invoice = require("../models/Invoice");
+const auth = require("../middleware/auth");
 
 // CREATE invoice
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
         const invoice = new Invoice(req.body);
         await invoice.save();
@@ -14,7 +15,7 @@ router.post("/", async (req, res) => {
 });
 
 // 🔥 CREATE invoice FROM job
-router.post("/from-job/:jobId", async (req, res) => {
+router.post("/from-job/:jobId", auth, async (req, res) => {
     try {
         const Job = require("../models/Job");
 
@@ -46,7 +47,7 @@ router.post("/from-job/:jobId", async (req, res) => {
 });
 
 // GET all invoices (WITH OPTIONAL FILTERS)
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
 
         const query = {};
@@ -72,7 +73,7 @@ router.get("/", async (req, res) => {
     }
 });
 // GET single invoice
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
     try {
         const invoice = await Invoice.findById(req.params.id)
             .populate("job")
@@ -88,7 +89,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE invoice
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
     try {
         const invoice = await Invoice.findByIdAndUpdate(
             req.params.id,
@@ -102,7 +103,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE invoice
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     try {
         await Invoice.findByIdAndDelete(req.params.id);
         res.json({ message: "Invoice deleted" });
