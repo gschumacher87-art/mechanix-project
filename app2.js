@@ -48,17 +48,4 @@ show('bookings');
 
 }
 
-async function testRegister() {
-    const res = await fetch(API + "/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            email: "admin@test.com",
-            password: "123456"
-        })
-    });
-
-    const data = await res.json();
-}
-
 show('bookings');
