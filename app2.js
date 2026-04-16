@@ -6,6 +6,18 @@ const originalFetch = window.fetch;
 
 window.fetch = function(url, options = {}) {
 
+    options = options || {}; // 👈 ADD THIS LINE
+
+    const token = localStorage.getItem("token");
+
+    options.headers = {
+        ...(options.headers || {}),
+        Authorization: token
+    };
+
+    return originalFetch(url, options);
+};
+
     console.log("FETCH HIT:", url); // 👈 THIS LINE
 
     const token = localStorage.getItem("token");
