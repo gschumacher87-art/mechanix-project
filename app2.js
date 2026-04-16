@@ -44,14 +44,12 @@ async function testLogin() {
 
     const data = await res.json();
 
-    localStorage.setItem("token", data.token);
+    localStorage.removeItem("token");
+localStorage.setItem("token", data.token);
 loadBookings();
 
     alert("TOKEN SAVED");
 }
 
-window.onload = () => {
-    if (localStorage.getItem("token")) loadBookings();
-};
 
 show('bookings');
