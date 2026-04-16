@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Booking = require("../models/Booking");
 const Job = require("../models/Job");
+const auth = require("../middleware/auth");
 
 
 // CREATE booking
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
 
         const checklist = (req.body.jobs || []).map(j => ({
@@ -37,7 +38,7 @@ router.post("/", async (req, res) => {
 
 
 // GET all bookings
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
         const bookings = await Booking.find()
             .populate("customer")
@@ -51,7 +52,7 @@ router.get("/", async (req, res) => {
 
 
 // GET single booking
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
     try {
         const booking = await Booking.findById(req.params.id)
             .populate("customer")
@@ -65,7 +66,7 @@ router.get("/:id", async (req, res) => {
 
 
 // UPDATE booking
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
     try {
         const booking = await Booking.findByIdAndUpdate(
             req.params.id,
@@ -83,7 +84,7 @@ router.put("/:id", async (req, res) => {
 
 
 // DELETE booking
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     try {
         await Booking.findByIdAndDelete(req.params.id);
         res.json({ message: "Booking deleted" });
@@ -94,7 +95,7 @@ router.delete("/:id", async (req, res) => {
 
 
 // CONVERT BOOKING → JOB
-router.post("/:id/convert", async (req, res) => {
+router.post("/:id/convert", auth, async (req, res) => {
     try {
         const booking = await Booking.findById(req.params.id);
 
