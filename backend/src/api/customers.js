@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
+const auth = require("../middleware/auth");
 
 // CREATE customer
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
         const customer = new Customer(req.body);
         await customer.save();
@@ -14,7 +15,7 @@ router.post("/", async (req, res) => {
 });
 
 // GET all customers
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
         const customers = await Customer.find().sort({ createdAt: -1 });
         res.json(customers);
@@ -24,7 +25,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET single customer
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
     try {
         const customer = await Customer.findById(req.params.id);
         if (!customer) return res.status(404).json({ error: "Not found" });
@@ -35,7 +36,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE customer
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
     try {
         const customer = await Customer.findByIdAndUpdate(
             req.params.id,
@@ -49,7 +50,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE customer
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     try {
         await Customer.findByIdAndDelete(req.params.id);
         res.json({ message: "Customer deleted" });
