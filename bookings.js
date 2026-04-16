@@ -9,7 +9,6 @@ async function loadBookings() {
         Authorization: localStorage.getItem("token")
     }
 });
-alert(res.status);
     const data = await res.json();
 
     bookings = data;
