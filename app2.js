@@ -1,3 +1,5 @@
+alert("APP2 LOADED");
+
 console.log("FETCH OVERRIDE LOADED");
 const API = "https://mechanix-api-87.onrender.com/api";
 
