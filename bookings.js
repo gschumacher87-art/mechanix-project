@@ -4,7 +4,11 @@ let jobs = [];
 
 // ================= LOAD BOOKINGS =================
 async function loadBookings() {
-    const res = await fetch(API + "/bookings");
+    const res = await fetch(API + "/bookings?test=" + Date.now(), {
+    headers: {
+        Authorization: localStorage.getItem("token")
+    }
+});
     const data = await res.json();
 
     bookings = data;
