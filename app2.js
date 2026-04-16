@@ -1,5 +1,3 @@
-alert("APP2 LOADED");
-
 console.log("FETCH OVERRIDE LOADED");
 const API = "https://mechanix-api-87.onrender.com/api";
 
@@ -43,8 +41,6 @@ async function testLogin() {
     });
 
     const data = await res.json();
-    
-    alert(JSON.stringify(data));
 
     localStorage.removeItem("token");
 localStorage.setItem("token", data.token);
@@ -64,8 +60,6 @@ async function testRegister() {
     });
 
     const data = await res.json();
-    alert(JSON.stringify(data));
 }
 
 show('bookings');
-testRegister();
