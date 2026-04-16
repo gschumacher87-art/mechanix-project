@@ -3,26 +3,6 @@ alert("APP2 LOADED");
 console.log("FETCH OVERRIDE LOADED");
 const API = "https://mechanix-api-87.onrender.com/api";
 
-// ===== GLOBAL FETCH AUTH (FIXED) =====
-const originalFetch = window.fetch;
-
-window.fetch = function(url, options = {}) {
-
-    console.log("FETCH HIT:", url);
-
-    options = options || {};
-
-    const token = localStorage.getItem("token");
-
-    options.headers = {
-        ...(options.headers || {}),
-        Authorization: token
-    };
-
-    return originalFetch(url, options);
-};
-// ===== END =====
-
 async function show(id, btn) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
