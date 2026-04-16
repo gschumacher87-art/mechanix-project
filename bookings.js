@@ -449,17 +449,40 @@ function renderCalendar() {
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    const today = new Date().toISOString().split("T")[0];
+
     let html = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>";
 
+    // empty slots before first day
     for (let i = 0; i < firstDay; i++) {
         html += "<div></div>";
     }
 
     for (let d = 1; d <= daysInMonth; d++) {
-        html += `<div class="card">${d}</div>`;
+
+        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
+
+        // check if this day has bookings
+        const hasBooking = bookings.some(b =>
+            (b.date || "").split("T")[0] === dateStr
+        );
+
+        html += `
+        <div class="card"
+            onclick="selectCalendarDate('${dateStr}')"
+            style="${dateStr === today ? 'border:2px solid #007bff;' : ''}">
+            
+            <div>${d}</div>
+            ${hasBooking ? "<div style='font-size:10px;color:#28a745;'>•</div>" : ""}
+        </div>`;
     }
 
     html += "</div>";
 
     el.innerHTML = html;
+}
+
+function selectCalendarDate(date) {
+    openBookingModal();
+    document.getElementById("bookingDate").value = date;
 }
