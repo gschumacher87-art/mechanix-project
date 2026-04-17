@@ -28,9 +28,8 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/invoices", invoiceRoutes);
-
-// ✅ NEW
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/templates", templateRoutes);
 
 app.use("/api/users", require("./api/users"));
 
