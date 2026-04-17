@@ -426,7 +426,7 @@ function renderJobs() {
 
             ${!job.mode ? `
     <button onclick="setJobMode(${i}, 'manual')">Manual</button>
-    <button onclick="openTemplatePopup(${i})">Template</button>
+    <button onclick="setJobMode(${i}, 'template'); openTemplatePopup(${i})">Template</button>
 ` : ""}
 
             ${job.mode === "manual" ? `
