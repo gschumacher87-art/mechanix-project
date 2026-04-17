@@ -127,7 +127,7 @@
 <div id="templates" class="screen">
     <div class="title">Repair Types</div>
 
-    <button class="primary" onclick="openTemplateModal()">
+    <button class="primary" onclick="document.getElementById('createTemplateModal').style.display='block'">
     + New Template
 </button>
 
@@ -247,6 +247,20 @@
 <div id="templateListModal"></div>
 
 <button class="secondary" onclick="closeTemplateModal()">Close</button>
+
+    </div>
+</div>
+
+<div id="createTemplateModal" class="modal">
+    <div class="modal-content">
+
+        <div class="title">New Template</div>
+
+        <input id="templateName" placeholder="Name">
+        <input id="templateDesc" placeholder="Description">
+
+        <button class="primary" onclick="saveTemplate()">Save</button>
+        <button class="secondary" onclick="document.getElementById('createTemplateModal').style.display='none'">Cancel</button>
 
     </div>
 </div>
