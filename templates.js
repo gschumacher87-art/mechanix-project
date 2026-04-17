@@ -19,7 +19,11 @@ window.templatesCache = data;
 `;
     });
 
-    document.getElementById("templateList").innerHTML = html;
+    const el1 = document.getElementById("templateList");
+if (el1) el1.innerHTML = html;
+
+const el2 = document.getElementById("templateListModal");
+if (el2) el2.innerHTML = html;
 }
 
 // ===== CREATE =====
