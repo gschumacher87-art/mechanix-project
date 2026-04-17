@@ -314,7 +314,6 @@ if (!bookingDate) {
     const data = await res.json();
 
     if (!res.ok) {
-        alert(data.error || "Booking failed");
         return;
     }
 
@@ -370,7 +369,6 @@ async function createCustomerFromSearch() {
     const phone = searchPhone.value;
 
     if (!first || !last) {
-        alert("Enter name");
         return;
     }
 
@@ -387,7 +385,6 @@ async function createCustomerFromSearch() {
     const customer = await res.json();
 
     if (!res.ok) {
-        alert(customer.error || "Failed");
         return;
     }
 
