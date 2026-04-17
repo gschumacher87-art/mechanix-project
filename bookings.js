@@ -224,7 +224,7 @@ const rego = (document.getElementById("searchRego").value || "").toLowerCase();
     document.getElementById("customerPopupList").innerHTML =
         html || `
         <div class='card'>No matches</div>
-        <button class="primary" onclick="createCustomerFromSearch()">Create New Customer</button>
+        <button class="primary" onclick="alert('Create flow next')">Create New Customer</button>
         `;
 
     document.getElementById("customerPopup").style.display = "block";
