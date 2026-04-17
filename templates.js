@@ -28,8 +28,7 @@ async function createTemplate(name) {
     await fetch(API + "/templates", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token")
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({ name })
     });
