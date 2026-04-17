@@ -359,9 +359,9 @@ async function confirmBooking() {
         return;
     }
 
-    if (!jobs.length || !jobs[0].mode) {
-        return;
-    }
+    if (!jobs.length || !jobs[0].summary) {
+    return;
+}
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
