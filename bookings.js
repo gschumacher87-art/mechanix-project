@@ -377,7 +377,7 @@ if (!bookingDate) {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-    title: jobs[0].description || "Booking",
+    title: jobs[0].summary || "Booking",
     services: jobs.map(j => j.description).filter(Boolean),
     customer: selectedCustomerId,
     vehicle: vehicleId,
@@ -400,7 +400,7 @@ if (!bookingDate) {
 
 // ================= JOB UI =================
 function addJob() {
-    jobs.push({ mode: null, description: "" });
+    jobs.push({ mode: null, summary: "", description: "" });
     renderJobs();
 }
 
@@ -428,9 +428,12 @@ function renderJobs() {
             ` : ""}
 
             ${job.mode === "manual" ? `
-                <input placeholder="Description"
-                    oninput="updateJobField(${i}, 'description', this.value)">
-            ` : ""}
+    <input placeholder="Summary"
+        oninput="updateJobField(${i}, 'summary', this.value)">
+        
+    <input placeholder="Description"
+        oninput="updateJobField(${i}, 'description', this.value)">
+` : ""}
         </div>
         `;
     });
