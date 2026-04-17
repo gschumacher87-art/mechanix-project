@@ -4,11 +4,7 @@ function openTemplatePopup() {
 
 // ===== LOAD + RENDER =====
 async function loadTemplates() {
-    const res = await fetch(API + "/templates", {
-        headers: {
-            Authorization: localStorage.getItem("token")
-        }
-    });
+    const res = await fetch(API + "/templates");
 
     const data = await res.json();
 
@@ -44,11 +40,8 @@ async function createTemplate(name) {
 // ===== DELETE =====
 async function deleteTemplate(id) {
     await fetch(API + "/templates/" + id, {
-        method: "DELETE",
-        headers: {
-            Authorization: localStorage.getItem("token")
-        }
-    });
+    method: "DELETE"
+});
 
     loadTemplates();
 }
@@ -68,13 +61,12 @@ async function saveTemplate() {
     if (!name) return;
 
     await fetch(API + "/templates", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token")
-        },
-        body: JSON.stringify({ name, description })
-    });
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, description })
+});
 
     closeTemplateModal();
     loadTemplates();
