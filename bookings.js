@@ -549,5 +549,6 @@ function changeMonth(direction) {
 }
 
 function openTemplatePopup() {
-    alert("Template UI coming next");
+    document.getElementById("templateModal").style.display = "block";
+    loadTemplates();
 }
