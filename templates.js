@@ -86,11 +86,11 @@ function useTemplate(id) {
 
     if (window.jobs && window.jobs.length) {
 
-    const i = window.jobs.length - 1;
+   const i = window.selectedJobIndex ?? 0;
 
-    window.jobs[i].mode = "manual";
-    window.jobs[i].summary = t.name || "";
-    window.jobs[i].description = t.description || "";
+window.jobs[i].mode = "manual";
+window.jobs[i].summary = t.name || "";
+window.jobs[i].description = t.description || "";
 
     renderJobs();
 }
