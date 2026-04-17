@@ -7,15 +7,16 @@ async function loadTemplates() {
     const res = await fetch(API + "/templates");
 
     const data = await res.json();
+window.templatesCache = data;
 
     let html = "";
     data.forEach(t => {
         html += `
-            <div class="card">
-                <b>${t.name}</b>
-                <button onclick="deleteTemplate('${t._id}')">Delete</button>
-            </div>
-        `;
+    <div class="card" onclick="useTemplate('${t._id}')">
+        <b>${t.name}</b>
+        <button onclick="deleteTemplate('${t._id}')">Delete</button>
+    </div>
+`;
     });
 
     document.getElementById("templateList").innerHTML = html;
@@ -69,4 +70,21 @@ async function saveTemplate() {
 
     closeTemplateModal();
     loadTemplates();
+}
+
+function useTemplate(id) {
+
+    const t = window.templatesCache.find(x => x._id === id);
+
+    if (!t) return;
+
+    if (window.jobs && window.jobs.length) {
+
+        window.jobs[0].summary = t.name || "";
+        window.jobs[0].description = t.description || "";
+
+        renderJobs();
+    }
+
+    closeTemplateModal();
 }
