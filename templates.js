@@ -85,10 +85,10 @@ function useTemplate(id) {
 
     if (!t) return;
 
-    const i = window.selectedJobIndex;
+   const i = window.selectedJobIndex;
 
-jobs[i].summary = t.name || "";
-jobs[i].description = t.description || "";
+window.jobs[i].summary = t.name || "";
+window.jobs[i].description = t.description || "";
 
 closeTemplateModal();
 renderJobs();
