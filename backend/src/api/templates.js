@@ -1,31 +1,29 @@
 const express = require("express");
 const router = express.Router();
-
-// In-memory for now (swap to DB later)
-let templates = [];
+const Template = require("../models/Template");
 
 // ===== GET ALL =====
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+    const templates = await Template.find().sort({ createdAt: -1 });
     res.json(templates);
 });
 
 // ===== CREATE =====
-router.post("/", (req, res) => {
-    const t = {
-        id: Date.now().toString(),
+router.post("/", async (req, res) => {
+    const t = new Template({
         name: req.body.name || "",
         description: req.body.description || "",
         duration: req.body.duration || 60,
         price: req.body.price || 0
-    };
+    });
 
-    templates.push(t);
+    await t.save();
     res.json(t);
 });
 
 // ===== DELETE =====
-router.delete("/:id", (req, res) => {
-    templates = templates.filter(t => t.id !== req.params.id);
+router.delete("/:id", async (req, res) => {
+    await Template.findByIdAndDelete(req.params.id);
     res.json({ success: true });
 });
 
