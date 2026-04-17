@@ -280,24 +280,20 @@ async function selectCustomerFromPopup(id) {
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
-        alert("Select customer");
         return;
     }
 
     if (!jobs.length || !jobs[0].mode) {
-        alert("Add job");
         return;
     }
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
 if (!bookingDate) {
-    alert("Select date");
     return;
 }
 
     if (!vehicleId) {
-        alert("Select vehicle");
         return;
     }
 
