@@ -365,11 +365,26 @@ function renderJobs() {
 
 async function createCustomerFromSearch() {
 
-    const first = searchFirstName.value;
-    const last = searchLastName.value;
-    const phone = searchPhone.value;
+    const first = searchFirstName.value.trim();
+    const last = searchLastName.value.trim();
+    const phone = searchPhone.value.trim();
 
-    if (!first || !last) {
+    const make = prompt("Vehicle Make?");
+    const model = prompt("Vehicle Model?");
+    const rego = prompt("Vehicle Rego?");
+
+    if (!phone) {
+        alert("Phone required");
+        return;
+    }
+
+    if (!first && !last) {
+        alert("First or Last name required");
+        return;
+    }
+
+    if (!make && !model && !rego) {
+        alert("Vehicle info required");
         return;
     }
 
@@ -386,10 +401,31 @@ async function createCustomerFromSearch() {
     const customer = await res.json();
 
     if (!res.ok) {
+        alert(customer.error || "Customer failed");
         return;
     }
 
-    selectCustomer(customer._id);
+    const vRes = await fetch(API + "/vehicles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            customer: customer._id,
+            make,
+            model,
+            rego
+        })
+    });
+
+    const vehicle = await vRes.json();
+
+    if (!vRes.ok) {
+        alert(vehicle.error || "Vehicle failed");
+        return;
+    }
+
+    await selectCustomer(customer._id);
+
+    closeCustomerPopup();
 }
 
 function generateChecklistFromServices(services) {
