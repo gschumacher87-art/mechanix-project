@@ -550,7 +550,8 @@ function changeMonth(direction) {
     renderCalendar();
 }
 
-function openTemplatePopup() {
+function openTemplatePopup(i) {
+    window.selectedJobIndex = i;
     document.getElementById("templateModal").style.display = "block";
     loadTemplates();
 }
