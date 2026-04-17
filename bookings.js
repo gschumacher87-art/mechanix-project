@@ -275,7 +275,7 @@ function closeCustomerPopup() {
 }
 
 function openCreateCustomer() {
-    alert("Create popup next");
+    document.getElementById("createCustomerModal").style.display = "block";
 }
 
 async function selectCustomerFromPopup(id) {
