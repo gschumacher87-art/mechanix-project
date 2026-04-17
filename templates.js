@@ -87,8 +87,8 @@ function useTemplate(id) {
 
    const i = window.selectedJobIndex;
 
-window.jobs[i].summary = t.name || "";
-window.jobs[i].description = t.description || "";
+jobs[i].summary = t.name || "";
+jobs[i].description = t.description || "";
 
 closeTemplateModal();
 renderJobs();
