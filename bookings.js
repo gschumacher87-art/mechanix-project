@@ -1,6 +1,7 @@
 let bookings = [];
 let selectedCustomerId = null;
 let jobs = [];
+let currentMonth = new Date();
 
 // ================= LOAD BOOKINGS =================
 async function loadBookings() {
@@ -439,16 +440,25 @@ function renderCalendar() {
     const el = document.getElementById("calendar");
     if (!el) return;
 
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     const today = new Date().toLocaleDateString("en-CA");
 
-    let html = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>";
+    const monthName = currentMonth.toLocaleString("default", { month: "long" });
+
+let html = `
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <button onclick="changeMonth(-1)">←</button>
+    <b>${monthName} ${year}</b>
+    <button onclick="changeMonth(1)">→</button>
+</div>
+
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+`;
 
     // empty slots before first day
     for (let i = 0; i < firstDay; i++) {
@@ -482,4 +492,9 @@ function renderCalendar() {
 function selectCalendarDate(date) {
     openBookingModal();
     document.getElementById("bookingDate").value = date;
+}
+
+function changeMonth(direction) {
+    currentMonth.setMonth(currentMonth.getMonth() + direction);
+    renderCalendar();
 }
