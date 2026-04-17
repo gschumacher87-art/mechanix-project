@@ -405,6 +405,7 @@ function addJob() {
 }
 
 function setJobMode(i, mode) {
+    window.selectedJobIndex = i;
     jobs[i].mode = mode;
     renderJobs();
 }
