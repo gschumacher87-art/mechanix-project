@@ -275,6 +275,7 @@ function closeCustomerPopup() {
 }
 
 function openCreateCustomer() {
+    closeCustomerPopup();
     document.getElementById("createCustomerModal").style.display = "block";
 }
 
