@@ -278,6 +278,72 @@ function openCreateCustomer() {
     document.getElementById("createCustomerModal").style.display = "block";
 }
 
+async function createCustomer() {
+
+    const first = document.getElementById("newFirstName").value.trim();
+    const last = document.getElementById("newLastName").value.trim();
+    const phone = document.getElementById("newPhone").value.trim();
+
+    const make = document.getElementById("newMake").value.trim();
+    const model = document.getElementById("newModel").value.trim();
+    const rego = document.getElementById("newRego").value.trim();
+
+    if (!phone) {
+        alert("Phone required");
+        return;
+    }
+
+    if (!first && !last) {
+        alert("First or Last required");
+        return;
+    }
+
+    if (!make && !model && !rego) {
+        alert("Vehicle info required");
+        return;
+    }
+
+    const res = await fetch(API + "/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            firstName: first,
+            lastName: last,
+            phone: phone
+        })
+    });
+
+    const customer = await res.json();
+
+    if (!res.ok) {
+        alert("Customer failed");
+        return;
+    }
+
+    const vRes = await fetch(API + "/vehicles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            customer: customer._id,
+            make,
+            model,
+            rego
+        })
+    });
+
+    const vehicle = await vRes.json();
+
+    if (!vRes.ok) {
+        alert("Vehicle failed");
+        return;
+    }
+
+    await selectCustomer(customer._id);
+
+    document.getElementById("createCustomerModal").style.display = "none";
+    closeCustomerPopup();
+}
+
 async function selectCustomerFromPopup(id) {
 
     closeCustomerPopup();
