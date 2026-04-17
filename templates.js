@@ -14,9 +14,9 @@ window.templatesCache = data;
     let html = "";
     data.forEach(t => {
         html += `
-    <div class="card" onclick="useTemplate('${t._id}')">
-    <b>${t.name}</b>
-    <button onclick="event.stopPropagation(); deleteTemplate('${t._id}')">Delete</button>
+    <div class="card">
+    <b onclick="useTemplate('${t._id}')">${t.name}</b>
+    <button onclick="deleteTemplate('${t._id}')">Delete</button>
 </div>
 `;
     });
