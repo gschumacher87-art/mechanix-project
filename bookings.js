@@ -430,10 +430,10 @@ function renderJobs() {
 ` : ""}
 
             ${job.mode === "manual" ? `
-    <input placeholder="Summary"
+    <input placeholder="Summary" value="${job.summary || ""}"
         oninput="updateJobField(${i}, 'summary', this.value)">
         
-    <input placeholder="Description"
+    <input placeholder="Description" value="${job.description || ""}"
         oninput="updateJobField(${i}, 'description', this.value)">
 ` : ""}
         </div>
