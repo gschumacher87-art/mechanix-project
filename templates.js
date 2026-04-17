@@ -84,15 +84,13 @@ function useTemplate(id) {
 
     if (!t) return;
 
-    if (window.jobs && !window.jobs.length) {
-    addJob();
-}
+    if (window.jobs && window.jobs.length) {
 
-if (window.jobs && window.jobs.length) {
+    const i = window.jobs.length - 1;
 
-    window.jobs[0].mode = "manual";
-    window.jobs[0].summary = t.name || "";
-    window.jobs[0].description = t.description || "";
+    window.jobs[i].mode = "manual";
+    window.jobs[i].summary = t.name || "";
+    window.jobs[i].description = t.description || "";
 
     renderJobs();
 }
