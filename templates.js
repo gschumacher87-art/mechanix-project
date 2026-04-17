@@ -55,3 +55,30 @@ async function deleteTemplate(id) {
 
     loadTemplates();
 }
+
+function openTemplateModal() {
+    document.getElementById("templateModal").style.display = "block";
+}
+
+function closeTemplateModal() {
+    document.getElementById("templateModal").style.display = "none";
+}
+
+async function saveTemplate() {
+    const name = document.getElementById("templateName").value;
+    const description = document.getElementById("templateDesc").value;
+
+    if (!name) return;
+
+    await fetch(API + "/templates", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token")
+        },
+        body: JSON.stringify({ name, description })
+    });
+
+    closeTemplateModal();
+    loadTemplates();
+}
