@@ -424,20 +424,13 @@ function renderJobs() {
         <div class="card">
             <div class="title">Job ${i + 1}</div>
 
-            ${!job.mode ? `
-    <button onclick="setJobMode(${i}, 'manual')">Manual</button>
-    <button onclick="setJobMode(${i}, 'template'); openTemplatePopup(${i})">Template</button>
-` : ""}
-
-            ${job.mode === "manual" ? `
-    <input placeholder="Summary"
-    value="${job.summary || ""}"
+            <input placeholder="Summary" value="${job.summary || ""}"
     oninput="updateJobField(${i}, 'summary', this.value)">
 
-<input placeholder="Description"
-    value="${job.description || ""}"
+<input placeholder="Description" value="${job.description || ""}"
     oninput="updateJobField(${i}, 'description', this.value)">
-` : ""}
+
+<button onclick="openTemplatePopup(${i})">Use Template</button>
         </div>
         `;
     });
