@@ -28,6 +28,7 @@ async function show(id, btn) {
     if (id === "jobs" && typeof loadJobs === "function") loadJobs();
     if (id === "customers" && typeof loadCustomers === "function") loadCustomers();
     if (id === "invoices" && typeof loadInvoices === "function") loadInvoices();
+    if (id === "templates" && typeof loadTemplates === "function") loadTemplates();
 }
 
 async function testLogin() {
