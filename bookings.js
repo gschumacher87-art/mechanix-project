@@ -270,6 +270,14 @@ function closeCustomerPopup() {
     document.getElementById("customerPopup").style.display = "none";
 }
 
+function closeCustomerPopup() {
+    document.getElementById("customerPopup").style.display = "none";
+}
+
+function openCreateCustomer() {
+    alert("Create popup next");
+}
+
 async function selectCustomerFromPopup(id) {
 
     closeCustomerPopup();
