@@ -1,12 +1,11 @@
 const API = "https://mechanix-api-87.onrender.com/api";
 
-// ===== OPEN POPUP =====
+// ===== OPEN =====
 function openTemplatePopup() {
     loadTemplates();
-    alert("Template system ready (UI next)");
 }
 
-// ===== LOAD =====
+// ===== LOAD + RENDER =====
 async function loadTemplates() {
     const res = await fetch(API + "/templates", {
         headers: {
@@ -15,12 +14,25 @@ async function loadTemplates() {
     });
 
     const data = await res.json();
-    console.log("Templates:", data);
+
+    let html = "";
+    data.forEach(t => {
+        html += `
+            <div class="card">
+                <b>${t.name}</b>
+                <button onclick="deleteTemplate('${t._id}')">Delete</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("templateList").innerHTML = html;
 }
 
 // ===== CREATE =====
 async function createTemplate(name) {
-    const res = await fetch(API + "/templates", {
+    if (!name) return;
+
+    await fetch(API + "/templates", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -29,6 +41,17 @@ async function createTemplate(name) {
         body: JSON.stringify({ name })
     });
 
-    const data = await res.json();
-    console.log("Created:", data);
+    loadTemplates();
+}
+
+// ===== DELETE =====
+async function deleteTemplate(id) {
+    await fetch(API + "/templates/" + id, {
+        method: "DELETE",
+        headers: {
+            Authorization: localStorage.getItem("token")
+        }
+    });
+
+    loadTemplates();
 }
