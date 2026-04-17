@@ -93,3 +93,20 @@ jobs[i].description = t.description || "";
 closeTemplateModal();
 renderJobs();
 }
+
+function getTemplateChecklistByName(name) {
+
+    if (!window.templatesCache) return null;
+
+    const t = window.templatesCache.find(x =>
+        x.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (!t || !t.description) return null;
+
+    // TURN DESCRIPTION INTO CHECKLIST (line by line)
+    return t.description.split("\n").map(line => ({
+        text: line.trim(),
+        done: false
+    })).filter(x => x.text);
+}
