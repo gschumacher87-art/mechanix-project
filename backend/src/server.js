@@ -9,9 +9,8 @@ const customerRoutes = require("./api/customers");
 const jobRoutes = require("./api/jobs");
 const vehicleRoutes = require("./api/vehicles"); 
 const invoiceRoutes = require("./api/invoices");
-
-// ✅ NEW
 const bookingRoutes = require("./api/bookings");
+const templateRoutes = require("./api/templates");
 
 const auth = require("./middleware/auth");
 const admin = require("./middleware/admin");
