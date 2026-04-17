@@ -14,9 +14,9 @@ window.templatesCache = data;
     data.forEach(t => {
         html += `
     <div class="card" onclick="useTemplate('${t._id}')">
-        <b>${t.name}</b>
-        <button onclick="deleteTemplate('${t._id}')">Delete</button>
-    </div>
+    <b>${t.name}</b>
+    <button onclick="event.stopPropagation(); deleteTemplate('${t._id}')">Delete</button>
+</div>
 `;
     });
 
@@ -53,6 +53,7 @@ async function deleteTemplate(id) {
 
 function openTemplateModal() {
     document.getElementById("templateModal").style.display = "block";
+    loadTemplates();
 }
 
 function closeTemplateModal() {
@@ -83,13 +84,18 @@ function useTemplate(id) {
 
     if (!t) return;
 
-    if (window.jobs && window.jobs.length) {
+    if (window.jobs && !window.jobs.length) {
+    addJob();
+}
 
-        window.jobs[0].summary = t.name || "";
-        window.jobs[0].description = t.description || "";
+if (window.jobs && window.jobs.length) {
 
-        renderJobs();
-    }
+    window.jobs[0].mode = "manual";
+    window.jobs[0].summary = t.name || "";
+    window.jobs[0].description = t.description || "";
+
+    renderJobs();
+}
 
     closeTemplateModal();
 }
