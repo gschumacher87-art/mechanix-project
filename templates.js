@@ -1,4 +1,5 @@
 function openTemplatePopup() {
+    document.getElementById("templateModal").style.display = "block";
     loadTemplates();
 }
 
