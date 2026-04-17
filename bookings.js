@@ -544,3 +544,7 @@ function changeMonth(direction) {
     currentMonth.setMonth(currentMonth.getMonth() + direction);
     renderCalendar();
 }
+
+function openTemplatePopup() {
+    alert("Template UI coming next");
+}
