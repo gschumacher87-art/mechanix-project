@@ -43,7 +43,7 @@ async function show(id, btn) {
     if (id === "templates" && typeof loadTemplates === "function") loadTemplates();
 }
 
-async function testLogin() {
+async function login() {
     const res = await fetch(API + "/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
