@@ -116,12 +116,13 @@ async function arrivedBooking(id) {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: booking.title,
-            customer: booking.customer?._id || booking.customer,
-            vehicle: booking.vehicle?._id || booking.vehicle,
-            status: "arrived",
-            checklist: generateChecklistFromServices(booking.services || [])
-        })
+    title: booking.title,
+    description: (booking.services || []).join("\n"),
+    customer: booking.customer?._id || booking.customer,
+    vehicle: booking.vehicle?._id || booking.vehicle,
+    status: "arrived",
+    checklist: []
+})
     });
 
     const job = await jobRes.json();
