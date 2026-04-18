@@ -89,13 +89,21 @@ function renderBookingCard() {
     });
 
     document.getElementById("jobCardInfo").innerHTML = `
-        <div class="card">
-            <div class="title">${currentJob.title}</div>
-            <b>Status:</b> BOOKING<br>
-            <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
-            <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
-        </div>
-    `;
+    <div class="card">
+        <b>Status:</b> BOOKING<br>
+        <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
+        <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
+    </div>
+
+    <div class="card">
+        <div class="title">${currentJob.title}</div>
+    </div>
+
+    <div class="card">
+        <div class="title">Description</div>
+        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
+    </div>
+`;
 
     document.getElementById("jobCardChecklist").innerHTML =
         checklistHtml || "<div style='color:#777;'>No tasks</div>";
