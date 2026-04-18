@@ -55,8 +55,6 @@ async function login() {
 
     const data = await res.json();
 
-alert(JSON.stringify(data)); // 👈 add this line
-
 localStorage.setItem("token", data.token);
 location.reload();
 
