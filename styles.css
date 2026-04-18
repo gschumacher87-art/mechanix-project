@@ -391,3 +391,65 @@ letter-spacing: 1px;
     }
 
 }
+
+/* ================= DESKTOP / iPAD LEFT PANEL ================= */
+@media (min-width: 900px) {
+
+    #leftPanelMount {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 45%;
+        height: 100vh;
+
+        background: linear-gradient(180deg, #000 0%, #050505 100%);
+        border-right: 1px solid #111;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 60px;
+
+        opacity: 0;
+        transform: translateX(-40px);
+        animation: panelIn 0.8s ease forwards;
+    }
+
+    /* move login to right side */
+    #loginScreen {
+        justify-content: flex-end;
+        padding-right: 10%;
+    }
+
+    /* keep login compact */
+    #loginScreen .card {
+        margin: 0;
+    }
+
+    /* big branding inside panel */
+    #leftPanelMount::before {
+        content: "SCHUMACHER AUTOMOTIVE";
+        color: #fff;
+        font-size: 14px;
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        opacity: 0.6;
+    }
+
+    #leftPanelMount::after {
+        content: "WMS";
+        color: #00ffff;
+        font-size: 60px;
+        font-weight: bold;
+        letter-spacing: 6px;
+    }
+
+}
+
+/* panel animation */
+@keyframes panelIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
