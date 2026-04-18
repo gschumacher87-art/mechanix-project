@@ -186,23 +186,18 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     text-align: center;
 }
 
-/* FULL BLACK BACKGROUND */
-body {
-    margin: 0;
-    background: #000;
-    font-family: Arial, sans-serif;
-}
+/* LOGIN ONLY STYLES */
 
-/* CENTER LOGIN SCREEN */
 #loginScreen {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: #000;
 }
 
-/* LOGIN CARD */
-.card {
+/* ONLY login card */
+#loginScreen .card {
     background: #0a0a0a;
     padding: 30px;
     border-radius: 14px;
@@ -212,33 +207,24 @@ body {
     box-shadow: 0 0 30px rgba(0,255,255,0.2);
 }
 
-/* TITLE */
-.title {
+/* ONLY login title */
+#loginScreen .title {
     color: #00ffff;
     font-size: 22px;
     margin-bottom: 20px;
 }
 
-/* INPUTS */
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    border: 1px solid #222;
+/* ONLY login inputs */
+#loginScreen input {
     background: #000;
     color: #fff;
+    border: 1px solid #222;
 }
 
-/* LOGIN BUTTON */
-button.primary {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
+/* ONLY login button */
+#loginScreen button.primary {
     background: #00ffff;
     color: #000;
-    font-weight: bold;
 }
 
 /* ERROR */
