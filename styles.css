@@ -190,6 +190,7 @@ img { width:100%; border-radius:8px; margin-top:10px; }
 
 #loginScreen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
