@@ -185,3 +185,64 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     padding: 10px;
     text-align: center;
 }
+
+/* FULL BLACK BACKGROUND */
+body {
+    margin: 0;
+    background: #000;
+    font-family: Arial, sans-serif;
+}
+
+/* CENTER LOGIN SCREEN */
+#loginScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* LOGIN CARD */
+.card {
+    background: #0a0a0a;
+    padding: 30px;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0,255,255,0.2);
+}
+
+/* TITLE */
+.title {
+    color: #00ffff;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #222;
+    background: #000;
+    color: #fff;
+}
+
+/* LOGIN BUTTON */
+button.primary {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #00ffff;
+    color: #000;
+    font-weight: bold;
+}
+
+/* ERROR */
+#loginError {
+    margin-top: 10px;
+    color: #ff4d4d;
+}
