@@ -65,9 +65,7 @@ async function openBooking(id) {
     title: booking.title,
     customer: booking.customer || {},
     vehicle: booking.vehicle || {},
-    description: (booking.services && booking.services.length)
-    ? booking.services.join("\n")
-    : booking.title,
+    description: booking.description || "",
     checklist: generateChecklistFromServices(booking.services || [])
 };
 
@@ -392,7 +390,8 @@ if (!bookingDate) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
     title: jobs[0].summary || "Booking",
-    services: jobs.map(j => j.description).filter(Boolean),
+    description: jobs.map(j => j.description).join("\n"),
+services: jobs.map(j => j.summary).filter(Boolean),
 customer: selectedCustomerId,
     vehicle: vehicleId,
     status: "booked",
