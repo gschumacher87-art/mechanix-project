@@ -33,13 +33,13 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { name, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!name || !password) {
+  if (!email || !password) {
     return res.status(400).json({ message: "Missing fields" });
   }
 
-  const user = await User.findOne({ name });
+  const user = await User.findOne({ email });
 
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
