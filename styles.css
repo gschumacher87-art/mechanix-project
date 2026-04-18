@@ -196,13 +196,6 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     background: #000;
 }
 
-/* LOCK WIDTH + CENTER STACK */
-#loginScreen > div {
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-}
-
 /* INTRO */
 
 #intro {
@@ -306,4 +299,23 @@ img { width:100%; border-radius:8px; margin-top:10px; }
     .wms-line {
         font-size: 26px;
     }
+}
+
+@media (min-width: 700px) {
+
+    #loginScreen {
+        flex-direction: column;
+    }
+
+    #intro {
+        width: 100%;
+        text-align: center;
+    }
+
+    #loginScreen .card {
+        width: 100%;
+        max-width: 380px;
+        margin: 0 auto;
+    }
+
 }
