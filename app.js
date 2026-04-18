@@ -1,3 +1,15 @@
+if (!localStorage.getItem("token")) {
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("loginScreen").style.display = "block";
+        document.getElementById("app").style.display = "none";
+    });
+} else {
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+    });
+}
+
 console.log("FETCH OVERRIDE LOADED");
 const API = "https://mechanix-api-87.onrender.com/api";
 
@@ -43,9 +55,8 @@ async function testLogin() {
 
     const data = await res.json();
 
-    localStorage.removeItem("token");
-localStorage.setItem("token", data.token);
-show('bookings');
+    localStorage.setItem("token", data.token);
+location.reload();
 
 }
 
