@@ -60,4 +60,6 @@ location.reload();
 
 }
 
-show('bookings');
+if (localStorage.getItem("token")) {
+    show('bookings');
+}
