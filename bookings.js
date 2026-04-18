@@ -61,12 +61,13 @@ async function openBooking(id) {
     document.getElementById("jobCard").classList.add("active");
 
     currentJob = {
-        _id: booking._id,
-        title: booking.title,
-        customer: booking.customer || {},
-        vehicle: booking.vehicle || {},
-        checklist: generateChecklistFromServices(booking.services || [])
-    };
+    _id: booking._id,
+    title: booking.title,
+    customer: booking.customer || {},
+    vehicle: booking.vehicle || {},
+    description: (booking.services || []).join("\n"),
+    checklist: generateChecklistFromServices(booking.services || [])
+};
 
     renderBookingCard();
 }
