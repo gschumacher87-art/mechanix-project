@@ -85,3 +85,46 @@ if (!localStorage.getItem("token")) {
     }, 1800);
 
 }
+
+// ================= DESKTOP / IPAD SPLIT INTRO =================
+if (!localStorage.getItem("token") && window.innerWidth > 700) {
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const login = document.querySelector("#loginScreen .card");
+
+        // start hidden (right side)
+        if (login) {
+            login.style.opacity = "0";
+            login.style.transform = "translateX(80px)";
+        }
+
+        // create left panel
+        const panel = document.createElement("div");
+        panel.id = "leftPanel";
+        panel.innerHTML = `
+            <div class="panel-inner">
+                <div class="panel-title">SCHUMACHER</div>
+                <div class="panel-sub">AUTOMOTIVE</div>
+                <div class="panel-sub">WMS</div>
+            </div>
+        `;
+
+        document.getElementById("loginScreen").appendChild(panel);
+
+        // animate panel in
+        setTimeout(() => {
+            panel.classList.add("show");
+        }, 200);
+
+        // bring login in after
+        setTimeout(() => {
+            if (login) {
+                login.style.transition = "all 0.6s ease";
+                login.style.opacity = "1";
+                login.style.transform = "translateX(0)";
+            }
+        }, 900);
+
+    });
+}
