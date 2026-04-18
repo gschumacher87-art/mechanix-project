@@ -373,20 +373,19 @@ letter-spacing: 1px;
     }
 
 }
-
 /* ================= DESKTOP / iPAD LEFT PANEL ================= */
 @media (min-width: 900px) {
 
     /* SPLIT LAYOUT */
-  #loginScreen {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    #loginScreen {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
 
-    height: 100vh;
-    overflow: hidden;
-}
+        min-height: 100vh;
+        overflow: hidden;
+    }
 
     /* LEFT SIDE */
     #leftPanelMount {
@@ -395,7 +394,7 @@ letter-spacing: 1px;
         justify-content: center;
 
         width: 50%;
-        height: 100vh;
+        height: 100%;
         padding-left: 80px;
 
         background: linear-gradient(180deg, #000 0%, #050505 100%);
