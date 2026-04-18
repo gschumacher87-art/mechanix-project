@@ -10,7 +10,18 @@
 <body>
     
 <div id="loginScreen">
-    <button onclick="testLogin()">Login</button>
+
+    <div class="card">
+        <div class="title">Login</div>
+
+        <input id="loginEmail" placeholder="Email">
+        <input id="loginPassword" type="password" placeholder="Password">
+
+        <button class="primary" onclick="login()">Login</button>
+
+        <div id="loginError" style="color:red;"></div>
+    </div>
+
 </div>
 
 <div id="app" style="display:none;">
