@@ -392,7 +392,7 @@ if (!bookingDate) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
     title: jobs[0].summary || "Booking",
-    services: jobs.map(j => j.description || j.summary).filter(Boolean),
+    services: jobs.map(j => j.description).filter(Boolean),
 customer: selectedCustomerId,
     vehicle: vehicleId,
     status: "booked",
