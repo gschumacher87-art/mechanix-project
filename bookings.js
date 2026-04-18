@@ -65,7 +65,9 @@ async function openBooking(id) {
     title: booking.title,
     customer: booking.customer || {},
     vehicle: booking.vehicle || {},
-    description: (booking.services || []).join("\n"),
+    description: (booking.services && booking.services.length)
+    ? booking.services.join("\n")
+    : booking.title,
     checklist: generateChecklistFromServices(booking.services || [])
 };
 
@@ -126,7 +128,9 @@ async function arrivedBooking(id) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
     title: booking.title,
-    description: (booking.services || []).join("\n"),
+    description: (booking.services && booking.services.length)
+    ? booking.services.join("\n")
+    : booking.title,
     customer: booking.customer?._id || booking.customer,
     vehicle: booking.vehicle?._id || booking.vehicle,
     status: "arrived",
