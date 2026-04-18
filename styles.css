@@ -373,3 +373,26 @@ letter-spacing: 1px;
     }
 
 }
+
+@media (max-width: 500px) {
+
+    #loginScreen .card {
+        width: 85%;
+        max-width: 300px;
+        padding: 20px;
+    }
+
+    #loginScreen .title {
+        font-size: 20px;
+    }
+
+    #loginScreen input {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    #loginScreen button.primary {
+        padding: 12px;
+    }
+
+}
