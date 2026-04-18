@@ -55,15 +55,15 @@ async function login() {
 
     const data = await res.json();
 
-localStorage.setItem("token", data.token);
-location.reload();
-
+    localStorage.setItem("token", data.token);
+    location.reload();
 }
 
 if (localStorage.getItem("token")) {
     show('bookings');
 }
 
+// ================= INTRO ANIMATION =================
 if (!localStorage.getItem("token")) {
 
     setTimeout(() => {
