@@ -63,3 +63,25 @@ location.reload();
 if (localStorage.getItem("token")) {
     show('bookings');
 }
+
+if (!localStorage.getItem("token")) {
+
+    setTimeout(() => {
+        const w = document.getElementById("lineW");
+        const m = document.getElementById("lineM");
+        const s = document.getElementById("lineS");
+
+        if (!w || !m || !s) return;
+
+        w.innerText = "WORKSHOP";
+        w.classList.add("expand");
+
+        m.innerText = "MANAGEMENT";
+        m.classList.add("expand");
+
+        s.innerText = "SOFTWARE";
+        s.classList.add("expand");
+
+    }, 1800);
+
+}
