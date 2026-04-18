@@ -126,9 +126,7 @@ async function arrivedBooking(id) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
     title: booking.title,
-    description: (booking.services && booking.services.length)
-    ? booking.services.join("\n")
-    : booking.title,
+    description: booking.description || "",
     customer: booking.customer?._id || booking.customer,
     vehicle: booking.vehicle?._id || booking.vehicle,
     status: "arrived",
