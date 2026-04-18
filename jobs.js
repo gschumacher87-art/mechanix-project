@@ -67,56 +67,32 @@ async function openJobCard(id) {
 
 function renderJobCard() {
 
-    let checklistHtml = "";
-
-    currentJob.checklist ??= [];
-
-    // BUILD CHECKLIST FROM DESCRIPTION IF EMPTY
-if (currentJob.checklist.length === 0 && currentJob.description) {
-
-    currentJob.checklist = currentJob.description
-        .split("\n")
-        .map(line => ({
-            text: line.trim(),
-            done: false
-        }))
-        .filter(x => x.text);
-
-    // SAVE BACK TO SERVER
-    fetch(API + "/jobs/" + currentJob._id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentJob)
-    });
-}
-
-    currentJob.checklist.forEach((item, i) => {
-        checklistHtml += `
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-            <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleChecklist(${i})">
-            <span>${item.text}</span>
-        </div>`;
-    });
-
     document.getElementById("jobCardInfo").innerHTML = `
+
+        <div class="card">
+            <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
+            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
+            <b>Status:</b> ${currentJob.status}
+        </div>
+
         <div class="card">
             <div class="title">${currentJob.title}</div>
-            <b>Status:</b> ${currentJob.status}<br>
-            <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
-            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}
+        </div>
+
+        <div class="card">
+            <div class="title">Description</div>
+            ${currentJob.description || "<span style='color:#777;'>No description</span>"}
         </div>
     `;
 
-    document.getElementById("jobCardChecklist").innerHTML = `
-        ${checklistHtml || "<div style='color:#777;'>No tasks</div>"}
-    `;
+    document.getElementById("jobCardChecklist").innerHTML = "";
 
     document.getElementById("jobCardActions").innerHTML = `
-    <button class="primary" onclick="startJobFromCard()">Start Job</button>
-    <button class="primary" onclick="finishJob()">Finish Job</button>
-    <button class="secondary" onclick="deleteJob('${currentJob._id}')">Delete Job</button>
-    <button class="secondary" onclick="show('jobs')">Back</button>
-`;
+        <button class="primary" onclick="startJobFromCard()">Start Job</button>
+        <button class="primary" onclick="finishJob()">Finish Job</button>
+        <button class="secondary" onclick="deleteJob('${currentJob._id}')">Delete Job</button>
+        <button class="secondary" onclick="show('jobs')">Back</button>
+    `;
 }
 
 async function startJobFromCard() {
