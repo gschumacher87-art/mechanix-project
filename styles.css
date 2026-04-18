@@ -346,6 +346,11 @@ letter-spacing: 1px;
     }
 }
 
+    .wms-line {
+        font-size: 26px;
+    }
+}
+
 @media (min-width: 700px) {
 
     #loginScreen {
