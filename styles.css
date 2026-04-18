@@ -234,7 +234,7 @@ img { width:100%; border-radius:8px; margin-top:10px; }
 /* WMS STACK (comes out from banner) */
 #wmsStack {
     position: absolute;
-    left: 70px;
+    left: 90px;
     top: 10px;
 }
 
