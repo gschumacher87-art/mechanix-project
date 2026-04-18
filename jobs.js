@@ -71,34 +71,24 @@ function renderJobCard() {
 
     currentJob.checklist ??= [];
 
-    // AUTO APPLY BASIC TEMPLATE IF EMPTY
-    if (currentJob.checklist.length === 0 && currentJob.title) {
+    // BUILD CHECKLIST FROM DESCRIPTION IF EMPTY
+if (currentJob.checklist.length === 0 && currentJob.description) {
 
-        if (currentJob.title.toLowerCase().includes("brake")) {
-            currentJob.checklist = [
-                { text: "Replace front brake disc rotors", done: false },
-                { text: "Replace brake pads", done: false },
-                { text: "Inspect brake system", done: false },
-                { text: "Road test", done: false }
-            ];
-        }
+    currentJob.checklist = currentJob.description
+        .split("\n")
+        .map(line => ({
+            text: line.trim(),
+            done: false
+        }))
+        .filter(x => x.text);
 
-        if (currentJob.title.toLowerCase().includes("service")) {
-            currentJob.checklist = [
-                { text: "Replace engine oil", done: false },
-                { text: "Replace oil filter", done: false },
-                { text: "Check fluids", done: false },
-                { text: "General inspection", done: false }
-            ];
-        }
-
-        // SAVE BACK TO SERVER (so it sticks)
-        fetch(API + "/jobs/" + currentJob._id, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(currentJob)
-        });
-    }
+    // SAVE BACK TO SERVER
+    fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentJob)
+    });
+}
 
     currentJob.checklist.forEach((item, i) => {
         checklistHtml += `
