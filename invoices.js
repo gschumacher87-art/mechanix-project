@@ -57,7 +57,7 @@ async function openInvoice(id) {
     const locked = invoice.status === "finalised";
 
     document.getElementById("invoiceList").innerHTML = `
-<div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px;">
+<div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px; align-items:start;">
 
     <!-- LEFT SIDE -->
     <div>
