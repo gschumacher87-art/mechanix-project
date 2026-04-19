@@ -38,8 +38,14 @@ async function openCustomer(id) {
     let invoiceHtml = "";
 
     vehicles.forEach(v => {
-        vehicleHtml += `<div class="card">${v.make} ${v.model}</div>`;
-    });
+    vehicleHtml += `
+    <div class="card">
+        <b>${v.make || ""} ${v.model || ""}</b><br>
+        ${v.yearMonth || ""}<br>
+        ${v.rego || ""}<br>
+        ${v.vin || ""}
+    </div>`;
+});
 
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
 
