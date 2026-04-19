@@ -144,11 +144,11 @@ for (let i = 0; i < (booking.services || []).length; i++) {
     createdJobs.push(job);
 }
 
-    console.log("CREATED JOB:", job);
+  console.log("CREATED JOBS:", createdJobs);
 
-    await fetch(API + "/bookings/" + id, { method:"DELETE" });
+await fetch(API + "/bookings/" + id, { method:"DELETE" });
 
-    openJobCard(job._id);
+openJobCard(createdJobs[0]._id);
 }
 
 // ================= DELETE =================
