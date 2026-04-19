@@ -60,13 +60,11 @@ async function openBooking(id) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
 
-    currentJob = {
+currentJob = {
     _id: booking._id,
-    title: booking.services?.join(", ") || booking.title,
+    jobs: booking.jobs || [],
     customer: booking.customer || {},
-    vehicle: booking.vehicle || {},
-    description: booking.description || "",
-    checklist: generateChecklistFromServices(booking.services || [])
+    vehicle: booking.vehicle || {}
 };
 
     renderBookingCard();
