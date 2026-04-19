@@ -124,10 +124,13 @@ async function addVehicleToCustomer(customerId) {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            customer: customerId,
-            make: document.getElementById("newVehicleMake").value,
-            model: document.getElementById("newVehicleModel").value
-        })
+    customer: customerId,
+    make: document.getElementById("newVehicleMake").value,
+    model: document.getElementById("newVehicleModel").value,
+    yearMonth: document.getElementById("newVehicleYearMonth").value,
+    rego: document.getElementById("newVehicleRego").value,
+    vin: document.getElementById("newVehicleVin").value
+})
     });
 
     openCustomer(customerId);
@@ -141,7 +144,7 @@ async function loadVehicles(customerId = null) {
     let options = "";
 
     data.forEach(v => {
-        options += `<option value="${v._id}">${v.make} ${v.model}</option>`;
+        options += `<option value="${v._id}">${v.make} ${v.model} • ${v.rego || ""}</option>`;
     });
 
     document.getElementById("bookingVehicle").innerHTML = options;
