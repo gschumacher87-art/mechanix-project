@@ -104,8 +104,15 @@ ${(currentJob.jobs || []).map((j, i) => `
 `).join("")}
 `;
 
-    document.getElementById("jobCardChecklist").innerHTML =
-        checklistHtml || "<div style='color:#777;'>No tasks</div>";
+    document.getElementById("jobCardChecklist").innerHTML = `
+${(currentJob.jobs || []).map((j, i) => `
+<div class="card">
+    <div class="title">Job ${i + 1}</div>
+    <b>${j.summary || ""}</b><br>
+    ${j.description || ""}
+</div>
+`).join("")}
+`;
 
     document.getElementById("jobCardActions").innerHTML = `
         <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
