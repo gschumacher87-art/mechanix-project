@@ -62,7 +62,7 @@ async function openBooking(id) {
 
     currentJob = {
     _id: booking._id,
-    title: booking.title,
+    title: booking.services?.join(", ") || booking.title,
     customer: booking.customer || {},
     vehicle: booking.vehicle || {},
     description: booking.description || "",
