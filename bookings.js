@@ -561,3 +561,36 @@ function openTemplatePopup(i) {
     document.getElementById("templateModal").style.display = "block";
     loadTemplates();
 }
+
+async function saveBooking() {
+
+    const date = document.getElementById("bookingDate").value;
+    const vehicleId = document.getElementById("bookingVehicle").value;
+
+    if (!selectedCustomerId) return;
+    if (!date) return;
+    if (!vehicleId) return;
+
+    for (let job of jobs) {
+
+        if (!job.summary) continue;
+
+        const payload = {
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            date: date,
+            title: job.summary,
+            description: job.description || "",
+            services: [job.summary]
+        };
+
+        await fetch(API + "/bookings", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+        });
+    }
+}
