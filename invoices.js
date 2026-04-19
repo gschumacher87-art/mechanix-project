@@ -2,12 +2,24 @@ async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
 
-    document.getElementById("invoiceList").innerHTML = data.map(i => `
+    document.getElementById("invoiceList").innerHTML = data.map(i => {
+
+        const template = i.template || { items: [], labour: [] };
+
+        const subtotal =
+            (template.items || []).reduce((t, x) => t + Number(x.price || 0), 0) +
+            (template.labour || []).reduce((t, x) => t + Number(x.price || 0), 0);
+
+        const gst = subtotal * 0.10;
+        const total = subtotal + gst;
+
+        return `
         <div class="card" onclick="openInvoice('${i._id}')">
-            <div class="title">$${i.totalCost}</div>
+            <div class="title">$${total.toFixed(2)}</div>
             <div>Tap to view</div>
         </div>
-    `).join("");
+        `;
+    }).join("");
 }
 
 async function openInvoice(id) {
@@ -16,6 +28,13 @@ async function openInvoice(id) {
 
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
+    const subtotal =
+        (template.items || []).reduce((t, x) => t + Number(x.price || 0), 0) +
+        (template.labour || []).reduce((t, x) => t + Number(x.price || 0), 0);
+
+    const gst = subtotal * 0.10;
+    const total = subtotal + gst;
+
     let itemsHtml = "";
     let labourHtml = "";
 
@@ -23,7 +42,7 @@ async function openInvoice(id) {
         itemsHtml += `
         <div style="display:flex; justify-content:space-between; padding:6px 0;">
             <span>${i.name}</span>
-            <span>$${i.price}</span>
+            <span>$${Number(i.price).toFixed(2)}</span>
         </div>`;
     });
 
@@ -31,15 +50,17 @@ async function openInvoice(id) {
         labourHtml += `
         <div style="display:flex; justify-content:space-between; padding:6px 0;">
             <span>${l.name}</span>
-            <span>$${l.price}</span>
+            <span>$${Number(l.price).toFixed(2)}</span>
         </div>`;
     });
+
+    const locked = invoice.status === "finalised";
 
     document.getElementById("invoiceList").innerHTML = `
         <div class="card">
 
             <div style="text-align:center; font-size:22px; font-weight:bold;">
-                INVOICE
+                INVOICE ${locked ? "(FINAL)" : ""}
             </div>
 
             <hr>
@@ -63,41 +84,54 @@ async function openInvoice(id) {
 
             <hr>
 
+            <div style="display:flex; justify-content:space-between;">
+                <span>Subtotal</span>
+                <span>$${subtotal.toFixed(2)}</span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between;">
+                <span>GST (10%)</span>
+                <span>$${gst.toFixed(2)}</span>
+            </div>
+
             <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:bold;">
                 <span>Total</span>
-                <span>$${invoice.totalCost}</span>
+                <span>$${total.toFixed(2)}</span>
             </div>
 
         </div>
 
         <div class="card">
+            ${locked ? "" : `
             <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
             <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
             <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
-
             <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
-    Finalise Invoice
-</button>
+                Finalise Invoice
+            </button>
+            `}
 
-<button class="secondary" onclick="deleteInvoice('${invoice._id}')">
-    Delete Invoice
-</button>
+            <button class="secondary" onclick="deleteInvoice('${invoice._id}')">
+                Delete Invoice
+            </button>
 
-<button class="secondary" onclick="loadInvoices()">Back</button>
+            <button class="secondary" onclick="loadInvoices()">Back</button>
         </div>
     `;
 }
 
 async function addItem(id) {
 
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    if (invoice.status === "finalised") return alert("Invoice locked");
+
     const name = prompt("Item name:");
     if (!name) return;
 
     const price = Number(prompt("Price:"));
     if (!price) return;
-
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
 
     const template = {
         items: [...(invoice.template?.items || [])],
@@ -107,16 +141,12 @@ async function addItem(id) {
 
     template.items.push({ name, price });
 
-    const updatedInvoice = {
-        ...invoice,
-        template: template,
-        totalCost: (invoice.totalCost || 0) + price
-    };
-
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(updatedInvoice)
+        body: JSON.stringify({
+            template: template
+        })
     });
 
     openInvoice(id);
@@ -124,14 +154,16 @@ async function addItem(id) {
 
 async function addLabour(id) {
 
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    if (invoice.status === "finalised") return alert("Invoice locked");
+
     const name = prompt("Labour description:");
     if (!name) return;
 
     const price = Number(prompt("Price:"));
     if (!price) return;
-
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
 
     const template = {
         items: [...(invoice.template?.items || [])],
@@ -141,15 +173,11 @@ async function addLabour(id) {
 
     template.labour.push({ name, price });
 
-    invoice.template = template;
-    invoice.totalCost += price;
-
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            template: invoice.template,
-            totalCost: invoice.totalCost
+            template: template
         })
     });
 
@@ -158,20 +186,26 @@ async function addLabour(id) {
 
 async function addNote(id) {
 
-    const note = prompt("Note:");
-    if (!note) return;
-
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    invoice.template ??= { items: [], labour: [], notes: "" };
+    if (invoice.status === "finalised") return alert("Invoice locked");
 
-    invoice.template.notes = note;
+    const note = prompt("Note:");
+    if (!note) return;
+
+    const template = {
+        items: [...(invoice.template?.items || [])],
+        labour: [...(invoice.template?.labour || [])],
+        notes: note
+    };
 
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(invoice)
+        body: JSON.stringify({
+            template: template
+        })
     });
 
     openInvoice(id);
@@ -185,6 +219,14 @@ async function finaliseInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
+    await fetch(API + "/invoices/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            status: "finalised"
+        })
+    });
+
     const jobRes = await fetch(API + "/jobs/" + invoice.job);
     const job = await jobRes.json();
 
@@ -196,10 +238,8 @@ async function finaliseInvoice(id) {
         body: JSON.stringify(job)
     });
 
-    // 👉 GO TO CUSTOMER HISTORY
     show("customers");
 
-    // 👉 OPEN THAT CUSTOMER
     if (invoice.customer) {
         openCustomer(invoice.customer);
     }
