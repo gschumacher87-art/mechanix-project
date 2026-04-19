@@ -146,9 +146,9 @@ for (let i = 0; i < (booking.services || []).length; i++) {
 
   console.log("CREATED JOBS:", createdJobs);
 
-await fetch(API + "/bookings/" + id, { method:"DELETE" });
+currentJob.jobs = createdJobs;
 
-openJobCard(createdJobs[0]._id);
+renderBookingCard();
 }
 
 // ================= DELETE =================
