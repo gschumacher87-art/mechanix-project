@@ -99,10 +99,16 @@ function renderBookingCard() {
         <div class="title">${currentJob.title}</div>
     </div>
 
-    <div class="card">
-        <div class="title">Description</div>
-        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
-    </div>
+   <div class="card">
+    <div class="title">Jobs</div>
+    ${
+        (currentJob.jobs || []).map(j => `
+            <div onclick="openJobCard('${j._id}')">
+                ${j.title}
+            </div>
+        `).join("") || "<span style='color:#777;'>No jobs yet</span>"
+    }
+</div>
 `;
 
     document.getElementById("jobCardChecklist").innerHTML =
