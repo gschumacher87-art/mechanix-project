@@ -77,7 +77,10 @@ async function openCustomer(id) {
         ${vehicleHtml}
 
         <input id="newVehicleMake" placeholder="Make">
-        <input id="newVehicleModel" placeholder="Model">
+<input id="newVehicleModel" placeholder="Model">
+<input id="newVehicleYearMonth" placeholder="MM/YYYY">
+<input id="newVehicleRego" placeholder="Rego">
+<input id="newVehicleVin" placeholder="VIN">
 
         <button class="primary" onclick="addVehicleToCustomer('${customer._id}')">
             + Add Vehicle
