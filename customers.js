@@ -96,21 +96,6 @@ async function openCustomer(id) {
 
 window.openCustomer = openCustomer;
 
-// ===== SAVE CUSTOMER =====
-async function saveCustomer(id) {
-
-    await fetch(API + "/customers/" + id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            firstName: document.getElementById("editFirstName").value,
-            lastName: document.getElementById("editLastName").value,
-            phone: document.getElementById("editPhone").value
-        })
-    });
-
-    openCustomer(id);
-}
 
 // ===== ADD VEHICLE =====
 async function addVehicleToCustomer(customerId) {
