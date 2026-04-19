@@ -175,3 +175,11 @@ async function searchCustomers() {
 
     document.getElementById("customerList").innerHTML = html;
 }
+
+function editCustomer(id) {
+    alert("Edit customer coming next");
+}
+
+function editVehicle(id) {
+    alert("Edit vehicle coming next");
+}
