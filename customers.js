@@ -39,7 +39,7 @@ async function openCustomer(id) {
 
     vehicles.forEach(v => {
     vehicleHtml += `
-    <div class="card">
+    <div class="card" onclick="editVehicle('${v._id}')">
         <b>${v.make || ""} ${v.model || ""}</b><br>
         ${v.yearMonth || ""}<br>
         ${v.rego || ""}<br>
@@ -50,8 +50,8 @@ async function openCustomer(id) {
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
 
     invoices.forEach(i => {
-        invoiceHtml += `<div class="card">$${i.totalCost || 0}</div>`;
-    });
+    invoiceHtml += `<div class="card" onclick="openInvoice('${i._id}')">$${i.totalCost || 0}</div>`;
+});
 
     if (!invoiceHtml) invoiceHtml = "<div>No invoices</div>";
 
@@ -59,17 +59,12 @@ async function openCustomer(id) {
     document.getElementById("customerDetail").style.display = "block";
 
     document.getElementById("customerDetail").innerHTML = `
-    <div class="card">
-        <div class="title">Customer</div>
+    <div class="card" onclick="editCustomer('${customer._id}')">
+    <div class="title">Customer</div>
 
-        <input id="editFirstName" value="${customer.firstName}">
-        <input id="editLastName" value="${customer.lastName}">
-        <input id="editPhone" value="${customer.phone}">
-
-        <button class="primary" onclick="saveCustomer('${customer._id}')">
-            Save
-        </button>
-    </div>
+    <b>${customer.firstName || ""} ${customer.lastName || ""}</b><br>
+    ${customer.phone || ""}
+</div>
 
     <div class="card">
         <div class="title">Vehicles</div>
