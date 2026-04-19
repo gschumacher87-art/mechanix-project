@@ -144,7 +144,6 @@ for (let i = 0; i < (booking.services || []).length; i++) {
     createdJobs.push(job);
 }
 
-    const job = await jobRes.json();
     console.log("CREATED JOB:", job);
 
     await fetch(API + "/bookings/" + id, { method:"DELETE" });
