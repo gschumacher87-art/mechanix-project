@@ -122,12 +122,15 @@ async function arrivedBooking(id) {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
        body: JSON.stringify({
-    title: booking.title,
-    description: booking.description || "",
+    title: (booking.jobs || []).map(j => j.summary).join(", "),
+    jobs: booking.jobs || [],
     customer: booking.customer?._id || booking.customer,
     vehicle: booking.vehicle?._id || booking.vehicle,
     status: "arrived",
-    checklist: generateChecklistFromServices(booking.services || [])
+    checklist: (booking.jobs || []).flatMap(j => [
+        { text: j.summary, done: false },
+        { text: j.description, done: false }
+    ])
 })
     });
 
