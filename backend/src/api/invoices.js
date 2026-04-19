@@ -25,14 +25,27 @@ router.post("/from-job/:jobId", auth, async (req, res) => {
             return res.status(404).json({ error: "Job not found" });
         }
 
-        const invoice = new Invoice({
-            job: job._id,
-            customer: job.customer,
-            vehicle: job.vehicle,
-            labourCost: job.labourCost,
-            partsCost: job.partsCost,
-            totalCost: job.totalCost
-        });
+        const template = {
+    items: (job.parts || []).map(p => ({
+        name: p.name,
+        qty: p.qty || 1,
+        price: p.price || 0
+    })),
+
+    labour: job.labourHours
+        ? [{ name: "Labour Hours", qty: job.labourHours, price: 0 }]
+        : [],
+
+    notes: `${job.summary || ""}\n${job.description || ""}`.trim()
+};
+
+const invoice = new Invoice({
+    job: job._id,
+    customer: job.customer,
+    vehicle: job.vehicle,
+    template,
+    status: "draft"
+});
 
         await invoice.save();
 
