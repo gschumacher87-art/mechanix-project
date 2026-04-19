@@ -54,7 +54,11 @@ async function loadBookings() {
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
 
-    const res = await fetch(API + "/bookings/" + id);
+    const res = await fetch(API + "/bookings/" + id, {
+    headers: {
+        Authorization: localStorage.getItem("token")
+    }
+});
     const booking = await res.json();
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
@@ -114,7 +118,11 @@ ${(currentJob.jobs || []).map((j, i) => `
 // ================= ARRIVED =================
 async function arrivedBooking(id) {
 
-    const res = await fetch(API + "/bookings/" + id);
+    const res = await fetch(API + "/bookings/" + id, {
+    headers: {
+        Authorization: localStorage.getItem("token")
+    }
+});
     const booking = await res.json();
 
     const jobRes = await fetch(API + "/jobs", {
