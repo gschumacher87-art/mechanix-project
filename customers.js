@@ -163,17 +163,19 @@ async function searchCustomers() {
         return v.includes(value);
     });
 
+    const list = value ? filtered : data;
+
     let html = "";
 
-    filtered.forEach(c => {
-        html += `
-        <div class="card" onclick="openCustomer('${c._id}')">
-            ${c.firstName || ""} ${c.lastName || ""} • ${c.phone || ""}
+    list.forEach(c => {
+        html += `<div class="card" onclick="openCustomer('${c._id}')" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;">
+            <div>${c.firstName || ""}</div>
+            <div>${c.lastName || ""}</div>
+            <div>${c.phone || ""}</div>
+            <div>${c.rego || ""}</div>
+            <div>${c.vin || ""}</div>
         </div>`;
     });
 
-    document.getElementById("customerSearchResults").innerHTML = html;
-
-    // hide full list while searching
-    document.getElementById("customerList").style.display = value ? "none" : "block";
+    document.getElementById("customerList").innerHTML = html;
 }
