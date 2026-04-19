@@ -36,7 +36,7 @@ router.post("/from-job/:jobId", auth, async (req, res) => {
         ? [{ name: "Labour Hours", qty: job.labourHours, price: 0 }]
         : [],
 
-    notes: `${job.summary || ""}\n${job.description || ""}`.trim()
+    notes: `${job.title || ""}\n${job.description || ""}`.trim()
 };
 
 const invoice = new Invoice({
