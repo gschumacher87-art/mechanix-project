@@ -171,7 +171,9 @@ async function toggleChecklist(index) {
     await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentJob)
+        body: JSON.stringify({
+            checklist: currentJob.checklist
+        })
     });
 
     renderJobCard();
