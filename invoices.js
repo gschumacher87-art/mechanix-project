@@ -7,8 +7,8 @@ async function loadInvoices() {
         const template = i.template || { items: [], labour: [] };
 
         const subtotal =
-            (template.items || []).reduce((t, x) => t + Number(x.price || 0), 0) +
-            (template.labour || []).reduce((t, x) => t + Number(x.price || 0), 0);
+            (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
+            (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
 
         const gst = subtotal * 0.10;
         const total = subtotal + gst;
@@ -29,8 +29,8 @@ async function openInvoice(id) {
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
     const subtotal =
-        (template.items || []).reduce((t, x) => t + Number(x.price || 0), 0) +
-        (template.labour || []).reduce((t, x) => t + Number(x.price || 0), 0);
+        (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
+        (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
 
     const gst = subtotal * 0.10;
     const total = subtotal + gst;
@@ -41,16 +41,16 @@ async function openInvoice(id) {
     (template.items || []).forEach(i => {
         itemsHtml += `
         <div style="display:flex; justify-content:space-between; padding:6px 0;">
-            <span>${i.name}</span>
-            <span>$${Number(i.price).toFixed(2)}</span>
+            <span>${i.name} x${i.qty || 1}</span>
+            <span>$${(Number(i.price) * Number(i.qty || 1)).toFixed(2)}</span>
         </div>`;
     });
 
     (template.labour || []).forEach(l => {
         labourHtml += `
         <div style="display:flex; justify-content:space-between; padding:6px 0;">
-            <span>${l.name}</span>
-            <span>$${Number(l.price).toFixed(2)}</span>
+            <span>${l.name} x${l.qty || 1}</span>
+            <span>$${(Number(l.price) * Number(l.qty || 1)).toFixed(2)}</span>
         </div>`;
     });
 
@@ -133,13 +133,15 @@ async function addItem(id) {
     const price = Number(prompt("Price:"));
     if (!price) return;
 
+    const qty = Number(prompt("Qty:")) || 1;
+
     const template = {
         items: [...(invoice.template?.items || [])],
         labour: [...(invoice.template?.labour || [])],
         notes: invoice.template?.notes || ""
     };
 
-    template.items.push({ name, price });
+    template.items.push({ name, price, qty });
 
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
@@ -165,13 +167,15 @@ async function addLabour(id) {
     const price = Number(prompt("Price:"));
     if (!price) return;
 
+    const qty = Number(prompt("Hours:")) || 1;
+
     const template = {
         items: [...(invoice.template?.items || [])],
         labour: [...(invoice.template?.labour || [])],
         notes: invoice.template?.notes || ""
     };
 
-    template.labour.push({ name, price });
+    template.labour.push({ name, price, qty });
 
     await fetch(API + "/invoices/" + id, {
         method:"PUT",
