@@ -66,20 +66,10 @@ async function openCustomer(id) {
     ${customer.phone || ""}
 </div>
 
-    <div class="card">
+        <div class="card">
         <div class="title">Vehicles</div>
 
         ${vehicleHtml}
-
-        <input id="newVehicleMake" placeholder="Make">
-<input id="newVehicleModel" placeholder="Model">
-<input id="newVehicleYearMonth" placeholder="MM/YYYY">
-<input id="newVehicleRego" placeholder="Rego">
-<input id="newVehicleVin" placeholder="VIN">
-
-        <button class="primary" onclick="addVehicleToCustomer('${customer._id}')">
-            + Add Vehicle
-        </button>
     </div>
 
     <div class="card">
