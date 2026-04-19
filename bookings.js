@@ -54,21 +54,19 @@ async function loadBookings() {
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
 
-    const res = await fetch(API + "/bookings/" + id, {
-    headers: {
-        Authorization: localStorage.getItem("token")
-    }
-});
+    const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
 
-currentJob = {
+    currentJob = {
     _id: booking._id,
-    jobs: booking.jobs || [],
+    title: booking.title,
     customer: booking.customer || {},
-    vehicle: booking.vehicle || {}
+    vehicle: booking.vehicle || {},
+    description: booking.description || "",
+    checklist: generateChecklistFromServices(booking.services || [])
 };
 
     renderBookingCard();
@@ -96,17 +94,19 @@ function renderBookingCard() {
         <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
         <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
     </div>
+
+    <div class="card">
+        <div class="title">${currentJob.title}</div>
+    </div>
+
+    <div class="card">
+        <div class="title">Description</div>
+        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
+    </div>
 `;
 
-document.getElementById("jobCardChecklist").innerHTML = `
-${(currentJob.jobs || []).map((j, i) => `
-<div class="card">
-    <div class="title">Job ${i + 1}</div>
-    <b>${j.summary || ""}</b><br>
-    ${j.description || ""}
-</div>
-`).join("")}
-`;
+    document.getElementById("jobCardChecklist").innerHTML =
+        checklistHtml || "<div style='color:#777;'>No tasks</div>";
 
     document.getElementById("jobCardActions").innerHTML = `
         <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
@@ -118,26 +118,19 @@ ${(currentJob.jobs || []).map((j, i) => `
 // ================= ARRIVED =================
 async function arrivedBooking(id) {
 
-    const res = await fetch(API + "/bookings/" + id, {
-    headers: {
-        Authorization: localStorage.getItem("token")
-    }
-});
+    const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
        body: JSON.stringify({
-    title: (booking.jobs || []).map(j => j.summary).join(", "),
-    jobs: booking.jobs || [],
+    title: booking.title,
+    description: booking.description || "",
     customer: booking.customer?._id || booking.customer,
     vehicle: booking.vehicle?._id || booking.vehicle,
     status: "arrived",
-    checklist: (booking.jobs || []).flatMap(j => [
-        { text: j.summary, done: false },
-        { text: j.description, done: false }
-    ])
+    checklist: generateChecklistFromServices(booking.services || [])
 })
     });
 
@@ -395,8 +388,7 @@ if (!bookingDate) {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
     title: jobs[0].summary || "Booking",
-    description: "",
-jobs: jobs,
+    description: jobs.map(j => j.description).join("\n"),
 services: jobs.map(j => j.summary).filter(Boolean),
 customer: selectedCustomerId,
     vehicle: vehicleId,
