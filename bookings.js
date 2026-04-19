@@ -411,13 +411,6 @@ if (!bookingDate) {
         })
     });
 }
-
-    const data = await res.json();
-
-    if (!res.ok) {
-        return;
-    }
-
     closeBookingModal();
     show('bookings');
     loadBookings();
