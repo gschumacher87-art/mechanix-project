@@ -112,8 +112,10 @@ router.post("/:id/convert", auth, async (req, res) => {
     customer: booking.customer,
     vehicle: booking.vehicle,
     status: "booked",
-    checklist: []
-});
+    checklist: (booking.jobs || []).flatMap(j => [
+    { text: j.summary, done: false },
+    { text: j.description, done: false }
+])
 
         await job.save();
 
