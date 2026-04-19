@@ -121,18 +121,28 @@ async function arrivedBooking(id) {
     const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
+    let createdJobs = [];
+
+for (let i = 0; i < (booking.services || []).length; i++) {
+
+    const service = booking.services[i];
+
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-       body: JSON.stringify({
-    title: booking.title,
-    description: booking.description || "",
-    customer: booking.customer?._id || booking.customer,
-    vehicle: booking.vehicle?._id || booking.vehicle,
-    status: "arrived",
-    checklist: generateChecklistFromServices(booking.services || [])
-})
+        body: JSON.stringify({
+            title: service,
+            description: booking.description || "",
+            customer: booking.customer?._id || booking.customer,
+            vehicle: booking.vehicle?._id || booking.vehicle,
+            status: "arrived",
+            checklist: generateChecklistFromServices([service])
+        })
     });
+
+    const job = await jobRes.json();
+    createdJobs.push(job);
+}
 
     const job = await jobRes.json();
     console.log("CREATED JOB:", job);
