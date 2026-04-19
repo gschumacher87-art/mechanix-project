@@ -392,25 +392,26 @@ if (!bookingDate) {
         return;
     }
 
-    for (const j of jobs) {
+    const services = jobs
+    .map(j => j.summary)
+    .filter(s => s && s.trim());
 
-    if (!j.summary) continue;
+if (!services.length) return;
 
-    await fetch(API + "/bookings", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            title: j.summary,
-            description: j.description || "",
-            services: [j.summary],
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
-            status: "booked",
-            date: bookingDate,
-            checklist: []
-        })
-    });
-}
+await fetch(API + "/bookings", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+        title: services[0],
+        description: "",
+        services: services,
+        customer: selectedCustomerId,
+        vehicle: vehicleId,
+        status: "booked",
+        date: bookingDate,
+        checklist: []
+    })
+});
     closeBookingModal();
     show('bookings');
     loadBookings();
