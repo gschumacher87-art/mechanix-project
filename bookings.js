@@ -93,14 +93,13 @@ function renderBookingCard() {
         <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
     </div>
 
-    <div class="card">
-        <div class="title">${currentJob.title}</div>
-    </div>
-
-    <div class="card">
-        <div class="title">Description</div>
-        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
-    </div>
+    ${(currentJob.jobs || []).map((j, i) => `
+<div class="card">
+    <div class="title">Job ${i + 1}</div>
+    <b>${j.summary || ""}</b><br>
+    ${j.description || "<span style='color:#777;'>No description</span>"}
+</div>
+`).join("")}
 `;
 
     document.getElementById("jobCardChecklist").innerHTML =
