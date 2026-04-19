@@ -132,7 +132,11 @@ async function addVehicleToCustomer(customerId) {
     vin: document.getElementById("newVehicleVin").value
 })
     });
-
+document.getElementById("newVehicleMake").value = "";
+document.getElementById("newVehicleModel").value = "";
+document.getElementById("newVehicleYearMonth").value = "";
+document.getElementById("newVehicleRego").value = "";
+document.getElementById("newVehicleVin").value = "";
     openCustomer(customerId);
 }
 
