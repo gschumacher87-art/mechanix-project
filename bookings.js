@@ -88,20 +88,21 @@ function renderBookingCard() {
         </div>`;
     });
 
-    document.getElementById("jobCardInfo").innerHTML = `
+   document.getElementById("jobCardInfo").innerHTML = `
     <div class="card">
         <b>Status:</b> BOOKING<br>
         <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
         <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
     </div>
 
-    ${(currentJob.jobs || []).map((j, i) => `
     <div class="card">
-        <div class="title">Job ${i + 1}</div>
-        <b>${j.summary || ""}</b><br>
-        ${j.description || ""}
+        <div class="title">${currentJob.title}</div>
     </div>
-    `).join("")}
+
+    <div class="card">
+        <div class="title">Description</div>
+        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
+    </div>
 `;
 
     document.getElementById("jobCardChecklist").innerHTML =
