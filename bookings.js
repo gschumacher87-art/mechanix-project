@@ -92,12 +92,14 @@ function renderBookingCard() {
         <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
         <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
     </div>
+`;
 
-    ${(currentJob.jobs || []).map((j, i) => `
+document.getElementById("jobCardChecklist").innerHTML = `
+${(currentJob.jobs || []).map((j, i) => `
 <div class="card">
     <div class="title">Job ${i + 1}</div>
     <b>${j.summary || ""}</b><br>
-    ${j.description || "<span style='color:#777;'>No description</span>"}
+    ${j.description || ""}
 </div>
 `).join("")}
 `;
