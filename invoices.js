@@ -66,19 +66,18 @@ async function openInvoice(id) {
             <div class="title">Customer Invoice ${locked ? "(FINAL)" : ""}</div>
 
             <div style="margin-bottom:10px;">
-                <b>Invoice Summary</b>
-                <div style="color:#555;">
-                    ${template.notes || "No summary"}
-                </div>
-            </div>
+    <b>Invoice Summary</b>
+    <div style="color:#555;">
+        ${invoice.summary || template.notes || "No summary"}
+    </div>
+</div>
 
-            <div style="margin-bottom:10px;">
-                <b>Description</b>
-                <div style="color:#555;">
-                    ${template.notes || "No description"}
-                </div>
-            </div>
-        </div>
+<div style="margin-bottom:10px;">
+    <b>Description</b>
+    <div style="color:#555;">
+        ${invoice.description || "No description"}
+    </div>
+</div>
 
         <div class="card">
             <div class="title">Items</div>
