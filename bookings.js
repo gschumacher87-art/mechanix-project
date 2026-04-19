@@ -383,20 +383,25 @@ if (!bookingDate) {
         return;
     }
 
-    const res = await fetch(API + "/bookings", {
+    for (const j of jobs) {
+
+    if (!j.summary) continue;
+
+    await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-    title: jobs[0].summary || "Booking",
-    description: jobs.map(j => j.description).join("\n"),
-services: jobs.map(j => j.summary).filter(Boolean),
-customer: selectedCustomerId,
-    vehicle: vehicleId,
-    status: "booked",
-    date: bookingDate,
-    checklist: []
-})
+            title: j.summary,
+            description: j.description || "",
+            services: [j.summary],
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            status: "booked",
+            date: bookingDate,
+            checklist: []
+        })
     });
+}
 
     const data = await res.json();
 
