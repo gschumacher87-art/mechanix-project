@@ -72,13 +72,6 @@ async function openInvoice(id) {
     </div>
 </div>
 
-<div style="margin-bottom:10px;">
-    <b>Description</b>
-    <div style="color:#555;">
-        ${invoice.description || "No description"}
-    </div>
-</div>
-
         <div class="card">
             <div class="title">Items</div>
             ${itemsHtml || "<div style='color:#777;'>No items</div>"}
