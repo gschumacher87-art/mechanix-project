@@ -124,13 +124,13 @@ async function arrivedBooking(id) {
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
+       body: JSON.stringify({
     title: booking.title,
     description: booking.description || "",
     customer: booking.customer?._id || booking.customer,
     vehicle: booking.vehicle?._id || booking.vehicle,
     status: "arrived",
-    checklist: []
+    checklist: generateChecklistFromServices(booking.services || [])
 })
     });
 
