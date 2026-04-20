@@ -18,7 +18,7 @@ async function loadBookings() {
     let futureHtml = "";
     
 
-   const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
 
     data.forEach(b => {
         const c = b.customer || {};
@@ -33,9 +33,13 @@ async function loadBookings() {
 
         const bookingDate = (b.date || "").split("T")[0];
 
-        todayHtml += card;
+        if (bookingDate === today) {
+            todayHtml += card;
+        } else {
+            futureHtml += card;
+        }
     });
-alert(res.status);
+
     // calendar handled separately
 
     document.getElementById("todayList").innerHTML =
@@ -62,7 +66,7 @@ async function openBooking(id) {
     customer: booking.customer || {},
     vehicle: booking.vehicle || {},
     description: booking.description || "",
-    jobs: booking.services || []
+    checklist: generateChecklistFromServices(booking.services || [])
 };
 
     renderBookingCard();
@@ -95,16 +99,10 @@ function renderBookingCard() {
         <div class="title">${currentJob.title}</div>
     </div>
 
-   <div class="card">
-    <div class="title">Jobs</div>
-    ${
-        (currentJob.jobs || []).map(j => `
-    <div onclick="alert('${j.description || ""}')">
-        ${j.title}
-        </div>
-        `).join("") || "<span style='color:#777;'>No jobs yet</span>"
-    }
-</div>
+    <div class="card">
+        <div class="title">Description</div>
+        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
+    </div>
 `;
 
     document.getElementById("jobCardChecklist").innerHTML =
@@ -123,34 +121,25 @@ async function arrivedBooking(id) {
     const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
-    let createdJobs = [];
-
-for (let i = 0; i < (booking.services || []).length; i++) {
-
-    const service = booking.services[i];
-
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            title: service.title,
-            description: service.description || "",
-            customer: booking.customer?._id || booking.customer,
-            vehicle: booking.vehicle?._id || booking.vehicle,
-            status: "arrived",
-            checklist: generateChecklistFromServices([service])
-        })
+       body: JSON.stringify({
+    title: booking.title,
+    description: booking.description || "",
+    customer: booking.customer?._id || booking.customer,
+    vehicle: booking.vehicle?._id || booking.vehicle,
+    status: "arrived",
+    checklist: generateChecklistFromServices(booking.services || [])
+})
     });
 
     const job = await jobRes.json();
-    createdJobs.push(job);
-}
+    console.log("CREATED JOB:", job);
 
-  console.log("CREATED JOBS:", createdJobs);
+    await fetch(API + "/bookings/" + id, { method:"DELETE" });
 
-currentJob.jobs = createdJobs;
-
-renderBookingCard();
+    openJobCard(job._id);
 }
 
 // ================= DELETE =================
@@ -394,29 +383,32 @@ if (!bookingDate) {
         return;
     }
 
-    const services = jobs
-    .map(j => ({
-        title: j.summary,
-        description: j.description || ""
-    }))
-    .filter(s => s.title && s.title.trim());
+    for (const j of jobs) {
 
-if (!services.length) return;
+    if (!j.summary) continue;
 
-await fetch(API + "/bookings", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-        title: services[0].title,
-description: "",
-services: services,
-        customer: selectedCustomerId,
-        vehicle: vehicleId,
-        status: "booked",
-        date: bookingDate,
-        checklist: []
-    })
-});
+    await fetch(API + "/bookings", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: j.summary,
+            description: j.description || "",
+            services: [j.summary],
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            status: "booked",
+            date: bookingDate,
+            checklist: []
+        })
+    });
+}
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        return;
+    }
+
     closeBookingModal();
     show('bookings');
     loadBookings();
