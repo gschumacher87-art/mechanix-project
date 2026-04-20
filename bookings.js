@@ -99,8 +99,7 @@ function renderBookingCard() {
         <b>Job ${i + 1}</b><br>
         ${s}
     </div>
-`)
-            `).join("") || "<span style='color:#777;'>No jobs</span>"
+`).join("") || "<span style='color:#777;'>No jobs</span>"
         }
     </div>
 `;
