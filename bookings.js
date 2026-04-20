@@ -88,10 +88,6 @@ function renderBookingCard() {
     </div>
 
     <div class="card">
-        <div class="title">${currentJob.title}</div>
-    </div>
-
-    <div class="card">
         <div class="title">Jobs</div>
         ${
             (currentJob.services || []).map((s, i) => `
