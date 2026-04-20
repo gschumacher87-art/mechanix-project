@@ -28,9 +28,17 @@ async function loadJobs() {
         const card = `
 <div class="card" onclick="openJobCard('${j._id}')" style="border-left:6px solid ${color}">
     <div class="title">${j.title}</div>
-    <span class="status ${j.status}">${j.status}</span><br><br>
-    <b>${customerName}</b><br>
-    ${vehicleName}
+<span class="status ${j.status}">${j.status}</span><br><br>
+
+${
+    (j.jobs || []).map(x => `
+        <div style="font-size:14px;">• ${x.summary}</div>
+    `).join("")
+}
+
+<br>
+<b>${customerName}</b><br>
+${vehicleName}
 </div>`;
 
         if (j.status === "arrived") booked += card;
