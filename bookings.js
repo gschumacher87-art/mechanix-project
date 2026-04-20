@@ -378,7 +378,6 @@ async function confirmBooking() {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: jobs[0]?.summary || "Booking",
-            description: jobs.map(j => j.description).join("\n"),
             services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
             customer: selectedCustomerId,
             vehicle: vehicleId,
