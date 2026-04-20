@@ -383,25 +383,20 @@ if (!bookingDate) {
         return;
     }
 
-    for (const j of jobs) {
-
-    if (!j.summary) continue;
-
-    await fetch(API + "/bookings", {
+    const res = await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: j.summary,
-            description: j.description || "",
-            services: [j.summary],
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
-            status: "booked",
-            date: bookingDate,
-            checklist: []
-        })
+    title: jobs[0].summary || "Booking",
+    description: jobs.map(j => j.description).join("\n"),
+services: jobs.map(j => j.summary).filter(Boolean),
+customer: selectedCustomerId,
+    vehicle: vehicleId,
+    status: "booked",
+    date: bookingDate,
+    checklist: []
+})
     });
-}
 
     const data = await res.json();
 
@@ -565,4 +560,37 @@ function openTemplatePopup(i) {
     window.selectedJobIndex = i;
     document.getElementById("templateModal").style.display = "block";
     loadTemplates();
+}
+
+async function saveBooking() {
+
+    const date = document.getElementById("bookingDate").value;
+    const vehicleId = document.getElementById("bookingVehicle").value;
+
+    if (!selectedCustomerId) return;
+    if (!date) return;
+    if (!vehicleId) return;
+
+    for (let job of jobs) {
+
+        if (!job.summary) continue;
+
+        const payload = {
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            date: date,
+            title: job.summary,
+            description: job.description || "",
+            services: [job.summary]
+        };
+
+        await fetch(API + "/bookings", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+        });
+    }
 }
