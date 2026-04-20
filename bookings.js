@@ -6,17 +6,16 @@ let currentMonth = new Date();
 // ================= LOAD BOOKINGS =================
 async function loadBookings() {
     const res = await fetch(API + "/bookings?test=" + Date.now(), {
-    headers: {
-        Authorization: localStorage.getItem("token")
-    }
-});
+        headers: {
+            Authorization: localStorage.getItem("token")
+        }
+    });
     const data = await res.json();
 
     bookings = data;
 
     let todayHtml = "";
     let futureHtml = "";
-    
 
     const today = new Date().toLocaleDateString("en-CA");
 
@@ -28,7 +27,12 @@ async function loadBookings() {
         <div class="card" onclick="openBooking('${b._id}')">
             <div class="title">${b.title || "Booking"}</div>
             <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
-            ${v.make || ""} ${v.model || ""}
+            ${v.make || ""} ${v.model || ""}<br><br>
+            ${
+                (b.services || []).map(s => `
+                    <div>• ${s}</div>
+                `).join("")
+            }
         </div>`;
 
         const bookingDate = (b.date || "").split("T")[0];
@@ -39,8 +43,6 @@ async function loadBookings() {
             futureHtml += card;
         }
     });
-
-    // calendar handled separately
 
     document.getElementById("todayList").innerHTML =
         todayHtml || "<div class='card'>No bookings today</div>";
@@ -61,14 +63,13 @@ async function openBooking(id) {
     document.getElementById("jobCard").classList.add("active");
 
     currentJob = {
-    _id: booking._id,
-    title: booking.title,
-    customer: booking.customer || {},
-    vehicle: booking.vehicle || {},
-    description: booking.description || "",
-    services: booking.services || [],
-    checklist: generateChecklistFromServices(booking.services || [])
-};
+        _id: booking._id,
+        title: booking.title,
+        customer: booking.customer || {},
+        vehicle: booking.vehicle || {},
+        description: booking.description || "",
+        services: booking.services || []
+    };
 
     renderBookingCard();
 }
@@ -79,17 +80,7 @@ function renderBookingCard() {
     const c = currentJob.customer || {};
     const v = currentJob.vehicle || {};
 
-    let checklistHtml = "";
-
-    (currentJob.checklist || []).forEach(item => {
-        checklistHtml += `
-        <div style="display:flex; gap:10px; margin-bottom:6px;">
-            <input type="checkbox" ${item.done ? "checked" : ""}>
-            <span>${item.text}</span>
-        </div>`;
-    });
-
-   document.getElementById("jobCardInfo").innerHTML = `
+    document.getElementById("jobCardInfo").innerHTML = `
     <div class="card">
         <b>Status:</b> BOOKING<br>
         <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
@@ -101,19 +92,18 @@ function renderBookingCard() {
     </div>
 
     <div class="card">
-    <div class="title">Jobs</div>
-    ${
-        (currentJob.services || []).map(s => `
-            <div style="margin-bottom:10px;">
-                <b>${s}</b>
-            </div>
-        `).join("") || "<span style='color:#777;'>No jobs</span>"
-    }
-</div>
+        <div class="title">Jobs</div>
+        ${
+            (currentJob.services || []).map(s => `
+                <div style="margin-bottom:10px;">
+                    <b>${s}</b>
+                </div>
+            `).join("") || "<span style='color:#777;'>No jobs</span>"
+        }
+    </div>
 `;
 
-    document.getElementById("jobCardChecklist").innerHTML =
-        checklistHtml || "<div style='color:#777;'>No tasks</div>";
+    document.getElementById("jobCardChecklist").innerHTML = "";
 
     document.getElementById("jobCardActions").innerHTML = `
         <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
@@ -131,14 +121,14 @@ async function arrivedBooking(id) {
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-       body: JSON.stringify({
-    title: booking.title,
-    description: booking.description || "",
-    customer: booking.customer?._id || booking.customer,
-    vehicle: booking.vehicle?._id || booking.vehicle,
-    status: "arrived",
-    checklist: generateChecklistFromServices(booking.services || [])
-})
+        body: JSON.stringify({
+            title: booking.title,
+            description: booking.description || "",
+            services: booking.services || [],
+            customer: booking.customer?._id || booking.customer,
+            vehicle: booking.vehicle?._id || booking.vehicle,
+            status: "arrived"
+        })
     });
 
     const job = await jobRes.json();
@@ -165,9 +155,9 @@ function openBookingModal() {
 
     document.getElementById("bookingVehicle").innerHTML = "";
     document.getElementById("displayFirstName").value = "";
-document.getElementById("displayLastName").value = "";
-document.getElementById("displayPhone").value = "";
-document.getElementById("displayRego").value = "";
+    document.getElementById("displayLastName").value = "";
+    document.getElementById("displayPhone").value = "";
+    document.getElementById("displayRego").value = "";
 
     document.getElementById("bookingDate").value =
         new Date().toLocaleDateString("en-CA");
@@ -183,9 +173,9 @@ function closeBookingModal() {
 async function bookingSearchCustomers() {
 
     const first = (document.getElementById("searchFirstName").value || "").toLowerCase();
-const last = (document.getElementById("searchLastName").value || "").toLowerCase();
-const phone = document.getElementById("searchPhone").value || "";
-const rego = (document.getElementById("searchRego").value || "").toLowerCase();
+    const last = (document.getElementById("searchLastName").value || "").toLowerCase();
+    const phone = document.getElementById("searchPhone").value || "";
+    const rego = (document.getElementById("searchRego").value || "").toLowerCase();
 
     const res = await fetch(API + "/customers");
     const customers = await res.json();
@@ -218,24 +208,24 @@ const rego = (document.getElementById("searchRego").value || "").toLowerCase();
 
         if (matchCustomer || matchVehicle) {
 
-    const customerVehicles = vehicles.filter(v =>
-        v.customer && (v.customer._id || v.customer).toString() === c._id.toString()
-    );
+            const customerVehicles = vehicles.filter(v =>
+                v.customer && (v.customer._id || v.customer).toString() === c._id.toString()
+            );
 
-    let vehicleLine = "";
+            let vehicleLine = "";
 
-    if (customerVehicles.length) {
-        const v = customerVehicles[0];
-        vehicleLine = `<br><small>${v.make || ""} ${v.model || ""} (${v.rego || ""})</small>`;
-    }
+            if (customerVehicles.length) {
+                const v = customerVehicles[0];
+                vehicleLine = `<br><small>${v.make || ""} ${v.model || ""} (${v.rego || ""})</small>`;
+            }
 
-    html += `
-    <div class="card" onclick="selectCustomerFromPopup('${c._id}')">
-        <b>${c.firstName} ${c.lastName}</b><br>
-        ${c.phone}
-        ${vehicleLine}
-    </div>`;
-}
+            html += `
+            <div class="card" onclick="selectCustomerFromPopup('${c._id}')">
+                <b>${c.firstName} ${c.lastName}</b><br>
+                ${c.phone}
+                ${vehicleLine}
+            </div>`;
+        }
     });
 
     document.getElementById("customerPopupList").innerHTML =
@@ -246,7 +236,6 @@ const rego = (document.getElementById("searchRego").value || "").toLowerCase();
 
     document.getElementById("customerPopup").style.display = "block";
 }
-
 // ================= SELECT CUSTOMER =================
 async function selectCustomer(id) {
 
@@ -255,23 +244,19 @@ async function selectCustomer(id) {
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
-    // ✅ FILL DISPLAY FIELDS
     document.getElementById("displayFirstName").value = customer.firstName || "";
     document.getElementById("displayLastName").value = customer.lastName || "";
     document.getElementById("displayPhone").value = customer.phone || "";
 
-    // LOAD VEHICLES
     const vRes = await fetch(API + "/vehicles?customer=" + id);
     const vehicles = await vRes.json();
 
-    // fill rego (first vehicle only)
     if (vehicles.length) {
         document.getElementById("displayRego").value = vehicles[0].rego || "";
     } else {
         document.getElementById("displayRego").value = "";
     }
 
-    // populate dropdown
     let options = `<option value="">Select vehicle</option>`;
 
     vehicles.forEach(v => {
@@ -282,10 +267,6 @@ async function selectCustomer(id) {
     document.getElementById("bookingVehicle").value = vehicles[0]?._id || "";
 }
 window.selectCustomer = selectCustomer;
-
-function closeCustomerPopup() {
-    document.getElementById("customerPopup").style.display = "none";
-}
 
 function closeCustomerPopup() {
     document.getElementById("customerPopup").style.display = "none";
@@ -376,15 +357,16 @@ async function confirmBooking() {
         return;
     }
 
-    if (!jobs.length || !jobs[0].summary) {
-    return;
-}
+    if (!jobs.length) {
+        return;
+    }
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
-if (!bookingDate) {
-    return;
-}
+
+    if (!bookingDate) {
+        return;
+    }
 
     if (!vehicleId) {
         return;
@@ -394,15 +376,14 @@ if (!bookingDate) {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-    title: jobs[0].summary || "Booking",
-    description: jobs.map(j => j.description).join("\n"),
-services: jobs.map(j => j.summary).filter(Boolean),
-customer: selectedCustomerId,
-    vehicle: vehicleId,
-    status: "booked",
-    date: bookingDate,
-    checklist: []
-})
+            title: jobs[0]?.summary || "Booking",
+            description: jobs.map(j => j.description).join("\n"),
+            services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            status: "booked",
+            date: bookingDate
+        })
     });
 
     const data = await res.json();
@@ -443,12 +424,12 @@ function renderJobs() {
             <div class="title">Job ${i + 1}</div>
 
             <input placeholder="Summary" value="${job.summary || ""}"
-    oninput="updateJobField(${i}, 'summary', this.value)">
+                oninput="updateJobField(${i}, 'summary', this.value)">
 
-<input placeholder="Description" value="${job.description || ""}"
-    oninput="updateJobField(${i}, 'description', this.value)">
+            <input placeholder="Description" value="${job.description || ""}"
+                oninput="updateJobField(${i}, 'description', this.value)">
 
-<button onclick="openTemplatePopup(${i})">Use Template</button>
+            <button onclick="openTemplatePopup(${i})">Use Template</button>
         </div>
         `;
     });
@@ -514,7 +495,7 @@ function renderCalendar() {
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
 
-let html = `
+    let html = `
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
     <button onclick="changeMonth(-1)">←</button>
     <b>${monthName} ${year}</b>
@@ -524,7 +505,6 @@ let html = `
 <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
 `;
 
-    // empty slots before first day
     for (let i = 0; i < firstDay; i++) {
         html += "<div></div>";
     }
@@ -533,7 +513,6 @@ let html = `
 
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
-        // check if this day has bookings
         const hasBooking = bookings.some(b =>
             (b.date || "").split("T")[0] === dateStr
         );
