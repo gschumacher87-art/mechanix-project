@@ -115,8 +115,6 @@ async function arrivedBooking(id) {
     const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
-    let firstJobId = null;
-
     const jobRes = await fetch(API + "/jobs", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
