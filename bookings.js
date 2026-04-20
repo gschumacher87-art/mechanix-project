@@ -90,6 +90,8 @@ function renderBookingCard() {
         <div class="title">Jobs</div>
         ${
            (() => {
+    ${
+(() => {
     const services = currentJob.services || [];
     const descriptions = (currentJob.description || "").split("\n");
 
