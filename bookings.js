@@ -68,7 +68,7 @@ async function openBooking(id) {
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
         description: booking.description || "",
-        services: booking.services || []
+        services: booking.services || booking.summaries || []
     };
 
     renderBookingCard();
