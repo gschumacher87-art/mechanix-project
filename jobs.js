@@ -77,6 +77,9 @@ async function openJobCard(id) {
 // ================= RENDER JOB =================
 function renderJobCard() {
 
+    const jobs = currentJob.jobs || [];
+    const selected = jobs[selectedSubJobIndex] || {};
+
     document.getElementById("jobCardInfo").innerHTML = `
         <div class="card">
             <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
@@ -87,14 +90,30 @@ function renderJobCard() {
         <div class="card">
             <div class="title">Jobs</div>
             ${
-                (currentJob.jobs || []).map((j, i) => `
-                    <div style="margin-bottom:12px;">
-                        <b>Job ${i + 1}</b><br>
-                        ${j.summary || ""}<br>
-                        <div style="color:#555;">${j.description || ""}</div>
+                jobs.map((j, i) => `
+                    <div 
+                        onclick="selectSubJob(${i})"
+                        style="
+                            padding:8px;
+                            margin-bottom:6px;
+                            border:${i === selectedSubJobIndex ? '2px solid #007bff' : '1px solid #ccc'};
+                            cursor:pointer;
+                        ">
+                        ${j.summary || ""}
                     </div>
                 `).join("") || "<span style='color:#777;'>No jobs</span>"
             }
+        </div>
+
+        <div class="card">
+            <div class="title">Selected Job</div>
+            <b>${selected.summary || ""}</b><br><br>
+            <div style="color:#555;">${selected.description || "No description"}</div>
+
+            <br>
+
+            <button class="primary" onclick="clockOn()">Clock On</button>
+            <button class="secondary" onclick="clockOff()">Clock Off</button>
         </div>
     `;
 
