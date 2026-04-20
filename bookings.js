@@ -86,16 +86,14 @@ function renderBookingCard() {
         <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
     </div>
 
-    <div class="card">
-        <div class="title">Jobs</div>
-        ${
-           (() => {
+  <div class="card">
+    <div class="title">Jobs</div>
     ${
-(() => {
-    const services = currentJob.services || [];
-    const descriptions = (currentJob.description || "").split("\n");
+        (() => {
+            const services = currentJob.services || [];
+            const descriptions = (currentJob.description || "").split("\n");
 
-    return services.map((s, i) => `
+            return services.map((s, i) => `
 <div style="margin-bottom:15px;">
     <b>Job ${i + 1}</b><br>
     <b>${s || "No Title"}</b><br>
@@ -104,9 +102,9 @@ function renderBookingCard() {
     </small>
 </div>
 `).join("");
-})()
-}
-    </div>
+        })()
+    }
+</div>
 `;
 
     document.getElementById("jobCardChecklist").innerHTML = "";
