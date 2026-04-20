@@ -56,8 +56,7 @@ async function loadBookings() {
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
 
-    const res = await fetch(API + "/bookings/" + id);
-    const booking = await res.json();
+    const booking = bookings.find(b => b._id === id); // ✅ USE EXISTING DATA
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
