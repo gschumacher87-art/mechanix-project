@@ -33,11 +33,7 @@ async function loadBookings() {
 
         const bookingDate = (b.date || "").split("T")[0];
 
-        if (bookingDate === today) {
-            todayHtml += card;
-        } else {
-            futureHtml += card;
-        }
+        todayHtml += card;
     });
 alert(res.status);
     // calendar handled separately
