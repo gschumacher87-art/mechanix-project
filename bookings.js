@@ -66,7 +66,6 @@ async function openBooking(id) {
         title: booking.title,
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
-        description: booking.description || "",
         services: booking.services || booking.summaries || []
     };
 
@@ -91,15 +90,11 @@ function renderBookingCard() {
     ${
         (() => {
             const services = currentJob.services || [];
-            const descriptions = (currentJob.description || "").split("\n");
 
-            return services.map((s, i) => `
+return services.map((s, i) => `
 <div style="margin-bottom:15px;">
     <b>Job ${i + 1}</b><br>
-    <b>${s || "No Title"}</b><br>
-    <small style="color:#777;">
-        ${descriptions[i] || "No Description"}
-    </small>
+    <b>${s}</b>
 </div>
 `).join("");
         })()
