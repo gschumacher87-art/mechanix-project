@@ -118,17 +118,18 @@ async function arrivedBooking(id) {
     const booking = await res.json();
 
     const jobRes = await fetch(API + "/jobs", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-    title: "Job Card",
-    jobs: (booking.services || []).map(s => ({
-        summary: s,
-        description: ""
-    })),
-    customer: booking.customer?._id || booking.customer,
-    vehicle: booking.vehicle?._id || booking.vehicle,
-    status: "arrived"
+method:"POST",
+headers:{ "Content-Type":"application/json" },
+body: JSON.stringify({
+title: "Job Card",
+jobs: (booking.services || []).map(s => ({
+    summary: s,
+    description: ""
+})),
+customer: booking.customer?._id || booking.customer,
+vehicle: booking.vehicle?._id || booking.vehicle,
+status: "arrived"
+})
 });
 
 const job = await jobRes.json();
