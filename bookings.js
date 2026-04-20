@@ -374,47 +374,54 @@ async function selectCustomerFromPopup(id) {
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
+        alert("No customer selected");
         return;
     }
 
     if (!jobs.length || !jobs[0].summary) {
-    return;
-}
+        alert("No job added");
+        return;
+    }
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
-if (!bookingDate) {
-    return;
-}
+
+    if (!bookingDate) {
+        alert("No date");
+        return;
+    }
 
     if (!vehicleId) {
+        alert("No vehicle");
         return;
     }
 
     const res = await fetch(API + "/bookings", {
         method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        
+        headers:{ 
+            "Content-Type":"application/json",
+            "Authorization": localStorage.getItem("token")
+        },
         body: JSON.stringify({
-    title: jobs[0].summary || "Booking",
-    description: jobs.map(j => j.description).join("\n"),
-    services: jobs.map(j => ({
-        title: j.summary,
-        description: j.description || ""
-    })).filter(j => j.title && j.title.trim()),
-    customer: selectedCustomerId,
-    vehicle: vehicleId,
-    status: "booked",
-    date: bookingDate,
-    checklist: []
-})
+            title: jobs[0].summary || "Booking",
+            description: jobs.map(j => j.description).join("\n"),
+            services: jobs.map(j => j.summary).filter(Boolean),
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            status: "booked",
+            date: bookingDate,
+            checklist: []
+        })
     });
 
     const data = await res.json();
 
     if (!res.ok) {
+        alert("FAILED: " + JSON.stringify(data));
         return;
     }
+
+    alert("Booking created");
 
     closeBookingModal();
     show('bookings');
