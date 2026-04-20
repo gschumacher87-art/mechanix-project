@@ -7,7 +7,7 @@ let currentMonth = new Date();
 async function loadBookings() {
     const res = await fetch(API + "/bookings?test=" + Date.now(), {
     headers: {
-        Authorization: "Bearer " + localStorage.getItem("token")
+        Authorization: localStorage.getItem("token")
     }
 });
     const data = await res.json();
@@ -66,7 +66,6 @@ async function openBooking(id) {
     customer: booking.customer || {},
     vehicle: booking.vehicle || {},
     description: booking.description || "",
-    services: booking.services || [],
     checklist: generateChecklistFromServices(booking.services || [])
 };
 
@@ -101,16 +100,9 @@ function renderBookingCard() {
     </div>
 
     <div class="card">
-    <div class="title">Jobs</div>
-    ${
-        (currentJob.services || []).map(s => `
-    <div style="margin-bottom:10px;">
-        <b>${s.title}</b><br>
-        <small>${s.description || ""}</small>
+        <div class="title">Description</div>
+        ${currentJob.description || "<span style='color:#777;'>No description</span>"}
     </div>
-        `).join("") || "<span style='color:#777;'>No jobs</span>"
-    }
-</div>
 `;
 
     document.getElementById("jobCardChecklist").innerHTML =
@@ -374,54 +366,43 @@ async function selectCustomerFromPopup(id) {
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
-        alert("No customer selected");
         return;
     }
 
     if (!jobs.length || !jobs[0].summary) {
-        alert("No job added");
-        return;
-    }
+    return;
+}
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
-
-    if (!bookingDate) {
-        alert("No date");
-        return;
-    }
+if (!bookingDate) {
+    return;
+}
 
     if (!vehicleId) {
-        alert("No vehicle");
         return;
     }
 
     const res = await fetch(API + "/bookings", {
         method:"POST",
-        headers:{ 
-            "Content-Type":"application/json",
-            "Authorization": localStorage.getItem("token")
-        },
+        headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: jobs[0].summary || "Booking",
-            description: jobs.map(j => j.description).join("\n"),
-            services: jobs.map(j => j.summary).filter(Boolean),
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
-            status: "booked",
-            date: bookingDate,
-            checklist: []
-        })
+    title: jobs[0].summary || "Booking",
+    description: jobs.map(j => j.description).join("\n"),
+services: jobs.map(j => j.summary).filter(Boolean),
+customer: selectedCustomerId,
+    vehicle: vehicleId,
+    status: "booked",
+    date: bookingDate,
+    checklist: []
+})
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-        alert("FAILED: " + JSON.stringify(data));
         return;
     }
-
-    alert("Booking created");
 
     closeBookingModal();
     show('bookings');
@@ -579,37 +560,4 @@ function openTemplatePopup(i) {
     window.selectedJobIndex = i;
     document.getElementById("templateModal").style.display = "block";
     loadTemplates();
-}
-
-async function saveBooking() {
-
-    const date = document.getElementById("bookingDate").value;
-    const vehicleId = document.getElementById("bookingVehicle").value;
-
-    if (!selectedCustomerId) return;
-    if (!date) return;
-    if (!vehicleId) return;
-
-    for (let job of jobs) {
-
-        if (!job.summary) continue;
-
-        const payload = {
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
-            date: date,
-            title: job.summary,
-            description: job.description || "",
-            services: [job.summary]
-        };
-
-        await fetch(API + "/bookings", {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token")
-            },
-            body: JSON.stringify(payload)
-        });
-    }
 }
