@@ -399,8 +399,11 @@ if (!bookingDate) {
     }
 
     const services = jobs
-    .map(j => j.summary)
-    .filter(s => s && s.trim());
+    .map(j => ({
+        title: j.summary,
+        description: j.description || ""
+    }))
+    .filter(s => s.title && s.title.trim());
 
 if (!services.length) return;
 
