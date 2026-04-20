@@ -25,7 +25,7 @@ async function loadBookings() {
 
         const card = `
         <div class="card" onclick="openBooking('${b._id}')">
-            <div class="title">${b.title || "Booking"}</div>
+            <div class="title">Booking</div>
             <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
             ${v.make || ""} ${v.model || ""}<br><br>
             ${
@@ -94,10 +94,12 @@ function renderBookingCard() {
     <div class="card">
         <div class="title">Jobs</div>
         ${
-            (currentJob.services || []).map(s => `
-                <div style="margin-bottom:10px;">
-                    <b>${s}</b>
-                </div>
+            (currentJob.services || []).map((s, i) => `
+    <div style="margin-bottom:10px;">
+        <b>Job ${i + 1}</b><br>
+        ${s}
+    </div>
+`)
             `).join("") || "<span style='color:#777;'>No jobs</span>"
         }
     </div>
