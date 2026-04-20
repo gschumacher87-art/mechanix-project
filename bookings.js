@@ -396,7 +396,7 @@ if (!bookingDate) {
         body: JSON.stringify({
     title: jobs[0].summary || "Booking",
     description: jobs.map(j => j.description).join("\n"),
-    services: jobs.map(j => j.summary).filter(Boolean),
+    (currentJob.services || []).map(s => ...
     customer: selectedCustomerId,
     vehicle: vehicleId,
     status: "booked",
