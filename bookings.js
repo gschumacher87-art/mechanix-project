@@ -393,10 +393,14 @@ if (!bookingDate) {
     const res = await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
+        
         body: JSON.stringify({
     title: jobs[0].summary || "Booking",
     description: jobs.map(j => j.description).join("\n"),
-    (currentJob.services || []).map(s => ...
+    services: jobs.map(j => ({
+        title: j.summary,
+        description: j.description || ""
+    })).filter(j => j.title && j.title.trim()),
     customer: selectedCustomerId,
     vehicle: vehicleId,
     status: "booked",
