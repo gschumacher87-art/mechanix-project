@@ -89,13 +89,20 @@ function renderBookingCard() {
     <div class="card">
         <div class="title">Jobs</div>
         ${
-            (currentJob.services || []).map((s, i) => `
-    <div style="margin-bottom:10px;">
-        <b>Job ${i + 1}</b><br>
-        ${s}
-    </div>
-`).join("") || "<span style='color:#777;'>No jobs</span>"
-        }
+           (() => {
+    const services = currentJob.services || [];
+    const descriptions = (currentJob.description || "").split("\n");
+
+    return services.map((s, i) => `
+<div style="margin-bottom:15px;">
+    <b>Job ${i + 1}</b><br>
+    <b>${s || "No Title"}</b><br>
+    <small style="color:#777;">
+        ${descriptions[i] || "No Description"}
+    </small>
+</div>
+`).join("");
+})()
     </div>
 `;
 
