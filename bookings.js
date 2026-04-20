@@ -411,9 +411,9 @@ await fetch(API + "/bookings", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify({
-        title: services[0],
-        description: "",
-        services: services,
+        title: services[0].title,
+description: "",
+services: services,
         customer: selectedCustomerId,
         vehicle: vehicleId,
         status: "booked",
