@@ -103,9 +103,9 @@ function renderBookingCard() {
     <div class="title">Jobs</div>
     ${
         (currentJob.jobs || []).map(j => `
-    <div ${j._id ? `onclick="openJobCard('${j._id}')"` : ""}>
+    <div onclick="alert('${j.description || ""}')">
         ${j.title}
-    </div>
+        </div>
         `).join("") || "<span style='color:#777;'>No jobs yet</span>"
     }
 </div>
