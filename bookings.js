@@ -39,7 +39,7 @@ async function loadBookings() {
             futureHtml += card;
         }
     });
-
+alert(res.status);
     // calendar handled separately
 
     document.getElementById("todayList").innerHTML =
