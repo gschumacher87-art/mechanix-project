@@ -80,13 +80,9 @@ function renderJobCard() {
         </div>
 
         <div class="card">
-    <div class="title">Jobs</div>
-    ${(currentJob.jobs || []).map((j,i) => `
-        <div style="margin-bottom:10px;">
-            <b>Job ${i+1}: ${j.summary}</b><br>
-            <div style="color:#555;">${j.description || ""}</div>
-        </div>
-    `).join("") || "<span style='color:#777;'>No jobs</span>"}
+    <div class="title">Job</div>
+    <b>${currentJob.title || ""}</b><br>
+    <div style="color:#555;">${currentJob.description || ""}</div>
 </div>
     `;
 
