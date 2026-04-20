@@ -118,18 +118,30 @@ async function arrivedBooking(id) {
     const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
+    let firstJobId = null;
+
+for (const s of (booking.services || [])) {
+
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: booking.title,
-            description: booking.description || "",
-            services: booking.services || [],
+            title: s,
+            description: s,
             customer: booking.customer?._id || booking.customer,
             vehicle: booking.vehicle?._id || booking.vehicle,
             status: "arrived"
         })
     });
+
+    const job = await jobRes.json();
+
+    if (!firstJobId) firstJobId = job._id;
+}
+
+await fetch(API + "/bookings/" + id, { method:"DELETE" });
+
+if (firstJobId) openJobCard(firstJobId);
 
     const job = await jobRes.json();
     console.log("CREATED JOB:", job);
