@@ -1,5 +1,6 @@
 let currentJob = null;
 
+// ================= LOAD JOBS =================
 async function loadJobs() {
     const res = await fetch(API + "/jobs");
     const data = await res.json();
@@ -32,8 +33,7 @@ async function loadJobs() {
     ${vehicleName}
 </div>`;
 
-        if (j.status === "booked") booked += card;
-        else if (j.status === "arrived") booked += card;
+        if (j.status === "arrived") booked += card;
         else if (j.status === "in-progress") active += card;
         else if (j.status === "pending-invoice") pending += card;
         else if (j.status === "completed") completed += card;
@@ -42,7 +42,7 @@ async function loadJobs() {
 
     jobList.innerHTML = `
         <div class="title">Booked</div>
-        ${booked || "<div class='card'>No bookings</div>"}
+        ${booked || "<div class='card'>No jobs</div>"}
 
         <div class="title">In Workshop</div>
         ${active || "<div class='card'>No active jobs</div>"}
@@ -55,6 +55,7 @@ async function loadJobs() {
     `;
 }
 
+// ================= OPEN JOB =================
 async function openJobCard(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
@@ -65,10 +66,10 @@ async function openJobCard(id) {
     renderJobCard();
 }
 
+// ================= RENDER JOB =================
 function renderJobCard() {
 
     document.getElementById("jobCardInfo").innerHTML = `
-
         <div class="card">
             <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
             <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
@@ -77,13 +78,8 @@ function renderJobCard() {
 
         <div class="card">
             <div class="title">${currentJob.title}</div>
+            <div style="color:#555;">${currentJob.description || ""}</div>
         </div>
-
-        <div class="card">
-    <div class="title">Job</div>
-    <b>${currentJob.title || ""}</b><br>
-    <div style="color:#555;">${currentJob.description || ""}</div>
-</div>
     `;
 
     let checklistHtml = "";
@@ -102,15 +98,21 @@ function renderJobCard() {
         checklistHtml || "<div style='color:#777;'>No tasks</div>";
 
     document.getElementById("jobCardActions").innerHTML = `
-        <button class="primary" onclick="startJobFromCard()">Start Job</button>
-        <button class="primary" onclick="finishJob()">Finish Job</button>
+        ${currentJob.status === "arrived" ? `
+            <button class="primary" onclick="startJob()">Start Job</button>
+        ` : ""}
+
+        ${currentJob.status === "in-progress" ? `
+            <button class="primary" onclick="finishJob()">Finish Job</button>
+        ` : ""}
+
         <button class="secondary" onclick="deleteJob('${currentJob._id}')">Delete Job</button>
         <button class="secondary" onclick="show('jobs')">Back</button>
     `;
 }
 
-async function startJobFromCard() {
-    currentJob.status = "in-progress";
+// ================= START JOB =================
+async function startJob() {
 
     await fetch(API + "/jobs/" + currentJob._id, {
         method:"PUT",
@@ -122,50 +124,24 @@ async function startJobFromCard() {
     loadJobs();
 }
 
+// ================= FINISH JOB =================
 async function finishJob() {
 
-    if (!currentJob) return;
-
-    if (currentJob.status === "pending-invoice") return;
-
-    // SAFE ID EXTRACTION (STRICT)
-    const customerId =
-        currentJob.customer && typeof currentJob.customer === "object"
-            ? currentJob.customer._id
-            : currentJob.customer;
-
-    const vehicleId =
-        currentJob.vehicle && typeof currentJob.vehicle === "object"
-            ? currentJob.vehicle._id
-            : currentJob.vehicle;
-
-    // HARD VALIDATION (NO FALLBACKS)
-    if (!customerId || !vehicleId) {
-        return;
-    }
-
-    // UPDATE JOB STATUS FIRST
     await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "pending-invoice" })
     });
 
-    // CREATE INVOICE
-    // CREATE INVOICE FROM JOB (CORRECT FLOW)
-const res = await fetch(API + "/invoices/from-job/" + currentJob._id, {
-    method: "POST"
-});
+    await fetch(API + "/invoices/from-job/" + currentJob._id, {
+        method: "POST"
+    });
 
-    if (!res.ok) {
-        const err = await res.text();
-        return;
-    }
-await loadJobs();
-    show("invoices");
-    loadInvoices();
+    show("jobs");
+    loadJobs();
 }
 
+// ================= CHECKLIST =================
 async function toggleChecklist(index) {
     currentJob.checklist[index].done = !currentJob.checklist[index].done;
 
@@ -180,6 +156,7 @@ async function toggleChecklist(index) {
     renderJobCard();
 }
 
+// ================= DELETE =================
 async function deleteJob(id) {
     if (!confirm("Delete this job?")) return;
 
@@ -188,4 +165,3 @@ async function deleteJob(id) {
     show("jobs");
     loadJobs();
 }
-window.finishJob = finishJob;
