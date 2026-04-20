@@ -7,7 +7,7 @@ let currentMonth = new Date();
 async function loadBookings() {
     const res = await fetch(API + "/bookings?test=" + Date.now(), {
     headers: {
-        Authorization: localStorage.getItem("token")
+        Authorization: "Bearer " + localStorage.getItem("token")
     }
 });
     const data = await res.json();
