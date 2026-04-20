@@ -31,6 +31,12 @@ const jobSchema = new mongoose.Schema(
     description: {
         type: String
     },
+    jobs: [
+    {
+        summary: String,
+        description: String
+    }
+],
 
     // ✅ CHECKLIST
     checklist: [
