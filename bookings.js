@@ -104,9 +104,10 @@ function renderBookingCard() {
     <div class="title">Jobs</div>
     ${
         (currentJob.services || []).map(s => `
-            <div style="margin-bottom:10px;">
-                <b>${s}</b>
-            </div>
+    <div style="margin-bottom:10px;">
+        <b>${s.title}</b><br>
+        <small>${s.description || ""}</small>
+    </div>
         `).join("") || "<span style='color:#777;'>No jobs</span>"
     }
 </div>
