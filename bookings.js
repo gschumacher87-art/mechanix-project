@@ -137,7 +137,7 @@ for (let i = 0; i < (booking.services || []).length; i++) {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: service,
+            title: service.title,
             description: booking.description || "",
             customer: booking.customer?._id || booking.customer,
             vehicle: booking.vehicle?._id || booking.vehicle,
