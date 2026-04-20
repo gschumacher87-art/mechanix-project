@@ -123,9 +123,8 @@ async function arrivedBooking(id) {
     body: JSON.stringify({
         title: "Job Card",
         jobs: (booking.services || []).map(s => ({
-            summary: s,
-            description: s
-        })),
+    summary: s,
+    description: ""
         customer: booking.customer?._id || booking.customer,
         vehicle: booking.vehicle?._id || booking.vehicle,
         status: "arrived"
