@@ -512,7 +512,7 @@ function renderWeekView() {
 
     const el = document.getElementById("calendar");
 
-    const base = new Date(selectedDate);
+    const base = new Date(selectedDate || new Date());
     const start = new Date(base);
     start.setDate(base.getDate() - base.getDay());
 
