@@ -202,21 +202,6 @@ function deleteSubJob(i) {
     saveSubJobs();
 }
 
-function editSubJob(i) {
-
-    const job = currentJob.jobs[i];
-
-    const newSummary = prompt("Edit job summary:", job.summary);
-    if (newSummary === null) return;
-
-    const newDesc = prompt("Edit description:", job.description || "");
-
-    job.summary = newSummary;
-    job.description = newDesc || "";
-
-    saveSubJobs();
-}
-
 async function saveSubJobs() {
 
     await fetch(API + "/jobs/" + currentJob._id, {
