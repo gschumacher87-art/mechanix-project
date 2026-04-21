@@ -534,3 +534,17 @@ function deleteBookingJob(i) {
     // re-render UI
     renderBookingCard();
 }
+
+function addBookingJob() {
+
+    // add empty job
+    currentJob.services.push("New Job");
+
+    // add matching description line
+    const descriptions = (currentJob.description || "").split("\n");
+    descriptions.push("");
+    currentJob.description = descriptions.join("\n");
+
+    // refresh UI
+    renderBookingCard();
+}
