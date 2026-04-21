@@ -275,15 +275,18 @@ function clockOff(i) {
 
 function finishSubJob(i) {
 
+    const now = Date.now();
+
+    // STOP any running job first (important)
+    currentJob.jobs.forEach(j => {
+        if (j.startedAt) {
+            const time = now - j.startedAt;
+            j.timeSpent = (j.timeSpent || 0) + time;
+            j.startedAt = null;
+        }
+    });
+
     const job = currentJob.jobs[i];
-
-    // stop timer if running
-    if (job.startedAt) {
-        const time = Date.now() - job.startedAt;
-        job.timeSpent = (job.timeSpent || 0) + time;
-        job.startedAt = null;
-    }
-
     job.status = "done";
 
     // check if ALL sub-jobs are done
@@ -292,8 +295,7 @@ function finishSubJob(i) {
     if (allDone) {
         currentJob.status = "pending-invoice";
     } else {
-        const anyRunning = currentJob.jobs.some(j => j.startedAt);
-        currentJob.status = anyRunning ? "in-progress" : "arrived";
+        currentJob.status = "arrived";
     }
 
     saveSubJobs();
