@@ -206,10 +206,25 @@ function editSubJob(i) {
 
 function clockOn(i) {
 
-    const job = currentJob.jobs[i];
+    const now = Date.now();
 
-    job.startedAt = Date.now();
+    // STOP any running job first
+    currentJob.jobs.forEach(j => {
+        if (j.startedAt) {
+            const time = now - j.startedAt;
+            j.timeSpent = (j.timeSpent || 0) + time;
+            j.startedAt = null;
+            j.status = "paused";
+        }
+    });
+
+    // START selected job
+    const job = currentJob.jobs[i];
+    job.startedAt = now;
     job.status = "in-progress";
+
+    // update parent job status
+    currentJob.status = "in-progress";
 
     saveSubJobs();
 }
