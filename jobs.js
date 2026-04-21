@@ -223,6 +223,11 @@ function editSubJob(i) {
 
 function clockOn(i) {
 
+    const job = currentJob.jobs[i];
+
+    // ❌ prevent restarting finished jobs
+    if (job.status === "done") return;
+
     const now = Date.now();
 
     // STOP any running job first
@@ -236,7 +241,6 @@ function clockOn(i) {
     });
 
     // START selected job
-    const job = currentJob.jobs[i];
     job.startedAt = now;
     job.status = "in-progress";
 
