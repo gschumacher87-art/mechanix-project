@@ -548,3 +548,18 @@ function addBookingJob() {
     // refresh UI
     renderBookingCard();
 }
+
+function editBookingJob(i) {
+
+    const newSummary = prompt("Edit job summary:", currentJob.services[i]);
+    if (newSummary === null) return;
+
+    const descriptions = (currentJob.description || "").split("\n");
+    const newDesc = prompt("Edit description:", descriptions[i] || "");
+
+    currentJob.services[i] = newSummary;
+    descriptions[i] = newDesc || "";
+    currentJob.description = descriptions.join("\n");
+
+    renderBookingCard();
+}
