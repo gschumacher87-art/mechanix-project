@@ -79,7 +79,7 @@ function renderBookingCard() {
     const c = currentJob.customer || {};
     const v = currentJob.vehicle || {};
 
-    document.getElementById("jobCardInfo").innerHTML = `
+    document.getElementById("bookingCardInfo").innerHTML = `
     <div class="card">
         <b>Status:</b> BOOKING<br>
         <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
