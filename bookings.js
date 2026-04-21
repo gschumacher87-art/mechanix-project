@@ -123,9 +123,6 @@ function renderBookingCard() {
 // ================= ARRIVED =================
 async function arrivedBooking(id) {
 
-    const res = await fetch(API + "/bookings/" + id);
-    const booking = await res.json();
-
 const descriptions = (currentJob.description || "").split("\n");
 
     const jobRes = await fetch(API + "/jobs", {
