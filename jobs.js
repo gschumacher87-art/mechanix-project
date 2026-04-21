@@ -124,8 +124,9 @@ function renderJobCard() {
 
             <br>
 
-            <button class="primary" onclick="clockOn()">Clock On</button>
-            <button class="secondary" onclick="clockOff()">Clock Off</button>
+            <button class="primary" onclick="clockOn(${i})">Clock On</button>
+<button class="secondary" onclick="clockOff(${i})">Clock Off</button>
+<button class="primary" onclick="finishSubJob(${i})">Finish</button>
         </div>
     `;
 
