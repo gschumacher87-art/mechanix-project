@@ -98,17 +98,25 @@ function renderJobCard() {
                     padding:8px;
                     margin-bottom:10px;
                     border:${
-    j.startedAt
-        ? '2px solid #28a745'
-        : i === selectedSubJobIndex
-            ? '2px solid #007bff'
-            : '1px solid #ccc'
+    j.status === "done"
+        ? '2px solid #6c757d'
+        : j.startedAt
+            ? '2px solid #28a745'
+            : i === selectedSubJobIndex
+                ? '2px solid #007bff'
+                : '1px solid #ccc'
 };
                 ">
 
                 <div onclick="selectSubJob(${i})" style="cursor:pointer;">
                     <b>${j.summary || "No Title"}</b>
-${j.startedAt ? '<span style="color:#28a745;"> ● Running</span>' : ''}
+${
+    j.status === "done"
+        ? '<span style="color:#6c757d;"> ✔ Done</span>'
+        : j.startedAt
+            ? '<span style="color:#28a745;"> ● Running</span>'
+            : ''
+}
                 </div>
 
                 <div style="font-size:12px; color:#777; margin-top:4px;">
