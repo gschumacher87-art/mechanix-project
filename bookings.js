@@ -94,12 +94,17 @@ function renderBookingCard() {
             const descriptions = (currentJob.description || "").split("\n");
 
             return services.map((s, i) => `
-<div style="margin-bottom:15px;">
+<div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
     <b>Job ${i + 1}</b><br>
     <b>${s || "No Title"}</b><br>
     <small style="color:#777;">
         ${descriptions[i] || "No Description"}
     </small>
+
+    <br><br>
+
+    <button class="secondary" onclick="editBookingJob(${i})">Edit</button>
+    <button class="secondary" onclick="deleteBookingJob(${i})">Delete</button>
 </div>
 `).join("");
         })()
@@ -108,10 +113,11 @@ function renderBookingCard() {
 `;
 
     document.getElementById("bookingCardActions").innerHTML = `
-        <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
-        <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete</button>
-        <button class="secondary" onclick="show('bookings')">Back</button>
-    `;
+    <button class="primary" onclick="addBookingJob()">+ Add Job</button>
+    <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
+    <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete</button>
+    <button class="secondary" onclick="show('bookings')">Back</button>
+`;
 }
 
 // ================= ARRIVED =================
