@@ -122,10 +122,7 @@ method:"POST",
 headers:{ "Content-Type":"application/json" },
 body: JSON.stringify({
 title: "Job Card",
-jobs: (booking.services || []).map(s => ({
-    summary: s,
-    description: ""
-})),
+jobs: booking.jobs || [],
 customer: booking.customer?._id || booking.customer,
 vehicle: booking.vehicle?._id || booking.vehicle,
 status: "arrived"
