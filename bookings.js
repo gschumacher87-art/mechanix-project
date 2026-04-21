@@ -349,6 +349,7 @@ async function selectCustomerFromPopup(id) {
 }
 
 // ================= CREATE BOOKING =================
+// ================= CREATE BOOKING =================
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
@@ -374,13 +375,13 @@ async function confirmBooking() {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-    title: jobs[0]?.summary || "Booking",
-    services: (booking.jobs || []).map(j => j.summary)
-    customer: selectedCustomerId,
-    vehicle: vehicleId,
-    status: "booked",
-    date: bookingDate
-})
+            title: jobs[0]?.summary || "Booking",
+            jobs: jobs,
+            customer: selectedCustomerId,
+            vehicle: vehicleId,
+            status: "booked",
+            date: bookingDate
+        })
     });
 
     const data = await res.json();
