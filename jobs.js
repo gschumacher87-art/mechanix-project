@@ -227,5 +227,5 @@ function editSubJob(i) {
     job.summary = newSummary;
     job.description = newDesc || "";
 
-    renderJobCard();
+    saveSubJobs();
 }
