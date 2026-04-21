@@ -1,4 +1,5 @@
 let currentJob = null;
+let selectedSubJobIndex = 0;
 
 // ================= LOAD JOBS =================
 async function loadJobs() {
@@ -144,6 +145,11 @@ function renderJobCard() {
         <button class="secondary" onclick="deleteJob('${currentJob._id}')">Delete Job</button>
         <button class="secondary" onclick="show('jobs')">Back</button>
     `;
+}
+
+function selectSubJob(i) {
+    selectedSubJobIndex = i;
+    renderJobCard();
 }
 
 // ================= START JOB =================
