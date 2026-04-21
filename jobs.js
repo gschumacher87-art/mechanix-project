@@ -133,6 +133,7 @@ ${j.startedAt ? '<span style="color:#28a745;"> ● Running</span>' : ''}
 
             <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
 <button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
+<button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Finish</button>
         </div>
     `;
 
@@ -253,6 +254,32 @@ function clockOff(i) {
     const anyRunning = currentJob.jobs.some(j => j.startedAt);
 
     currentJob.status = anyRunning ? "in-progress" : "arrived";
+
+    saveSubJobs();
+}
+
+function finishSubJob(i) {
+
+    const job = currentJob.jobs[i];
+
+    // stop timer if running
+    if (job.startedAt) {
+        const time = Date.now() - job.startedAt;
+        job.timeSpent = (job.timeSpent || 0) + time;
+        job.startedAt = null;
+    }
+
+    job.status = "done";
+
+    // check if ALL sub-jobs are done
+    const allDone = currentJob.jobs.every(j => j.status === "done");
+
+    if (allDone) {
+        currentJob.status = "pending-invoice";
+    } else {
+        const anyRunning = currentJob.jobs.some(j => j.startedAt);
+        currentJob.status = anyRunning ? "in-progress" : "arrived";
+    }
 
     saveSubJobs();
 }
