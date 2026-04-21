@@ -93,42 +93,46 @@ function renderJobCard() {
     <div class="title">Jobs</div>
     ${
         jobs.map((j, i) => `
-            <div 
-                style="
-                    padding:8px;
-                    margin-bottom:10px;
-                    border:${
-    j.status === "done"
-        ? '2px solid #6c757d'
-        : j.startedAt
-            ? '2px solid #28a745'
+    <div 
+        style="
+            padding:8px;
+            margin-bottom:10px;
+            border:${
+j.status === "done"
+    ? '2px solid #6c757d'
+    : j.status === "in-progress"
+        ? '2px solid #28a745'
+        : j.status === "paused"
+            ? '2px solid #ffc107'
             : i === selectedSubJobIndex
                 ? '2px solid #007bff'
                 : '1px solid #ccc'
 };
-                ">
+        ">
 
-                <div onclick="selectSubJob(${i})" style="cursor:pointer;">
-                    <b>${j.summary || "No Title"}</b>
+        <div onclick="selectSubJob(${i})" style="cursor:pointer;">
+            <b>${j.summary || "No Title"}</b>
 ${
-    j.status === "done"
-        ? '<span style="color:#6c757d;"> ✔ Done</span>'
-        : j.startedAt
-            ? '<span style="color:#28a745;"> ● Running</span>'
+j.status === "done"
+    ? '<span style="color:#6c757d;"> ✔ Done</span>'
+    : j.status === "in-progress"
+        ? '<span style="color:#28a745;"> ● Running</span>'
+        : j.status === "paused"
+            ? '<span style="color:#ffc107;"> ● Paused</span>'
             : ''
 }
-                </div>
+        </div>
 
-                <div style="font-size:12px; color:#777; margin-top:4px;">
-                    ${j.description || "No description"}
-                </div>
+        <div style="font-size:12px; color:#777; margin-top:4px;">
+            ${j.description || "No description"}
+        </div>
 
-                <br>
+        <br>
 
-                <button class="secondary" onclick="editSubJob(${i})">Edit</button>
-                <button class="secondary" onclick="deleteSubJob(${i})">Delete</button>
-            </div>
-        `).join("") || "<span style='color:#777;'>No jobs</span>"
+        <button class="secondary" onclick="editSubJob(${i})">Edit</button>
+        <button class="secondary" onclick="deleteSubJob(${i})">Delete</button>
+    </div>
+`).join("") || "<span style='color:#777;'>No jobs</span>"
     }
 </div>
 
