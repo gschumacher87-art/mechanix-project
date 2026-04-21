@@ -297,8 +297,12 @@ function finishSubJob(i) {
     if (allDone) {
         currentJob.status = "pending-invoice";
     } else {
-        currentJob.status = "arrived";
-    }
+    const anyActive = currentJob.jobs.some(j => 
+        j.status === "in-progress" || j.status === "paused"
+    );
+
+    currentJob.status = anyActive ? "in-progress" : "arrived";
+}
 
     saveSubJobs();
 }
