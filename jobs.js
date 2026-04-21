@@ -97,7 +97,13 @@ function renderJobCard() {
                 style="
                     padding:8px;
                     margin-bottom:10px;
-                    border:${i === selectedSubJobIndex ? '2px solid #007bff' : '1px solid #ccc'};
+                    border:${
+    j.startedAt
+        ? '2px solid #28a745'
+        : i === selectedSubJobIndex
+            ? '2px solid #007bff'
+            : '1px solid #ccc'
+};
                 ">
 
                 <div onclick="selectSubJob(${i})" style="cursor:pointer;">
