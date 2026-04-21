@@ -129,37 +129,11 @@ function renderJobCard() {
         </div>
     `;
 
-
-    document.getElementById("jobCardActions").innerHTML = `
-        ${currentJob.status === "arrived" ? `
-            <button class="primary" onclick="startJob()">Start Job</button>
-        ` : ""}
-
-        ${currentJob.status === "in-progress" ? `
-            <button class="primary" onclick="finishJob()">Finish Job</button>
-        ` : ""}
-
-        <button class="secondary" onclick="deleteJob('${currentJob._id}')">Delete Job</button>
-        <button class="secondary" onclick="show('jobs')">Back</button>
-    `;
 }
 
 function selectSubJob(i) {
     selectedSubJobIndex = i;
     renderJobCard();
-}
-
-// ================= START JOB =================
-async function startJob() {
-
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({ status: "in-progress" })
-    });
-
-    show("jobs");
-    loadJobs();
 }
 
 // ================= FINISH JOB =================
