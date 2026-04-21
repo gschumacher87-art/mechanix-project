@@ -68,6 +68,7 @@ ${vehicleName}
 async function openJobCard(id) {
     const res = await fetch(API + "/jobs/" + id);
     currentJob = await res.json();
+    selectedSubJobIndex = 0;
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
