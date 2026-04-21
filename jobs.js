@@ -196,8 +196,36 @@ function deleteSubJob(i) {
     currentJob.jobs.splice(i, 1);
 
     if (selectedSubJobIndex >= currentJob.jobs.length) {
-        selectedSubJobIndex = currentJob.jobs.length - 1;
+        selectedSubJobIndex = Math.max(0, currentJob.jobs.length - 1);
     }
+
+    saveSubJobs();
+}
+
+function editSubJob(i) {
+
+    const job = currentJob.jobs[i];
+
+    const newSummary = prompt("Edit job summary:", job.summary);
+    if (newSummary === null) return;
+
+    const newDesc = prompt("Edit description:", job.description || "");
+
+    job.summary = newSummary;
+    job.description = newDesc || "";
+
+    saveSubJobs();
+}
+
+async function saveSubJobs() {
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            jobs: currentJob.jobs
+        })
+    });
 
     renderJobCard();
 }
