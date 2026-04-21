@@ -266,9 +266,11 @@ function clockOff(i) {
     job.status = "paused";
 
     // check if any job still running
-    const anyRunning = currentJob.jobs.some(j => j.startedAt);
+    const anyActive = currentJob.jobs.some(j => 
+    j.status === "in-progress" || j.status === "paused"
+);
 
-    currentJob.status = anyRunning ? "in-progress" : "arrived";
+currentJob.status = anyActive ? "in-progress" : "arrived";
 
     saveSubJobs();
 }
