@@ -108,6 +108,7 @@ function renderJobCard() {
 
                 <div onclick="selectSubJob(${i})" style="cursor:pointer;">
                     <b>${j.summary || "No Title"}</b>
+${j.startedAt ? '<span style="color:#28a745;"> ● Running</span>' : ''}
                 </div>
 
                 <div style="font-size:12px; color:#777; margin-top:4px;">
