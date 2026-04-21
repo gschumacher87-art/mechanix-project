@@ -285,7 +285,6 @@ function finishSubJob(i) {
 
     const now = Date.now();
 
-    // STOP any running job first (important)
     currentJob.jobs.forEach(j => {
         if (j.startedAt) {
             const time = now - j.startedAt;
@@ -297,25 +296,24 @@ function finishSubJob(i) {
     const job = currentJob.jobs[i];
     job.status = "done";
 
-    // check if ALL sub-jobs are done
     const allDone = currentJob.jobs.every(j => j.status === "done");
 
     if (allDone) {
         currentJob.status = "pending-invoice";
     } else {
-    const anyActive = currentJob.jobs.some(j => 
-        j.status === "in-progress" || j.status === "paused"
-    );
+        const anyActive = currentJob.jobs.some(j => 
+            j.status === "in-progress" || j.status === "paused"
+        );
 
-    currentJob.status = anyActive ? "in-progress" : "arrived";
-}
+        currentJob.status = anyActive ? "in-progress" : "arrived";
+    }
 
     saveSubJobs();
-    
-    function deleteJobCard() {
+}
+
+function deleteJobCard() {
 
     const confirmDelete = confirm("Delete entire job card?");
-
     if (!confirmDelete) return;
 
     fetch(API + "/jobs/" + currentJob._id, {
@@ -325,5 +323,4 @@ function finishSubJob(i) {
         loadJobs();
     });
 
-}
 }
