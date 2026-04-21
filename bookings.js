@@ -29,9 +29,9 @@ async function loadBookings() {
             <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
             ${v.make || ""} ${v.model || ""}<br><br>
             ${
-                (b.jobs || []).map(j => `
-    <div>• ${j.summary}</div>
-`).join("")
+                (b.services || []).map(s => `
+                    <div>• ${s}</div>
+                `).join("")
             }
         </div>`;
 
@@ -56,7 +56,7 @@ async function loadBookings() {
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
 
-    const booking = bookings.find(b => b._id === id);
+    const booking = bookings.find(b => b._id === id); // ✅ USE EXISTING DATA
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
@@ -66,14 +66,13 @@ async function openBooking(id) {
         title: booking.title,
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
-        services: booking.jobs || []
+        description: booking.description || "",
+        services: booking.services || booking.summaries || []
     };
 
     renderBookingCard();
 }
 
-
-    
 // ================= RENDER =================
 function renderBookingCard() {
 
@@ -81,25 +80,32 @@ function renderBookingCard() {
     const v = currentJob.vehicle || {};
 
     document.getElementById("jobCardInfo").innerHTML = `
-        <div class="card">
-            <b>Status:</b> BOOKING<br>
-            <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
-            <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
-        </div>
+    <div class="card">
+        <b>Status:</b> BOOKING<br>
+        <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
+        <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
+    </div>
 
-        <div class="card">
-            <div class="title">Jobs</div>
-            ${
-                (currentJob.services || []).map((s, i) => `
-                    <div style="margin-bottom:15px;">
-                        <b>Job ${i + 1}</b><br>
-                        <b>${s.summary || ""}</b><br>
-                        <div style="color:#555;">${s.description || ""}</div>
-                    </div>
-                `).join("") || "<span style='color:#777;'>No jobs</span>"
-            }
-        </div>
-    `;
+  <div class="card">
+    <div class="title">Jobs</div>
+    ${
+        (() => {
+            const services = currentJob.services || [];
+            const descriptions = (currentJob.description || "").split("\n");
+
+            return services.map((s, i) => `
+<div style="margin-bottom:15px;">
+    <b>Job ${i + 1}</b><br>
+    <b>${s || "No Title"}</b><br>
+    <small style="color:#777;">
+        ${descriptions[i] || "No Description"}
+    </small>
+</div>
+`).join("");
+        })()
+    }
+</div>
+`;
 
     document.getElementById("jobCardChecklist").innerHTML = "";
 
@@ -117,15 +123,18 @@ async function arrivedBooking(id) {
     const booking = await res.json();
 
     const jobRes = await fetch(API + "/jobs", {
-method:"POST",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify({
-title: "Job Card",
-jobs: booking.jobs || [],
-customer: booking.customer?._id || booking.customer,
-vehicle: booking.vehicle?._id || booking.vehicle,
-status: "arrived"
-})
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+        title: "Job Card",
+        jobs: (booking.services || []).map(s => ({
+            summary: s,
+            description: s
+        })),
+        customer: booking.customer?._id || booking.customer,
+        vehicle: booking.vehicle?._id || booking.vehicle,
+        status: "arrived"
+    })
 });
 
 const job = await jobRes.json();
@@ -348,7 +357,6 @@ async function selectCustomerFromPopup(id) {
 }
 
 // ================= CREATE BOOKING =================
-// ================= CREATE BOOKING =================
 async function confirmBooking() {
 
     if (!selectedCustomerId) {
@@ -375,7 +383,8 @@ async function confirmBooking() {
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: jobs[0]?.summary || "Booking",
-            jobs: jobs,
+            description: jobs.map(j => j.description).join("\n"),
+            services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
             customer: selectedCustomerId,
             vehicle: vehicleId,
             status: "booked",
