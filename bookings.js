@@ -137,8 +137,8 @@ const descriptions = (currentJob.description || "").split("\n");
                 summary: s,
                 description: descriptions[i] || ""
             })),
-            customer: booking.customer?._id || booking.customer,
-            vehicle: booking.vehicle?._id || booking.vehicle,
+            customer: currentJob.customer?._id || currentJob.customer,
+vehicle: currentJob.vehicle?._id || currentJob.vehicle,
             status: "arrived"
         })
     });
