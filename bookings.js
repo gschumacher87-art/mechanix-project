@@ -59,7 +59,7 @@ async function openBooking(id) {
     const booking = bookings.find(b => b._id === id); // ✅ USE EXISTING DATA
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("jobCard").classList.add("active");
+    document.getElementById("bookingCard").classList.add("active");
 
     currentJob = {
         _id: booking._id,
