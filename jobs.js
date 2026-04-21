@@ -204,13 +204,27 @@ function editSubJob(i) {
     saveSubJobs();
 }
 
-async function clockOn() {
+function clockOn(i) {
 
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "in-progress" })
-    });
+    const job = currentJob.jobs[i];
 
-    loadJobs();
+    job.startedAt = Date.now();
+    job.status = "in-progress";
+
+    saveSubJobs();
+}
+
+function clockOff(i) {
+
+    const job = currentJob.jobs[i];
+
+    if (job.startedAt) {
+        const time = Date.now() - job.startedAt;
+        job.timeSpent = (job.timeSpent || 0) + time;
+        job.startedAt = null;
+    }
+
+    job.status = "paused";
+
+    saveSubJobs();
 }
