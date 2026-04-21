@@ -521,3 +521,19 @@ function openTemplatePopup(i) {
     document.getElementById("templateModal").style.display = "block";
     loadTemplates();
 }
+
+function deleteBookingJob(i) {
+
+    if (!confirm("Delete this job?")) return;
+
+    // remove from services
+    currentJob.services.splice(i, 1);
+
+    // remove matching description
+    const descriptions = (currentJob.description || "").split("\n");
+    descriptions.splice(i, 1);
+    currentJob.description = descriptions.join("\n");
+
+    // re-render UI
+    renderBookingCard();
+}
