@@ -189,8 +189,9 @@ async function saveSubJobs() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            jobs: currentJob.jobs
-        })
+    jobs: currentJob.jobs,
+    status: currentJob.status
+})
     });
 
     renderJobCard();
