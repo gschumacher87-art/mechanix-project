@@ -29,9 +29,9 @@ async function loadBookings() {
             <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
             ${v.make || ""} ${v.model || ""}<br><br>
             ${
-                (b.services || []).map(s => `
-                    <div>• ${s}</div>
-                `).join("")
+                (b.jobs || []).map(j => `
+    <div>• ${j.summary}</div>
+`).join("")
             }
         </div>`;
 
@@ -66,7 +66,7 @@ async function openBooking(id) {
         title: booking.title,
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
-        services: booking.services || booking.summaries || []
+        services: (booking.jobs || []).map(j => j.summary)
     };
 
     renderBookingCard();
