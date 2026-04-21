@@ -456,6 +456,11 @@ function renderCalendar() {
     const el = document.getElementById("calendar");
     if (!el) return;
 
+    if (calendarView === "week") {
+        renderWeekView();
+        return;
+    }
+
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
 
@@ -503,9 +508,13 @@ function renderCalendar() {
     el.innerHTML = html;
 }
 
+let calendarView = "month";
+let selectedDate = null;
+
 function selectCalendarDate(date) {
-    openBookingModal();
-    document.getElementById("bookingDate").value = date;
+    selectedDate = date;
+    calendarView = "week";
+    renderCalendar();
 }
 
 function changeMonth(direction) {
