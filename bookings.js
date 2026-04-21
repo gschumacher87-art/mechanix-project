@@ -508,6 +508,47 @@ function renderCalendar() {
     el.innerHTML = html;
 }
 
+function renderWeekView() {
+
+    const el = document.getElementById("calendar");
+
+    const base = new Date(selectedDate);
+    const start = new Date(base);
+    start.setDate(base.getDate() - base.getDay());
+
+    let html = `
+    <button onclick="calendarView='month'; renderCalendar()">← Back</button>
+    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;'>
+    `;
+
+    for (let i = 0; i < 7; i++) {
+
+        const day = new Date(start);
+        day.setDate(start.getDate() + i);
+
+        const dateStr = day.toLocaleDateString("en-CA");
+
+        const dayBookings = bookings.filter(b =>
+            (b.date || "").split("T")[0] === dateStr
+        );
+
+        html += `
+        <div class="card" onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
+            <div><b>${day.getDate()}</b></div>
+
+            ${
+                dayBookings.map(b => `
+                    <div style="font-size:10px;">• ${b.customer?.firstName || ""}</div>
+                `).join("")
+            }
+        </div>`;
+    }
+
+    html += "</div>";
+
+    el.innerHTML = html;
+}
+
 let calendarView = "month";
 let selectedDate = null;
 
