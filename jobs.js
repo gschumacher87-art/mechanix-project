@@ -119,20 +119,6 @@ function renderJobCard() {
         </div>
     `;
 
-    let checklistHtml = "";
-
-    (currentJob.checklist || []).forEach((item, i) => {
-        checklistHtml += `
-        <div style="display:flex; gap:10px; margin-bottom:6px;">
-            <input type="checkbox"
-                ${item.done ? "checked" : ""}
-                onchange="toggleChecklist(${i})">
-            <span>${item.text}</span>
-        </div>`;
-    });
-
-    document.getElementById("jobCardChecklist").innerHTML =
-        checklistHtml || "<div style='color:#777;'>No tasks</div>";
 
     document.getElementById("jobCardActions").innerHTML = `
         ${currentJob.status === "arrived" ? `
