@@ -54,9 +54,10 @@ async function loadBookings() {
 }
 
 // ================= OPEN BOOKING =================
+// ================= OPEN BOOKING =================
 async function openBooking(id) {
 
-    const booking = bookings.find(b => b._id === id); // ✅ USE EXISTING DATA
+    const booking = bookings.find(b => b._id === id);
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
@@ -66,12 +67,42 @@ async function openBooking(id) {
         title: booking.title,
         customer: booking.customer || {},
         vehicle: booking.vehicle || {},
-        services: (booking.jobs || []).map(j => j.summary)
+        services: booking.jobs || []
     };
 
     renderBookingCard();
 }
 
+// ================= RENDER =================
+function renderBookingCard() {
+
+    const c = currentJob.customer || {};
+    const v = currentJob.vehicle || {};
+
+    document.getElementById("jobCardInfo").innerHTML = `
+    <div class="card">
+        <b>Status:</b> BOOKING<br>
+        <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
+        <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
+    </div>
+
+  <div class="card">
+    <div class="title">Jobs</div>
+    ${
+        (() => {
+            const services = currentJob.services || [];
+
+return services.map((s, i) => `
+<div style="margin-bottom:15px;">
+    <b>Job ${i + 1}</b><br>
+    <b>${s.summary || ""}</b><br>
+    <div style="color:#555;">${s.description || ""}</div>
+</div>
+`).join("");
+        })()
+    }
+</div>
+`;
 // ================= RENDER =================
 function renderBookingCard() {
 
