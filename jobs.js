@@ -169,21 +169,6 @@ async function finishJob() {
     loadJobs();
 }
 
-// ================= CHECKLIST =================
-async function toggleChecklist(index) {
-    currentJob.checklist[index].done = !currentJob.checklist[index].done;
-
-    await fetch(API + "/jobs/" + currentJob._id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            checklist: currentJob.checklist
-        })
-    });
-
-    renderJobCard();
-}
-
 // ================= DELETE =================
 async function deleteJob(id) {
     if (!confirm("Delete this job?")) return;
