@@ -107,7 +107,7 @@ function renderBookingCard() {
 </div>
 `;
 
-    document.getElementById("jobCardActions").innerHTML = `
+    document.getElementById("bookingCardActions").innerHTML = `
         <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
         <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete</button>
         <button class="secondary" onclick="show('bookings')">Back</button>
