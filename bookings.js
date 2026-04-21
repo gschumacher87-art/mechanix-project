@@ -445,44 +445,6 @@ function renderJobs() {
     document.getElementById("jobsContainer").innerHTML = html;
 }
 
-function generateChecklistFromServices(services) {
-
-    let tasks = [];
-
-    services.forEach(s => {
-
-        const name = (s || "").toLowerCase();
-
-        if (name.includes("service")) {
-            tasks.push(
-                { text: "Oil change", done: false },
-                { text: "Replace oil filter", done: false },
-                { text: "General inspection", done: false }
-            );
-        }
-
-        else if (name.includes("brake")) {
-            tasks.push(
-                { text: "Inspect brakes", done: false },
-                { text: "Replace brake pads", done: false }
-            );
-        }
-
-        else if (name.includes("diagnose")) {
-            tasks.push(
-                { text: "Initial inspection", done: false },
-                { text: "Run diagnostics", done: false }
-            );
-        }
-
-        else {
-            tasks.push({ text: s, done: false });
-        }
-
-    });
-
-    return tasks;
-}
 
 function openBookingCustomerSearch() {
     bookingSearchCustomers();
