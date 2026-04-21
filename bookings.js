@@ -122,24 +122,24 @@ async function arrivedBooking(id) {
     const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
+    const descriptions = (booking.description || "").split("\n"); // 👈 MOVE HERE
+
     const jobRes = await fetch(API + "/jobs", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-        title: "Job Card",
-        const descriptions = (booking.description || "").split("\n");
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+            title: "Job Card",
+            jobs: (booking.services || []).map((s, i) => ({
+                summary: s,
+                description: descriptions[i] || ""
+            })),
+            customer: booking.customer?._id || booking.customer,
+            vehicle: booking.vehicle?._id || booking.vehicle,
+            status: "arrived"
+        })
+    });
 
-jobs: (booking.services || []).map((s, i) => ({
-    summary: s,
-    description: descriptions[i] || ""
-}))
-        customer: booking.customer?._id || booking.customer,
-        vehicle: booking.vehicle?._id || booking.vehicle,
-        status: "arrived"
-    })
-});
-
-const job = await jobRes.json();
+    const job = await jobRes.json();
 
     await fetch(API + "/bookings/" + id, { method:"DELETE" });
 
