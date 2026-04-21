@@ -84,10 +84,12 @@ function renderJobCard() {
 
     document.getElementById("jobCardInfo").innerHTML = `
         <div class="card">
-            <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
-            <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
-            <b>Status:</b> ${currentJob.status}
-        </div>
+    <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
+    <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
+    <b>Status:</b> ${currentJob.status}<br><br>
+
+    <button class="secondary" onclick="deleteJobCard()">Delete Job Card</button>
+</div>
 
         <div class="card">
     <div class="title">Jobs</div>
@@ -309,4 +311,19 @@ function finishSubJob(i) {
 }
 
     saveSubJobs();
+    
+    function deleteJobCard() {
+
+    const confirmDelete = confirm("Delete entire job card?");
+
+    if (!confirmDelete) return;
+
+    fetch(API + "/jobs/" + currentJob._id, {
+        method: "DELETE"
+    }).then(() => {
+        show("jobs");
+        loadJobs();
+    });
+
+}
 }
