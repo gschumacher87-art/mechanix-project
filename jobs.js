@@ -203,3 +203,14 @@ function editSubJob(i) {
 
     saveSubJobs();
 }
+
+async function clockOn() {
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "in-progress" })
+    });
+
+    loadJobs();
+}
