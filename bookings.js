@@ -126,14 +126,14 @@ async function arrivedBooking(id) {
     const res = await fetch(API + "/bookings/" + id);
     const booking = await res.json();
 
-    const descriptions = (booking.description || "").split("\n"); // 👈 MOVE HERE
+const descriptions = (currentJob.description || "").split("\n");
 
     const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
             title: "Job Card",
-            jobs: (booking.services || []).map((s, i) => ({
+            jobs: (currentJob.services || []).map((s, i) => ({
                 summary: s,
                 description: descriptions[i] || ""
             })),
