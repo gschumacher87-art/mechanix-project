@@ -90,22 +90,32 @@ function renderJobCard() {
         </div>
 
         <div class="card">
-            <div class="title">Jobs</div>
-            ${
-                jobs.map((j, i) => `
-                    <div 
-                        onclick="selectSubJob(${i})"
-                        style="
-                            padding:8px;
-                            margin-bottom:6px;
-                            border:${i === selectedSubJobIndex ? '2px solid #007bff' : '1px solid #ccc'};
-                            cursor:pointer;
-                        ">
-                        ${j.summary || ""}
-                    </div>
-                `).join("") || "<span style='color:#777;'>No jobs</span>"
-            }
-        </div>
+    <div class="title">Jobs</div>
+    ${
+        jobs.map((j, i) => `
+            <div 
+                style="
+                    padding:8px;
+                    margin-bottom:10px;
+                    border:${i === selectedSubJobIndex ? '2px solid #007bff' : '1px solid #ccc'};
+                ">
+
+                <div onclick="selectSubJob(${i})" style="cursor:pointer;">
+                    <b>${j.summary || "No Title"}</b>
+                </div>
+
+                <div style="font-size:12px; color:#777; margin-top:4px;">
+                    ${j.description || "No description"}
+                </div>
+
+                <br>
+
+                <button class="secondary" onclick="editSubJob(${i})">Edit</button>
+                <button class="secondary" onclick="deleteSubJob(${i})">Delete</button>
+            </div>
+        `).join("") || "<span style='color:#777;'>No jobs</span>"
+    }
+</div>
 
         <div class="card">
             <div class="title">Selected Job</div>
@@ -177,4 +187,32 @@ async function deleteJob(id) {
 
     show("jobs");
     loadJobs();
+}
+
+function deleteSubJob(i) {
+
+    if (!confirm("Delete this job?")) return;
+
+    currentJob.jobs.splice(i, 1);
+
+    if (selectedSubJobIndex >= currentJob.jobs.length) {
+        selectedSubJobIndex = currentJob.jobs.length - 1;
+    }
+
+    renderJobCard();
+}
+
+function editSubJob(i) {
+
+    const job = currentJob.jobs[i];
+
+    const newSummary = prompt("Edit job summary:", job.summary);
+    if (newSummary === null) return;
+
+    const newDesc = prompt("Edit description:", job.description || "");
+
+    job.summary = newSummary;
+    job.description = newDesc || "";
+
+    renderJobCard();
 }
