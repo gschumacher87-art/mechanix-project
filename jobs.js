@@ -254,6 +254,9 @@ function clockOff(i) {
 
     const job = currentJob.jobs[i];
 
+    // ❌ prevent touching finished jobs
+    if (job.status === "done") return;
+
     if (job.startedAt) {
         const time = Date.now() - job.startedAt;
         job.timeSpent = (job.timeSpent || 0) + time;
