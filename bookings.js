@@ -107,8 +107,6 @@ function renderBookingCard() {
 </div>
 `;
 
-    document.getElementById("jobCardChecklist").innerHTML = "";
-
     document.getElementById("jobCardActions").innerHTML = `
         <button class="primary" onclick="arrivedBooking('${currentJob._id}')">Arrived</button>
         <button class="secondary" onclick="deleteBooking('${currentJob._id}')">Delete</button>
