@@ -104,7 +104,18 @@ function renderJobCard() {
         <div class="card">
     <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
     <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
-    <b>Status:</b> ${currentJob.status}<br><br>
+   ${(() => {
+    const jobs = currentJob.jobs || [];
+    const hasInProgress = jobs.some(x => x.status === "in-progress");
+    const hasPaused = jobs.some(x => x.status === "paused");
+    const allDone = jobs.length && jobs.every(x => x.status === "done");
+
+    let displayStatus = "arrived";
+    if (allDone) displayStatus = "pending-invoice";
+    else if (hasInProgress || hasPaused) displayStatus = "in-progress";
+
+    return `<b>Status:</b> ${displayStatus}`;
+})()}
 
     <button class="secondary" onclick="deleteJobCard()">Delete Job Card</button>
 </div>
