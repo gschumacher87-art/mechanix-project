@@ -190,7 +190,7 @@ function selectSubJob(i) {
 // ================= FINISH JOB =================
 async function finishJob() {
 
-    await fetch(API + "/jobs/" + currentJob._id, {
+    await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now(), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "pending-invoice" })
