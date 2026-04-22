@@ -494,7 +494,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     <button onclick="changeMonth(1)">→</button>
 </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
 
 <div style="font-weight:bold;text-align:center;">Mon</div>
 <div style="font-weight:bold;text-align:center;">Tue</div>
@@ -503,6 +503,10 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 <div style="font-weight:bold;text-align:center;">Fri</div>
 <div style="font-weight:bold;text-align:center;">Sat</div>
 <div style="font-weight:bold;text-align:center;">Sun</div>
+
+</div>
+
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
 `;
 
     for (let i = 0; i < firstDay; i++) {
@@ -766,7 +770,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 <button onclick="changeMonth(1); renderCalendarMonthPopup()">→</button>
     </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
 
 <div style="font-weight:bold;text-align:center;">Mon</div>
 <div style="font-weight:bold;text-align:center;">Tue</div>
@@ -775,6 +779,10 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 <div style="font-weight:bold;text-align:center;">Fri</div>
 <div style="font-weight:bold;text-align:center;">Sat</div>
 <div style="font-weight:bold;text-align:center;">Sun</div>
+
+</div>
+
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
 `;
 
     for (let i = 0; i < firstDay; i++) {
@@ -831,7 +839,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         <button onclick="changeMonth(1); renderCalendarMonthPopup()">→</button>
     </div>
 
-    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
 
 <div style="font-weight:bold;text-align:center;">Mon</div>
 <div style="font-weight:bold;text-align:center;">Tue</div>
@@ -840,6 +848,10 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 <div style="font-weight:bold;text-align:center;">Fri</div>
 <div style="font-weight:bold;text-align:center;">Sat</div>
 <div style="font-weight:bold;text-align:center;">Sun</div>
+
+</div>
+
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
 `;
     for (let i = 0; i < firstDay; i++) {
         html += "<div></div>";
