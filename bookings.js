@@ -539,6 +539,7 @@ function renderWeekView() {
 
     const base = new Date(selectedDate || new Date());
     const start = new Date(base);
+    const grouped = groupBookingsByDate();
     start.setDate(base.getDate() - base.getDay());
 
     let html = `
@@ -553,9 +554,7 @@ function renderWeekView() {
 
         const dateStr = day.toLocaleDateString("en-CA");
 
-        const dayBookings = bookings.filter(b =>
-            (b.date || "").split("T")[0] === dateStr
-        );
+        const dayBookings = grouped[dateStr] || [];
 
         html += `
         <div class="card" onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
