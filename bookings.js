@@ -625,13 +625,13 @@ function renderWeekView() {
 
 function openDayView(dateStr) {
 
-    const el = document.getElementById("calendar");
+    const el = document.getElementById("calendarPopupContent");
     const grouped = groupBookingsByDate();
 
     const dayBookings = grouped[dateStr] || [];
 
     let html = `
-    <button onclick="calendarView='week'; renderCalendar()">← Back</button>
+    <button onclick="renderWeekView()">← Back</button>
     <div class="card">
         <div class="title">Bookings for ${dateStr}</div>
     `;
