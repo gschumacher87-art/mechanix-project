@@ -115,13 +115,31 @@ j.status === "done"
         <div onclick="selectSubJob(${i})" style="cursor:pointer;">
             <b>${j.summary || "No Title"}</b>
 ${
-j.status === "done"
-    ? '<span style="color:#6c757d;"> ✔ Done</span>'
-    : j.status === "in-progress"
-        ? '<span style="color:#28a745;"> ● Running</span>'
-        : j.status === "paused"
-            ? '<span style="color:#ffc107;"> ● Paused</span>'
-            : ''
+(() => {
+
+    let time = j.timeSpent || 0;
+
+    if (j.startedAt) {
+        time += Date.now() - j.startedAt;
+    }
+
+    const mins = Math.floor(time / 60000);
+
+    if (j.status === "done") {
+        return `<span style="color:#6c757d;"> ✔ Done (${mins}m)</span>`;
+    }
+
+    if (j.startedAt) {
+        return `<span style="color:#28a745;"> ● Running (${mins}m)</span>`;
+    }
+
+    if (j.timeSpent) {
+        return `<span style="color:#ffc107;"> ● Paused (${mins}m)</span>`;
+    }
+
+    return '';
+
+})()
 }
         </div>
 
