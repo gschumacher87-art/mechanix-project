@@ -174,9 +174,9 @@ j.status === "done"
 
             <br>
 
-            <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
-<button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
-<button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Finish</button>
+            <button class="primary" onclick="event.stopPropagation(); clockOn(selectedSubJobIndex)">Clock On</button>
+<button class="secondary" onclick="event.stopPropagation(); clockOff(selectedSubJobIndex)">Clock Off</button>
+<button class="primary" onclick="event.stopPropagation(); finishSubJob(selectedSubJobIndex)">Finish</button>
         </div>
     `;
 
