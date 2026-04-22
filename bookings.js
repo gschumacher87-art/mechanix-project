@@ -724,3 +724,7 @@ function editBookingJob(i) {
 
     renderBookingCard();
 }
+
+function closeCalendarPopup() {
+    document.getElementById("calendarPopup").style.display = "none";
+}
