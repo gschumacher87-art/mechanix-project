@@ -749,9 +749,9 @@ function openCalendarMonth() {
     <button onclick="closeCalendarPopup()">← Back</button>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <button onclick="changeMonth(-1); openCalendarMonth()">←</button>
-        <b>${monthName} ${year}</b>
-        <button onclick="changeMonth(1); openCalendarMonth()">→</button>
+        <button onclick="changeMonth(-1); renderCalendarMonthPopup()">←</button>
+<b>${monthName} ${year}</b>
+<button onclick="changeMonth(1); renderCalendarMonthPopup()">→</button>
     </div>
 
     <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
