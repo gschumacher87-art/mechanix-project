@@ -59,12 +59,12 @@ router.put("/:id", auth, async (req, res) => {
 if (req.body.status) {
     job.status = req.body.status;
 } else {
-    const hasInProgress = job.jobs.some(j => j.status === "in-progress");
-    const hasPaused = job.jobs.some(j => j.status === "paused");
+
+    const anyRunning = job.jobs.some(j => j.startedAt);
     const allDone = job.jobs.length && job.jobs.every(j => j.status === "done");
 
     if (allDone) job.status = "pending-invoice";
-    else if (hasInProgress || hasPaused) job.status = "in-progress";
+    else if (anyRunning) job.status = "in-progress";
     else job.status = "arrived";
 }
 
