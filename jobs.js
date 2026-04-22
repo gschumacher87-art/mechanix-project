@@ -257,7 +257,7 @@ function editSubJob(i) {
     saveSubJobs();
 }
 
-function clockOn(i) {
+async function clockOn(i) {
 
     const job = currentJob.jobs[i];
 
@@ -283,7 +283,7 @@ function clockOn(i) {
     // update parent job status
     currentJob.status = "in-progress";
 
-    saveSubJobs();
+    await saveSubJobs();
 }
 
 function clockOff(i) {
