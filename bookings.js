@@ -586,15 +586,17 @@ function renderWeekView() {
 
     // HEADER
     html += `<div></div>`;
-    for (let i = 0; i < 7; i++) {
-        const day = new Date(start);
-        day.setDate(start.getDate() + i);
+for (let i = 0; i < 7; i++) {
+    const day = new Date(start);
+    day.setDate(start.getDate() + i);
 
-        html += `
-        <div style="text-align:center; font-weight:bold; padding:6px 0;">
-            ${day.getDate()}
-        </div>`;
-    }
+    const dayName = day.toLocaleDateString("en-AU", { weekday: "short" });
+
+    html += `
+    <div style="text-align:center; font-weight:bold; padding:6px 0;">
+        ${dayName}<br>${day.getDate()}
+    </div>`;
+}
 
     // ROWS (HOURS)
     hours.forEach(h => {
