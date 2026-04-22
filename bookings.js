@@ -597,7 +597,7 @@ function renderWeekView() {
             html += `
             <div 
                 style="border:1px solid #eee; height:60px; position:relative;"
-                onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'"
+                onclick="openDayView('${dateStr}')"
             >
                 ${
                     dayBookings.map(b => `
