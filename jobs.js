@@ -286,7 +286,7 @@ async function clockOn(i) {
     await saveSubJobs();
 }
 
-function clockOff(i) {
+async function clockOff(i) {
 
     const job = currentJob.jobs[i];
 
@@ -308,10 +308,10 @@ function clockOff(i) {
 
 currentJob.status = anyActive ? "in-progress" : "arrived";
 
-    saveSubJobs();
+    await saveSubJobs();
 }
 
-function finishSubJob(i) {
+async function finishSubJob(i) {
 
     const now = Date.now();
 
@@ -338,7 +338,7 @@ function finishSubJob(i) {
         currentJob.status = anyActive ? "in-progress" : "arrived";
     }
 
-    saveSubJobs();
+    await saveSubJobs();
 }
 
 function deleteJobCard() {
