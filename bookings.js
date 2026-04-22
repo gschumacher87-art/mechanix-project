@@ -17,7 +17,7 @@ async function loadBookings() {
     let todayHtml = "";
 let futureHtml = "";
 
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toLocaleDateString("en-CA");
 
 data.forEach(b => {
     const c = b.customer || {};
@@ -482,8 +482,7 @@ function renderCalendar() {
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date().toISOString().split("T")[0];
-
+    const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
 
