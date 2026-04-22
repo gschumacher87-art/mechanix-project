@@ -17,7 +17,7 @@ async function loadBookings() {
     let todayHtml = "";
 let futureHtml = "";
 
-const today = new Date().toLocaleDateString("en-CA");
+const today = new Date().toISOString().split("T")[0];
 
 data.forEach(b => {
     const c = b.customer || {};
@@ -171,7 +171,7 @@ function openBookingModal() {
     document.getElementById("displayRego").value = "";
 
     document.getElementById("bookingDate").value =
-        new Date().toLocaleDateString("en-CA");
+    new Date().toISOString().split("T")[0];
 
     addJob();
 }
@@ -482,7 +482,7 @@ function renderCalendar() {
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = new Date().toISOString().split("T")[0];
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
@@ -515,7 +515,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
+        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
 
         const dayBookings = grouped[dateStr] || [];
 
@@ -609,7 +609,7 @@ for (let i = 0; i < 7; i++) {
             const day = new Date(start);
             day.setDate(start.getDate() + i);
 
-            const dateStr = day.toLocaleDateString("en-CA");
+            const dateStr = day.toISOString().split("T")[0];
             const dayBookings = grouped[dateStr] || [];
 
             html += `
@@ -757,7 +757,7 @@ function openCalendarMonth() {
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = new Date().toISOString().split("T")[0];
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
@@ -792,7 +792,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
+        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
         const dayBookings = grouped[dateStr] || [];
 
         html += `
@@ -826,7 +826,7 @@ function renderCalendarMonthPopup() {
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = new Date().toISOString().split("T")[0];
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
@@ -860,7 +860,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
+        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
         const dayBookings = grouped[dateStr] || [];
 
         html += `
