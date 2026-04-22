@@ -484,6 +484,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
+    const today = new Date().toLocaleDateString("en-CA");
 
     let html = `
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -824,8 +825,6 @@ function renderCalendarMonthPopup() {
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = new Date().toLocaleDateString("en-CA");
-
-    const today = new Date().toISOString().split("T")[0];
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
