@@ -567,7 +567,8 @@ function renderWeekView() {
 
     const base = new Date(selectedDate || new Date());
     const start = new Date(base);
-    start.setDate(base.getDate() - base.getDay());
+    const dayIndex = (base.getDay() === 0 ? 6 : base.getDay() - 1);
+start.setDate(base.getDate() - dayIndex);
 
     const grouped = groupBookingsByDate();
 
