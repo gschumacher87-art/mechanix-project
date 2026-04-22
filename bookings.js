@@ -451,6 +451,18 @@ function openBookingCustomerSearch() {
     bookingSearchCustomers();
 }
 
+function groupBookingsByDate() {
+    const map = {};
+
+    bookings.forEach(b => {
+        const date = (b.date || "").split("T")[0];
+        if (!map[date]) map[date] = [];
+        map[date].push(b);
+    });
+
+    return map;
+}
+
 function renderCalendar() {
 
     const el = document.getElementById("calendar");
