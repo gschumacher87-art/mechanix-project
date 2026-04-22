@@ -22,7 +22,7 @@ router.post("/", auth, async (req, res) => {
     customer: req.body.customer,
     vehicle: req.body.vehicle,
     status: req.body.status || "booked",
-    date: new Date(req.body.date + "T00:00:00"),
+    date: req.body.date,
     checklist: checklist
 });
 
