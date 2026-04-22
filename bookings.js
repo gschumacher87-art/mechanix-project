@@ -502,9 +502,7 @@ function renderCalendar() {
 
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
-        const dayBookings = bookings.filter(b =>
-            (b.date || "").split("T")[0] === dateStr
-        );
+        const dayBookings = grouped[dateStr] || [];
 
         html += `
         <div class="card"
