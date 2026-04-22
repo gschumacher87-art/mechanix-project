@@ -823,6 +823,7 @@ function renderCalendarMonthPopup() {
     let firstDay = new Date(year, month, 1).getDay();
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date().toLocaleDateString("en-CA");
 
     const today = new Date().toISOString().split("T")[0];
 
