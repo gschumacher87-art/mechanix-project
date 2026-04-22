@@ -46,11 +46,26 @@ router.get("/:id", auth, async (req, res) => {
 // UPDATE job
 router.put("/:id", auth, async (req, res) => {
     try {
-        const job = await Job.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
+        const job = await Job.findById(req.params.id);
+
+        if (!job) return res.status(404).json({ error: "Not found" });
+
+        // update sub-jobs
+        if (req.body.jobs) {
+            job.jobs = req.body.jobs;
+        }
+
+        // 🔥 derive status from sub-jobs
+        const hasInProgress = job.jobs.some(j => j.status === "in-progress");
+        const hasPaused = job.jobs.some(j => j.status === "paused");
+        const allDone = job.jobs.length && job.jobs.every(j => j.status === "done");
+
+        if (allDone) job.status = "pending-invoice";
+        else if (hasInProgress || hasPaused) job.status = "in-progress";
+        else job.status = "arrived";
+
+        await job.save();
+
         res.json(job);
     } catch (err) {
         res.status(400).json({ error: err.message });
