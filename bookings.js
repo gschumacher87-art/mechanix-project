@@ -17,7 +17,7 @@ async function loadBookings() {
     let todayHtml = "";
 let futureHtml = "";
 
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toLocaleDateString("en-CA");
 
 data.forEach(b => {
     const c = b.customer || {};
