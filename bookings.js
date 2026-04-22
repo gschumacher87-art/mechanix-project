@@ -482,7 +482,6 @@ function renderCalendar() {
 firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
 
