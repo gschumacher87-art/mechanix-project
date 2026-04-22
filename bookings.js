@@ -489,17 +489,31 @@ function renderCalendar() {
 
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
-        const hasBooking = bookings.some(b =>
+        const dayBookings = bookings.filter(b =>
             (b.date || "").split("T")[0] === dateStr
         );
 
         html += `
         <div class="card"
             onclick="selectCalendarDate('${dateStr}')"
-            style="${dateStr === today ? 'border:2px solid #007bff;' : ''}">
+            style="min-height:80px; ${dateStr === today ? 'border:2px solid #007bff;' : ''}">
             
-            <div>${d}</div>
-            ${hasBooking ? "<div style='font-size:10px;color:#28a745;'>•</div>" : ""}
+            <div><b>${d}</b></div>
+
+            <div style="margin-top:4px;">
+                ${
+                    dayBookings.map(b => `
+                        <div 
+                            style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
+                            onclick="event.stopPropagation(); openBooking('${b._id}')"
+                        >
+                            ${b.customer?.firstName || "No"} 
+                            ${b.customer?.lastName || ""}
+                        </div>
+                    `).join("")
+                }
+            </div>
+
         </div>`;
     }
 
