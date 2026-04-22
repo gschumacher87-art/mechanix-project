@@ -885,5 +885,6 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 }
 
 function openWeekView() {
+    document.getElementById("calendarPopup").style.display = "block";
     renderWeekView();
 }
