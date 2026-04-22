@@ -238,7 +238,6 @@ async function saveSubJobs() {
         jobs: currentJob.jobs
     })
 }).then(() => new Promise(r => setTimeout(r, 200)));
-    });
 
     renderJobCard();
 }
