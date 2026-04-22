@@ -33,17 +33,8 @@ async function loadJobs() {
 
 ${
     (j.jobs || []).map(x => `
-    <div style="font-size:14px;">
-        • ${x.summary}
-        ${
-            x.status === "in-progress"
-                ? '<span style="color:#28a745; font-weight:bold;"> [ACTIVE]</span>'
-                : x.status === "done"
-                    ? '<span style="color:#6c757d;"> [DONE]</span>'
-                    : ''
-        }
-    </div>
-`).join("")
+        <div style="font-size:14px;">• ${x.summary}</div>
+    `).join("")
 }
 
 <br>
