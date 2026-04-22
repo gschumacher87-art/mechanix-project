@@ -662,8 +662,11 @@ let selectedDate = null;
 
 function selectCalendarDate(date) {
     selectedDate = date;
-    calendarView = "week";
-    renderCalendar();
+
+    // 🔥 STEP 1: open popup instead of switching view
+    document.getElementById("calendarPopup").style.display = "block";
+
+    // keep month view intact for now
 }
 
 function changeMonth(direction) {
