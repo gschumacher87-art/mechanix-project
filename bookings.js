@@ -551,35 +551,72 @@ function renderWeekView() {
     const el = document.getElementById("calendar");
 
     const base = new Date(selectedDate || new Date());
-const start = new Date(base);
-start.setDate(base.getDate() - base.getDay());
-const grouped = groupBookingsByDate();
+    const start = new Date(base);
+    start.setDate(base.getDate() - base.getDay());
+
+    const grouped = groupBookingsByDate();
+
+    const hours = [8,9,10,11,12,13,14,15,16,17];
 
     let html = `
     <button onclick="calendarView='month'; renderCalendar()">← Back</button>
-    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;'>
+
+    <div style="
+        display:grid;
+        grid-template-columns:60px repeat(7,1fr);
+        border-top:1px solid #ddd;
+        margin-top:10px;
+    ">
     `;
 
+    // HEADER
+    html += `<div></div>`;
     for (let i = 0; i < 7; i++) {
-
         const day = new Date(start);
         day.setDate(start.getDate() + i);
 
-        const dateStr = day.toLocaleDateString("en-CA");
-
-        const dayBookings = grouped[dateStr] || [];
-
         html += `
-        <div class="card" onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
-            <div><b>${day.getDate()}</b></div>
-
-            ${
-                dayBookings.map(b => `
-                    <div style="font-size:10px;">• ${b.customer?.firstName || ""}</div>
-                `).join("")
-            }
+        <div style="text-align:center; font-weight:bold; padding:6px 0;">
+            ${day.getDate()}
         </div>`;
     }
+
+    // ROWS (HOURS)
+    hours.forEach(h => {
+
+        html += `<div style="font-size:12px; padding:4px;">${h}:00</div>`;
+
+        for (let i = 0; i < 7; i++) {
+
+            const day = new Date(start);
+            day.setDate(start.getDate() + i);
+
+            const dateStr = day.toLocaleDateString("en-CA");
+            const dayBookings = grouped[dateStr] || [];
+
+            html += `
+            <div 
+                style="border:1px solid #eee; height:60px; position:relative;"
+                onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'"
+            >
+                ${
+                    dayBookings.map(b => `
+                        <div style="
+                            font-size:10px;
+                            background:#007bff;
+                            color:white;
+                            margin:2px;
+                            padding:2px;
+                            border-radius:3px;
+                        ">
+                            ${b.customer?.firstName || "No"}
+                        </div>
+                    `).join("")
+                }
+            </div>`;
+        }
+
+    });
 
     html += "</div>";
 
