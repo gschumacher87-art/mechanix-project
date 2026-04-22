@@ -228,6 +228,8 @@ function deleteSubJob(i) {
 }
 
 async function saveSubJobs() {
+    
+    alert(JSON.stringify(currentJob.jobs));
 
     await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
