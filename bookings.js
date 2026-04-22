@@ -61,8 +61,8 @@ if (bDateObj >= startOfWeek && bDateObj <= endOfWeek && bookingDate !== today) {
     document.getElementById("todayList").innerHTML =
         todayHtml || "<div class='card'>No bookings today</div>";
 
-    document.getElementById("futureList").innerHTML =
-        futureHtml || "<div class='card'>No future bookings</div>";
+    document.getElementById("futureList").innerHTML = "";
+renderWeekView();
 
     renderCalendar();
 }
@@ -574,7 +574,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
 function renderWeekView() {
 
-    const el = document.getElementById("calendarPopupContent");
+    const el = document.getElementById("futureList");
 
     const base = new Date(selectedDate || new Date());
     const start = new Date(base);
