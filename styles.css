@@ -413,3 +413,30 @@ letter-spacing: 1px;
     }
 
 }
+
+/* === CALENDAR BOOKINGS STACK === */
+
+#calendar .card {
+    text-align: left;           /* stop center squashing */
+    display: flex;
+    flex-direction: column;
+}
+
+/* container inside each day */
+#calendar .card > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 4px;
+}
+
+/* each booking block */
+#calendar .card .booking-item {
+    font-size: 11px;
+    background: #ffe3e3;
+    padding: 3px 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
