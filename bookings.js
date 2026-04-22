@@ -537,9 +537,9 @@ function renderWeekView() {
 
     const el = document.getElementById("calendar");
 
-    const base = new Date(selectedDate || new Date());
     const start = new Date(base);
-    const grouped = groupBookingsByDate();
+start.setDate(base.getDate() - base.getDay());
+const grouped = groupBookingsByDate();
     start.setDate(base.getDate() - base.getDay());
 
     let html = `
