@@ -3,7 +3,7 @@ let selectedSubJobIndex = 0;
 
 // ================= LOAD JOBS =================
 async function loadJobs() {
-    const res = await fetch(API + "/jobs");
+    const res = await fetch(API + "/jobs?t=" + Date.now());
     const data = await res.json();
 
     let booked = "", active = "", pending = "", completed = "";
@@ -231,7 +231,7 @@ async function saveSubJobs() {
     
     alert(JSON.stringify(currentJob.jobs));
 
-    await fetch(API + "/jobs/" + currentJob._id, {
+    await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now(), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
