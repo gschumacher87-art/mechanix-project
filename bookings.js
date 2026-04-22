@@ -631,8 +631,7 @@ function openDayView(dateStr) {
     const dayBookings = grouped[dateStr] || [];
 
     let html = `
-    <button onclick="renderCalendar()">← Back</button>
-
+    <button onclick="calendarView='week'; renderCalendar()">← Back</button>
     <div class="card">
         <div class="title">Bookings for ${dateStr}</div>
     `;
