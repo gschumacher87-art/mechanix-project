@@ -495,6 +495,14 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 </div>
 
 <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+
+<div style="font-weight:bold;text-align:center;">Mon</div>
+<div style="font-weight:bold;text-align:center;">Tue</div>
+<div style="font-weight:bold;text-align:center;">Wed</div>
+<div style="font-weight:bold;text-align:center;">Thu</div>
+<div style="font-weight:bold;text-align:center;">Fri</div>
+<div style="font-weight:bold;text-align:center;">Sat</div>
+<div style="font-weight:bold;text-align:center;">Sun</div>
 `;
 
     for (let i = 0; i < firstDay; i++) {
@@ -758,8 +766,16 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 <button onclick="changeMonth(1); renderCalendarMonthPopup()">→</button>
     </div>
 
-    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
-    `;
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+
+<div style="font-weight:bold;text-align:center;">Mon</div>
+<div style="font-weight:bold;text-align:center;">Tue</div>
+<div style="font-weight:bold;text-align:center;">Wed</div>
+<div style="font-weight:bold;text-align:center;">Thu</div>
+<div style="font-weight:bold;text-align:center;">Fri</div>
+<div style="font-weight:bold;text-align:center;">Sat</div>
+<div style="font-weight:bold;text-align:center;">Sun</div>
+`;
 
     for (let i = 0; i < firstDay; i++) {
         html += "<div></div>";
@@ -816,8 +832,15 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     </div>
 
     <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
-    `;
 
+<div style="font-weight:bold;text-align:center;">Mon</div>
+<div style="font-weight:bold;text-align:center;">Tue</div>
+<div style="font-weight:bold;text-align:center;">Wed</div>
+<div style="font-weight:bold;text-align:center;">Thu</div>
+<div style="font-weight:bold;text-align:center;">Fri</div>
+<div style="font-weight:bold;text-align:center;">Sat</div>
+<div style="font-weight:bold;text-align:center;">Sun</div>
+`;
     for (let i = 0; i < firstDay; i++) {
         html += "<div></div>";
     }
