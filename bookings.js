@@ -786,3 +786,59 @@ function openCalendarMonth() {
 
     el.innerHTML = html;
 }
+
+function renderCalendarMonthPopup() {
+    const el = document.getElementById("calendarPopupContent");
+
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const today = new Date().toLocaleDateString("en-CA");
+
+    const monthName = currentMonth.toLocaleString("default", { month: "long" });
+    const grouped = groupBookingsByDate();
+
+    let html = `
+    <button onclick="closeCalendarPopup()">← Back</button>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <button onclick="changeMonth(-1); renderCalendarMonthPopup()">←</button>
+        <b>${monthName} ${year}</b>
+        <button onclick="changeMonth(1); renderCalendarMonthPopup()">→</button>
+    </div>
+
+    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+    `;
+
+    for (let i = 0; i < firstDay; i++) {
+        html += "<div></div>";
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+
+        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
+        const dayBookings = grouped[dateStr] || [];
+
+        html += `
+        <div class="card"
+            onclick="selectCalendarDate('${dateStr}')"
+            style="min-height:80px; ${dateStr === today ? 'border:2px solid #007bff;' : ''}">
+
+            <div><b>${d}</b></div>
+
+            ${
+                dayBookings.length
+                ? `<div style="font-size:10px; margin-top:4px;">${dayBookings.length} bookings</div>`
+                : ""
+            }
+
+        </div>`;
+    }
+
+    html += "</div>";
+
+    el.innerHTML = html;
+}
