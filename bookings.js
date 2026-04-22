@@ -515,7 +515,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
+        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
         const dayBookings = grouped[dateStr] || [];
 
@@ -792,7 +792,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
+        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
         const dayBookings = grouped[dateStr] || [];
 
         html += `
@@ -860,7 +860,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     for (let d = 1; d <= daysInMonth; d++) {
 
-        const dateStr = new Date(year, month, d).toISOString().split("T")[0];
+        const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
         const dayBookings = grouped[dateStr] || [];
 
         html += `
