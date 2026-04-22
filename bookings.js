@@ -623,6 +623,41 @@ function renderWeekView() {
     el.innerHTML = html;
 }
 
+function openDayView(dateStr) {
+
+    const el = document.getElementById("calendar");
+    const grouped = groupBookingsByDate();
+
+    const dayBookings = grouped[dateStr] || [];
+
+    let html = `
+    <button onclick="renderCalendar()">← Back</button>
+
+    <div class="card">
+        <div class="title">Bookings for ${dateStr}</div>
+    `;
+
+    if (!dayBookings.length) {
+        html += `<div>No bookings</div>`;
+    } else {
+        html += dayBookings.map(b => `
+            <div class="card" onclick="openBooking('${b._id}')">
+                <b>${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}</b><br>
+                ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
+            </div>
+        `).join("");
+    }
+
+    html += `
+        <button class="primary" onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
+            + Add Booking
+        </button>
+    </div>
+    `;
+
+    el.innerHTML = html;
+}
+
 let calendarView = "month";
 let selectedDate = null;
 
