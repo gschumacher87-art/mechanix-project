@@ -482,6 +482,7 @@ function renderCalendar() {
     const today = new Date().toLocaleDateString("en-CA");
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
+    const grouped = groupBookingsByDate();
 
     let html = `
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
