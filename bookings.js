@@ -883,3 +883,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
     el.innerHTML = html;
 }
+
+function openWeekView() {
+    renderWeekView();
+}
