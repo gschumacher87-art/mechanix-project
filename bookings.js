@@ -548,7 +548,7 @@ function renderCalendar() {
 
 function renderWeekView() {
 
-    const el = document.getElementById("calendar");
+    const el = document.getElementById("calendarPopupContent");
 
     const base = new Date(selectedDate || new Date());
     const start = new Date(base);
@@ -559,7 +559,7 @@ function renderWeekView() {
     const hours = [8,9,10,11,12,13,14,15,16,17];
 
     let html = `
-    <button onclick="calendarView='month'; renderCalendar()">← Back</button>
+    <button onclick="closeCalendarPopup()">← Back</button>
 
     <div style="
         display:grid;
