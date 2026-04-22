@@ -512,18 +512,31 @@ function renderCalendar() {
             <div><b>${d}</b></div>
 
             <div style="margin-top:4px;">
-                ${
-                    dayBookings.map(b => `
-                        <div 
-                            style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
-                            onclick="event.stopPropagation(); openBooking('${b._id}')"
-                        >
-                            ${b.customer?.firstName || "No"} 
-                            ${b.customer?.lastName || ""}
-                        </div>
-                    `).join("")
-                }
-            </div>
+    ${
+        (() => {
+            const visible = dayBookings.slice(0, 3);
+            const extra = dayBookings.length - visible.length;
+
+            return `
+                ${visible.map(b => `
+                    <div 
+                        style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
+                        onclick="event.stopPropagation(); openBooking('${b._id}')"
+                    >
+                        ${b.customer?.firstName || "No"} 
+                        ${b.customer?.lastName || ""}
+                    </div>
+                `).join("")}
+
+                ${extra > 0 ? `
+                    <div style="font-size:10px; color:#666;">
+                        +${extra} more
+                    </div>
+                ` : ""}
+            `;
+        })()
+    }
+</div>
 
         </div>`;
     }
