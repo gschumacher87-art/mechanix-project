@@ -3,7 +3,7 @@ let selectedSubJobIndex = 0;
 
 // ================= LOAD JOBS =================
 async function loadJobs() {
-    const res = await fetch(API + "/jobs?t=" + Date.now());
+    const res = await fetch(API + "/jobs");
     const data = await res.json();
 
     let booked = "", active = "", pending = "", completed = "";
@@ -21,24 +21,15 @@ async function loadJobs() {
                 : "";
 
         let color = "#ccc";
-        let hasInProgress = (j.jobs || []).some(x => x.status === "in-progress");
-let hasPaused = (j.jobs || []).some(x => x.status === "paused");
-let allDone = (j.jobs || []).length && (j.jobs || []).every(x => x.status === "done");
-
-let displayStatus = "arrived";
-
-if (allDone) displayStatus = "pending-invoice";
-else if (hasInProgress || hasPaused) displayStatus = "in-progress";
-
-if (displayStatus === "arrived") color = "orange";
-if (displayStatus === "in-progress") color = "#007bff";
-if (displayStatus === "pending-invoice") color = "purple";
-if (displayStatus === "completed") color = "green";
+        if (j.status === "arrived") color = "orange";
+        if (j.status === "in-progress") color = "#007bff";
+        if (j.status === "pending-invoice") color = "purple";
+        if (j.status === "completed") color = "green";
 
         const card = `
 <div class="card" onclick="openJobCard('${j._id}')" style="border-left:6px solid ${color}">
     <div class="title">${j.title}</div>
-<span class="status ${displayStatus}">${displayStatus}</span>
+<span class="status ${j.status}">${j.status}</span><br><br>
 
 ${
     (j.jobs || []).map(x => `
@@ -60,11 +51,11 @@ ${
 ${vehicleName}
 </div>`;
 
-        if (displayStatus === "arrived") booked += card;
-else if (displayStatus === "in-progress") active += card;
-else if (displayStatus === "pending-invoice") pending += card;
-else if (displayStatus === "completed") completed += card;
-else booked += card;
+        if (j.status === "arrived") booked += card;
+        else if (j.status === "in-progress") active += card;
+        else if (j.status === "pending-invoice") pending += card;
+        else if (j.status === "completed") completed += card;
+        else booked += card;
     });
 
     jobList.innerHTML = `
@@ -104,18 +95,7 @@ function renderJobCard() {
         <div class="card">
     <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
     <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
-   ${(() => {
-    const jobs = currentJob.jobs || [];
-    const hasInProgress = jobs.some(x => x.status === "in-progress");
-    const hasPaused = jobs.some(x => x.status === "paused");
-    const allDone = jobs.length && jobs.every(x => x.status === "done");
-
-    let displayStatus = "arrived";
-    if (allDone) displayStatus = "pending-invoice";
-    else if (hasInProgress || hasPaused) displayStatus = "in-progress";
-
-    return `<b>Status:</b> ${displayStatus}`;
-})()}
+    <b>Status:</b> ${currentJob.status}<br><br>
 
     <button class="secondary" onclick="deleteJobCard()">Delete Job Card</button>
 </div>
@@ -174,9 +154,9 @@ j.status === "done"
 
             <br>
 
-            <button class="primary" onclick="event.stopPropagation(); clockOn(selectedSubJobIndex)">Clock On</button>
-<button class="secondary" onclick="event.stopPropagation(); clockOff(selectedSubJobIndex)">Clock Off</button>
-<button class="primary" onclick="event.stopPropagation(); finishSubJob(selectedSubJobIndex)">Finish</button>
+            <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
+<button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
+<button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Finish</button>
         </div>
     `;
 
@@ -190,7 +170,7 @@ function selectSubJob(i) {
 // ================= FINISH JOB =================
 async function finishJob() {
 
-    await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now(), {
+    await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "pending-invoice" })
@@ -229,16 +209,14 @@ function deleteSubJob(i) {
 
 async function saveSubJobs() {
 
-    await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now(), {
+    await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            jobs: currentJob.jobs
-        })
+    jobs: currentJob.jobs,
+    status: currentJob.status
+})
     });
-
-    const res = await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now());
-    currentJob = await res.json();
 
     renderJobCard();
 }
@@ -258,7 +236,7 @@ function editSubJob(i) {
     saveSubJobs();
 }
 
-async function clockOn(i) {
+function clockOn(i) {
 
     const job = currentJob.jobs[i];
 
@@ -284,10 +262,10 @@ async function clockOn(i) {
     // update parent job status
     currentJob.status = "in-progress";
 
-    await saveSubJobs();
+    saveSubJobs();
 }
 
-async function clockOff(i) {
+function clockOff(i) {
 
     const job = currentJob.jobs[i];
 
@@ -309,10 +287,10 @@ async function clockOff(i) {
 
 currentJob.status = anyActive ? "in-progress" : "arrived";
 
-    await saveSubJobs();
+    saveSubJobs();
 }
 
-async function finishSubJob(i) {
+function finishSubJob(i) {
 
     const now = Date.now();
 
@@ -339,7 +317,7 @@ async function finishSubJob(i) {
         currentJob.status = anyActive ? "in-progress" : "arrived";
     }
 
-    await saveSubJobs();
+    saveSubJobs();
 }
 
 function deleteJobCard() {
