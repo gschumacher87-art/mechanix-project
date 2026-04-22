@@ -681,9 +681,7 @@ let selectedDate = null;
 function selectCalendarDate(date) {
     selectedDate = date;
 
-    document.getElementById("calendarPopup").style.display = "block";
-
-    renderWeekView();
+    openDayView(date); // just show that day, no week view
 }
 
 function changeMonth(direction) {
