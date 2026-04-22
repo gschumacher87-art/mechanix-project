@@ -21,15 +21,24 @@ async function loadJobs() {
                 : "";
 
         let color = "#ccc";
-        if (j.status === "arrived") color = "orange";
-        if (j.status === "in-progress") color = "#007bff";
-        if (j.status === "pending-invoice") color = "purple";
-        if (j.status === "completed") color = "green";
+        let hasInProgress = (j.jobs || []).some(x => x.status === "in-progress");
+let hasPaused = (j.jobs || []).some(x => x.status === "paused");
+let allDone = (j.jobs || []).length && (j.jobs || []).every(x => x.status === "done");
+
+let displayStatus = "arrived";
+
+if (allDone) displayStatus = "pending-invoice";
+else if (hasInProgress || hasPaused) displayStatus = "in-progress";
+
+if (displayStatus === "arrived") color = "orange";
+if (displayStatus === "in-progress") color = "#007bff";
+if (displayStatus === "pending-invoice") color = "purple";
+if (displayStatus === "completed") color = "green";
 
         const card = `
 <div class="card" onclick="openJobCard('${j._id}')" style="border-left:6px solid ${color}">
     <div class="title">${j.title}</div>
-<span class="status ${j.status}">${j.status}</span><br><br>
+<span class="status ${displayStatus}">${displayStatus}</span>
 
 ${
     (j.jobs || []).map(x => `
@@ -51,11 +60,11 @@ ${
 ${vehicleName}
 </div>`;
 
-        if (j.status === "arrived") booked += card;
-        else if (j.status === "in-progress") active += card;
-        else if (j.status === "pending-invoice") pending += card;
-        else if (j.status === "completed") completed += card;
-        else booked += card;
+        if (displayStatus === "arrived") booked += card;
+else if (displayStatus === "in-progress") active += card;
+else if (displayStatus === "pending-invoice") pending += card;
+else if (displayStatus === "completed") completed += card;
+else booked += card;
     });
 
     jobList.innerHTML = `
