@@ -32,10 +32,19 @@ const jobSchema = new mongoose.Schema(
         type: String
     },
     jobs: [
-    {
-        summary: String,
-        description: String
+{
+    summary: String,
+    description: String,
+    status: String,
+    timeSpent: {
+        type: Number,
+        default: 0
+    },
+    startedAt: {
+        type: Number,
+        default: null
     }
+}
 ],
 
     // ✅ CHECKLIST
