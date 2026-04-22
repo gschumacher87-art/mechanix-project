@@ -55,14 +55,18 @@ router.put("/:id", auth, async (req, res) => {
             job.jobs = req.body.jobs;
         }
 
-        // 🔥 derive status from sub-jobs
-        const hasInProgress = job.jobs.some(j => j.status === "in-progress");
-        const hasPaused = job.jobs.some(j => j.status === "paused");
-        const allDone = job.jobs.length && job.jobs.every(j => j.status === "done");
+        
+if (req.body.status) {
+    job.status = req.body.status;
+} else {
+    const hasInProgress = job.jobs.some(j => j.status === "in-progress");
+    const hasPaused = job.jobs.some(j => j.status === "paused");
+    const allDone = job.jobs.length && job.jobs.every(j => j.status === "done");
 
-        if (allDone) job.status = "pending-invoice";
-        else if (hasInProgress || hasPaused) job.status = "in-progress";
-        else job.status = "arrived";
+    if (allDone) job.status = "pending-invoice";
+    else if (hasInProgress || hasPaused) job.status = "in-progress";
+    else job.status = "arrived";
+}
 
         await job.save();
 
