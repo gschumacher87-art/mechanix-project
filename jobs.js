@@ -289,12 +289,10 @@ function clockOff(i) {
 
     job.status = "paused";
 
-    // check if any job still running
-    const anyActive = currentJob.jobs.some(j => 
-    j.status === "in-progress" || j.status === "paused"
-);
+    // check if any job still running (FIXED)
+    const anyRunning = currentJob.jobs.some(j => j.startedAt);
 
-currentJob.status = anyActive ? "in-progress" : "arrived";
+    currentJob.status = anyRunning ? "in-progress" : "arrived";
 
     saveSubJobs();
 }
@@ -319,11 +317,10 @@ function finishSubJob(i) {
     if (allDone) {
         currentJob.status = "pending-invoice";
     } else {
-        const anyActive = currentJob.jobs.some(j => 
-            j.status === "in-progress" || j.status === "paused"
-        );
+        // FIXED
+        const anyRunning = currentJob.jobs.some(j => j.startedAt);
 
-        currentJob.status = anyActive ? "in-progress" : "arrived";
+        currentJob.status = anyRunning ? "in-progress" : "arrived";
     }
 
     saveSubJobs();
