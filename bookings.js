@@ -537,10 +537,10 @@ function renderWeekView() {
 
     const el = document.getElementById("calendar");
 
-    const start = new Date(base);
+    const base = new Date(selectedDate || new Date());
+const start = new Date(base);
 start.setDate(base.getDate() - base.getDay());
 const grouped = groupBookingsByDate();
-    start.setDate(base.getDate() - base.getDay());
 
     let html = `
     <button onclick="calendarView='month'; renderCalendar()">← Back</button>
