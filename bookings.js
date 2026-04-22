@@ -35,7 +35,7 @@ data.forEach(b => {
         }
     </div>`;
 
-    const bookingDate = (b.date || "").split("T")[0];
+    const bookingDate = new Date(b.date).toISOString().split("T")[0];
 
     if (bookingDate === today) {
         todayHtml += card;
