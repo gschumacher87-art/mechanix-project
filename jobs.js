@@ -229,13 +229,18 @@ function deleteSubJob(i) {
 
 async function saveSubJobs() {
 
+    async function saveSubJobs() {
+
     await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now(), {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-        jobs: currentJob.jobs
-    })
-}).then(() => new Promise(r => setTimeout(r, 200)));
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            jobs: currentJob.jobs
+        })
+    });
+
+    const res = await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now());
+    currentJob = await res.json();
 
     renderJobCard();
 }
