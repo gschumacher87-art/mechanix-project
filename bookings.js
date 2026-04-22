@@ -41,9 +41,21 @@ data.forEach(b => {
         todayHtml += card;
     }
 
-    if (bookingDate > today) {
-        futureHtml += card;
-    }
+    const now = new Date();
+const startOfWeek = new Date(now);
+const day = (now.getDay() === 0 ? 6 : now.getDay() - 1);
+startOfWeek.setDate(now.getDate() - day);
+startOfWeek.setHours(0,0,0,0);
+
+const endOfWeek = new Date(startOfWeek);
+endOfWeek.setDate(startOfWeek.getDate() + 6);
+endOfWeek.setHours(23,59,59,999);
+
+const bDateObj = new Date(b.date);
+
+if (bDateObj >= startOfWeek && bDateObj <= endOfWeek && bookingDate !== today) {
+    futureHtml += card;
+}
 });
 
     document.getElementById("todayList").innerHTML =
