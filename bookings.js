@@ -15,34 +15,36 @@ async function loadBookings() {
     bookings = data;
 
     let todayHtml = "";
-    let futureHtml = "";
+let futureHtml = "";
 
-    const today = new Date().toLocaleDateString("en-CA");
+const today = new Date().toISOString().split("T")[0];
 
-    data.forEach(b => {
-        const c = b.customer || {};
-        const v = b.vehicle || {};
+data.forEach(b => {
+    const c = b.customer || {};
+    const v = b.vehicle || {};
 
-        const card = `
-        <div class="card" onclick="openBooking('${b._id}')">
-            <div class="title">Booking</div>
-            <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
-            ${v.make || ""} ${v.model || ""}<br><br>
-            ${
-                (b.services || []).map(s => `
-                    <div>• ${s}</div>
-                `).join("")
-            }
-        </div>`;
-
-        const bookingDate = (b.date || "").split("T")[0];
-
-        if (bookingDate === today) {
-            todayHtml += card;
-        } else {
-            futureHtml += card;
+    const card = `
+    <div class="card" onclick="openBooking('${b._id}')">
+        <div class="title">Booking</div>
+        <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
+        ${v.make || ""} ${v.model || ""}<br><br>
+        ${
+            (b.services || []).map(s => `
+                <div>• ${s}</div>
+            `).join("")
         }
-    });
+    </div>`;
+
+    const bookingDate = (b.date || "").split("T")[0];
+
+    if (bookingDate === today) {
+        todayHtml += card;
+    }
+
+    if (bookingDate > today) {
+        futureHtml += card;
+    }
+});
 
     document.getElementById("todayList").innerHTML =
         todayHtml || "<div class='card'>No bookings today</div>";
