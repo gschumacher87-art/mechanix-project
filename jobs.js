@@ -232,11 +232,12 @@ async function saveSubJobs() {
     alert(JSON.stringify(currentJob.jobs));
 
     await fetch(API + "/jobs/" + currentJob._id + "?t=" + Date.now(), {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-    jobs: currentJob.jobs
-})
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        jobs: currentJob.jobs
+    })
+}).then(() => new Promise(r => setTimeout(r, 200)));
     });
 
     renderJobCard();
