@@ -501,8 +501,8 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 `;
 
     for (let i = 0; i < firstDay; i++) {
-        html += "<div></div>";
-    }
+    html += `<div class="card" style="visibility:hidden;"></div>`;
+}
 
     for (let d = 1; d <= daysInMonth; d++) {
 
@@ -748,8 +748,8 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 `;
 
     for (let i = 0; i < firstDay; i++) {
-        html += "<div></div>";
-    }
+    html += `<div class="card" style="visibility:hidden;"></div>`;
+}
 
     for (let d = 1; d <= daysInMonth; d++) {
 
@@ -816,8 +816,8 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
 `;
     for (let i = 0; i < firstDay; i++) {
-        html += "<div></div>";
-    }
+    html += `<div class="card" style="visibility:hidden;"></div>`;
+}
 
     for (let d = 1; d <= daysInMonth; d++) {
 
