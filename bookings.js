@@ -844,5 +844,72 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
 function openWeekView() {
     document.getElementById("calendarPopup").style.display = "block";
-    renderWeekView();
+
+    const el = document.getElementById("calendarPopupContent");
+
+    const base = new Date(selectedDate || new Date());
+    const start = new Date(base);
+    const dayIndex = (base.getDay() === 0 ? 6 : base.getDay() - 1);
+    start.setDate(base.getDate() - dayIndex);
+
+    const grouped = groupBookingsByDate();
+
+    let html = `
+    <button onclick="openCalendarMonth()">← Back</button>
+
+    <div style="
+        display:grid;
+        grid-template-columns:60px repeat(7,1fr);
+        border-top:1px solid #ddd;
+        margin-top:10px;
+        overflow-x:auto;
+    ">
+    `;
+
+    html += `<div></div>`;
+
+    for (let i = 0; i < 7; i++) {
+        const day = new Date(start);
+        day.setDate(start.getDate() + i);
+
+        const dayName = day.toLocaleDateString("en-AU", { weekday: "short" });
+
+        html += `
+        <div style="text-align:center; font-weight:bold; padding:6px 0;">
+            ${dayName}<br>${day.getDate()}
+        </div>`;
+    }
+
+    html += `<div></div>`;
+
+    for (let i = 0; i < 7; i++) {
+
+        const day = new Date(start);
+        day.setDate(start.getDate() + i);
+
+        const dateStr = day.toISOString().split("T")[0];
+        const dayBookings = grouped[dateStr] || [];
+
+        html += `
+        <div style="min-width:120px; border:1px solid #eee; padding:4px;">
+            ${
+                dayBookings.map(b => `
+                    <div class="card"
+                        onclick="openBooking('${b._id}')"
+                        style="margin:4px 0;">
+                        ${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
+                    </div>
+                `).join("")
+            }
+
+            <button class="primary"
+                onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
+                + Book
+            </button>
+        </div>`;
+    }
+
+    html += "</div>";
+
+    el.innerHTML = html;
 }
