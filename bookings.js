@@ -639,7 +639,7 @@ let selectedDate = null;
 
 function selectCalendarDate(date) {
 
-    openBookingModal(date);
+    selectedDate = date;
 }
 
 function changeMonth(direction) {
