@@ -907,10 +907,6 @@ function openWeekView() {
                 `).join("")
             }
 
-            <button class="primary"
-    onclick="selectedDate='${dateStr}'"
-    + Book
-</button>
         </div>`;
     }
 
