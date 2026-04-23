@@ -629,6 +629,7 @@ for (let i = 0; i < 7; i++) {
 html += "</div>";
 
 el.innerHTML = html;
+}
 
 function openDayView(dateStr) {
 
