@@ -912,3 +912,10 @@ function openWeekView() {
 
     el.innerHTML = html;
 }
+
+function createFromSelectedDay() {
+    if (!selectedDate) return;
+
+    closeCalendarPopup();
+    openBookingModal(selectedDate);
+}
