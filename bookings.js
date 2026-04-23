@@ -768,7 +768,6 @@ ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
 
             ${dayBookings.map(b => `
     <div 
-        ${
         style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
         onclick="event.stopPropagation(); openBooking('${b._id}')"
     >
