@@ -154,7 +154,7 @@ async function deleteBooking(id) {
 }
 
 // ================= MODAL =================
-function openBookingModal() {
+function openBookingModal(date = null) {
     document.getElementById("bookingModal").style.display = "block";
 
     selectedCustomerId = null;
@@ -167,7 +167,7 @@ function openBookingModal() {
     document.getElementById("displayRego").value = "";
 
     document.getElementById("bookingDate").value =
-    new Date().toISOString().split("T")[0];
+        date || new Date().toISOString().split("T")[0];
 
     addJob();
 }
@@ -639,8 +639,7 @@ let selectedDate = null;
 
 function selectCalendarDate(date) {
 
-    openBookingModal();
-    document.getElementById('bookingDate').value = date;
+    openBookingModal(date);
 }
 
 function changeMonth(direction) {
@@ -903,7 +902,7 @@ function openWeekView() {
             }
 
             <button class="primary"
-                onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
+                onclick="openBookingModal('${dateStr}')"
                 + Book
             </button>
         </div>`;
