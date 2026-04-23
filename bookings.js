@@ -527,14 +527,16 @@ ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
 
             return `
                 ${visible.map(b => `
-                    <div 
-                        style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
-                        onclick="event.stopPropagation(); openBooking('${b._id}')"
-                    >
-                        ${b.customer?.firstName || "No"} 
-                        ${b.customer?.lastName || ""}
-                    </div>
-                `).join("")}
+    <div 
+        style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
+        onclick="event.stopPropagation(); openBooking('${b._id}')"
+    >
+        ${b.customer?.firstName || "No"} 
+        ${b.customer?.lastName || ""}
+        <br>
+        <small>${(b.services || []).join(", ")}</small>
+    </div>
+`).join("")}
 
                 ${extra > 0 ? `
                     <div style="font-size:10px; color:#666;">
@@ -766,6 +768,7 @@ ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
 
             ${dayBookings.map(b => `
     <div 
+        ${
         style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
         onclick="event.stopPropagation(); openBooking('${b._id}')"
     >
