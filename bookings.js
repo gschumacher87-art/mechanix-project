@@ -515,7 +515,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
             onclick="selectCalendarDate('${dateStr}')"
             style="height:100px; overflow:hidden;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
+${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
             
             <div><b>${d}</b></div>
 
@@ -761,7 +761,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
             onclick="selectCalendarDate('${dateStr}')"
             style="min-height:80px;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
+${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
             <div><b>${d}</b></div>
 
             ${
@@ -829,7 +829,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
             onclick="selectCalendarDate('${dateStr}')"
             style="min-height:80px;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
+${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
             <div><b>${d}</b></div>
 
             ${
