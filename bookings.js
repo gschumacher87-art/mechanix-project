@@ -761,7 +761,6 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
             style="min-height:80px;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
-
             <div><b>${d}</b></div>
 
             ${
