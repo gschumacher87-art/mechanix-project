@@ -46,9 +46,9 @@ data.forEach(b => {
         todayHtml || "<div class='card'>No bookings today</div>";
 
     document.getElementById("futureList").innerHTML = "";
-renderWeekView();
 
-    renderCalendar();
+renderCalendar();
+renderWeekView();
 }
 
 // ================= OPEN BOOKING =================
@@ -466,11 +466,7 @@ function renderCalendar() {
     const el = document.getElementById("calendar");
     if (!el) return;
 
-    if (calendarView === "week") {
-        renderWeekView();
-        return;
-    }
-
+    
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
 
@@ -558,7 +554,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 
 function renderWeekView() {
 
-    const el = document.getElementById("futureList");
+    const el = document.getElementById("dashboardWeek");
 
     const base = new Date(selectedDate || new Date());
     const start = new Date(base);
@@ -568,7 +564,7 @@ start.setDate(base.getDate() - dayIndex);
     const grouped = groupBookingsByDate();
 
     let html = `
-<button onclick="closeCalendarPopup()">← Back</button>
+<!-- removed for dashboard -->
 
 <div style="
     display:grid;
@@ -633,36 +629,9 @@ el.innerHTML = html;
 
 function openDayView(dateStr) {
 
-    const el = document.getElementById("calendarPopupContent");
-    const grouped = groupBookingsByDate();
+    openBookingModal();
 
-    const dayBookings = grouped[dateStr] || [];
-
-    let html = `
-    <button onclick="renderWeekView()">← Back</button>
-    <div class="card">
-        <div class="title">Bookings for ${dateStr}</div>
-    `;
-
-    if (!dayBookings.length) {
-        html += `<div>No bookings</div>`;
-    } else {
-        html += dayBookings.map(b => `
-            <div class="card" onclick="openBooking('${b._id}')">
-                <b>${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}</b><br>
-                ${b.vehicle?.make || ""} ${b.vehicle?.model || ""}
-            </div>
-        `).join("");
-    }
-
-    html += `
-        <button class="primary" onclick="openBookingModal(); document.getElementById('bookingDate').value='${dateStr}'">
-            + Add Booking
-        </button>
-    </div>
-    `;
-
-    el.innerHTML = html;
+    document.getElementById('bookingDate').value = dateStr;
 }
 
 let calendarView = "month";
