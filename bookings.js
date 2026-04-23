@@ -604,9 +604,11 @@ for (let i = 0; i < 7; i++) {
 
     html += `
     <div 
-        style="border:1px solid #eee; min-height:80px; padding:4px;"
-        onclick="openDayView('${dateStr}')"
-    >
+        <div 
+    onclick="selectedDate='${dateStr}'; renderWeekView();"
+    style="border:1px solid #eee; min-height:80px; padding:4px;
+    ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
+>
         ${
             dayBookings.map(b => `
                 <div style="
