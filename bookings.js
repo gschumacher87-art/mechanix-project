@@ -902,7 +902,7 @@ function openWeekView() {
             }
 
             <button class="primary"
-    onclick="openBookingModal('${dateStr}')">
+    onclick="selectedDate='${dateStr}'"
     + Book
 </button>
         </div>`;
