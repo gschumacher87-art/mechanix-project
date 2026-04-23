@@ -33,7 +33,7 @@ async function show(id, btn) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
 
-    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".navItem").forEach(b => b.classList.remove("active"));
     if (btn) btn.classList.add("active");
 
     if (id === "bookings" && typeof loadBookings === "function") loadBookings();
@@ -60,7 +60,7 @@ async function login() {
 }
 
 if (localStorage.getItem("token")) {
-    show('bookings');
+    show('dashboard');
 }
 
 // ================= INTRO ANIMATION =================
