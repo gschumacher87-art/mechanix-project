@@ -764,11 +764,18 @@ ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
             <div><b>${d}</b></div>
 
-            ${
-                dayBookings.length
-                ? `<div style="font-size:10px; margin-top:4px;">${dayBookings.length} bookings</div>`
-                : ""
-            }
+            ${dayBookings.map(b => `
+    </div 
+        style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
+        onclick="event.stopPropagation(); openBooking('${b._id}')"
+    >
+        ${b.customer?.firstName || "No"} 
+        ${b.customer?.lastName || ""}
+        <br>
+        <small>${(b.services || []).join(", ")}</small>
+    </div>
+`).join("")}
+            
 
         </div>`;
     }
@@ -832,11 +839,17 @@ ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
             <div><b>${d}</b></div>
 
-            ${
-                dayBookings.length
-                ? `<div style="font-size:10px; margin-top:4px;">${dayBookings.length} bookings</div>`
-                : ""
-            }
+            ${dayBookings.map(b => `
+    </div 
+        style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
+        onclick="event.stopPropagation(); openBooking('${b._id}')"
+    >
+        ${b.customer?.firstName || "No"} 
+        ${b.customer?.lastName || ""}
+        <br>
+        <small>${(b.services || []).join(", ")}</small>
+    </div>
+`).join("")}
 
         </div>`;
     }
