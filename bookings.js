@@ -897,9 +897,10 @@ const base = new Date();
 
         html += `
         <div
+   onclick="selectedDate='${dateStr}'; openWeekView();"
     style="min-width:120px; border:1px solid #eee; padding:4px;
     ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
-    >
+
             ${
                 dayBookings.map(b => `
                     <div class="card"
