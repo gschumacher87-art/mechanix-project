@@ -846,6 +846,7 @@ ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
 }
 
 function openWeekView() {
+    closeBookingModal();
     document.getElementById("calendarPopup").style.display = "block";
 
     const el = document.getElementById("calendarPopupContent");
