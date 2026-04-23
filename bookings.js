@@ -897,8 +897,7 @@ const base = new Date();
         const dayBookings = grouped[dateStr] || [];
 
         html += `
-        <div 
-    onclick="selectedDate='${dateStr}'; openWeekView();"
+        <div
     style="min-width:120px; border:1px solid #eee; padding:4px;
     ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
     >
