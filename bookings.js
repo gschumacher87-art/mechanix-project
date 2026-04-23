@@ -897,7 +897,7 @@ const base = new Date();
 
         html += `
         <div
-   onclick="selectedDate='${dateStr}'; openWeekView();"
+   onclick="selectedDate='${dateStr}'; createFromSelectedDay();"
     style="min-width:120px; border:1px solid #eee; padding:4px;
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
 
