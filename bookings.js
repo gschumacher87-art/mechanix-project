@@ -599,7 +599,7 @@ for (let i = 0; i < 7; i++) {
     const day = new Date(start);
     day.setDate(start.getDate() + i);
 
-    const dateStr = day.toISOString().split("T")[0];
+    const dateStr = day.toLocaleDateString("en-CA");
     const dayBookings = grouped[dateStr] || [];
 
     html += `
@@ -893,7 +893,7 @@ function openWeekView() {
         const day = new Date(start);
         day.setDate(start.getDate() + i);
 
-        const dateStr = day.toISOString().split("T")[0];
+        const dateStr = day.toLocaleDateString("en-CA");
         const dayBookings = grouped[dateStr] || [];
 
         html += `
