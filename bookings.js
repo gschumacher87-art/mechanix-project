@@ -852,7 +852,6 @@ function openWeekView() {
 
     const el = document.getElementById("calendarPopupContent");
 
-    selectedDate = null;
 const base = new Date();
     const start = new Date(base);
     const dayIndex = (base.getDay() === 0 ? 6 : base.getDay() - 1);
