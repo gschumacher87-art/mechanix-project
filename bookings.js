@@ -759,7 +759,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         html += `
         <div class="card"
             onclick="selectCalendarDate('${dateStr}')"
-            style="height:100px; overflow:hidden;
+            style="min-height:80px;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
             <div><b>${d}</b></div>
@@ -827,7 +827,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         html += `
         <div class="card"
             onclick="selectCalendarDate('${dateStr}')"
-            style="height:100px; overflow:hidden;
+            style="min-height:80px;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}"
             <div><b>${d}</b></div>
