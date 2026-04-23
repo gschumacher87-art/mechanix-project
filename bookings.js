@@ -567,21 +567,19 @@ start.setDate(base.getDate() - dayIndex);
 
     const grouped = groupBookingsByDate();
 
-    const hours = [8,9,10,11,12,13,14,15,16,17];
-
     let html = `
-    <button onclick="closeCalendarPopup()">← Back</button>
+<button onclick="closeCalendarPopup()">← Back</button>
 
-    <div style="
-        display:grid;
-        grid-template-columns:60px repeat(7,1fr);
-        border-top:1px solid #ddd;
-        margin-top:10px;
-    ">
-    `;
+<div style="
+    display:grid;
+    grid-template-columns:60px repeat(7,1fr);
+    border-top:1px solid #ddd;
+    margin-top:10px;
+">
+`;
 
-    // HEADER
-    html += `<div></div>`;
+// HEADER
+html += `<div></div>`;
 for (let i = 0; i < 7; i++) {
     const day = new Date(start);
     day.setDate(start.getDate() + i);
@@ -594,10 +592,7 @@ for (let i = 0; i < 7; i++) {
     </div>`;
 }
 
-    // ROWS (HOURS)
-    hours.forEach(h => {
-
-        // SINGLE ROW (NO TIMES)
+// SINGLE ROW (NO TIMES)
 
 html += `<div></div>`;
 
@@ -631,10 +626,9 @@ for (let i = 0; i < 7; i++) {
     </div>`;
 }
 
-    html += "</div>";
+html += "</div>";
 
-    el.innerHTML = html;
-}
+el.innerHTML = html;
 
 function openDayView(dateStr) {
 
