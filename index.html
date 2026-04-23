@@ -42,14 +42,23 @@
 
 <div id="app" style="display:none;">
 
-<div class="nav">
-    <button class="active" onclick="show('bookings', this)">Bookings</button>
-    <button onclick="show('jobs', this)">Jobs</button>
-    <button onclick="show('customers', this)">Customers</button>
-    <button onclick="show('invoices', this)">Invoices</button>
-    <button onclick="show('templates', this)">Repair Types</button>
-</div>
+<div id="appLayout">
 
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+
+        <div class="navItem active" onclick="openDashboard(this)">Dashboard</div>
+        <div class="navItem" onclick="show('bookings', this)">Bookings</div>
+        <div class="navItem" onclick="show('jobs', this)">Jobs</div>
+        <div class="navItem" onclick="show('customers', this)">Customers</div>
+        <div class="navItem" onclick="show('invoices', this)">Invoices</div>
+        <div class="navItem" onclick="show('templates', this)">Repair Types</div>
+
+    </div>
+
+    <!-- MAIN -->
+    <div id="mainContent">
+<div id="dashboard" class="screen active"></div>
 <div id="bookings" class="screen active">
     <div class="title">Bookings</div>
 
