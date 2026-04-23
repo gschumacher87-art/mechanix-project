@@ -638,9 +638,9 @@ let calendarView = "month";
 let selectedDate = null;
 
 function selectCalendarDate(date) {
-    selectedDate = date;
 
-    openDayView(date); // just show that day, no week view
+    openBookingModal();
+    document.getElementById('bookingDate').value = date;
 }
 
 function changeMonth(direction) {
