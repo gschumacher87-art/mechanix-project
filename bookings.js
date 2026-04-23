@@ -597,39 +597,39 @@ for (let i = 0; i < 7; i++) {
     // ROWS (HOURS)
     hours.forEach(h => {
 
-        html += `<div style="font-size:12px; padding:4px;">${h}:00</div>`;
+        // SINGLE ROW (NO TIMES)
 
-        for (let i = 0; i < 7; i++) {
+html += `<div></div>`;
 
-            const day = new Date(start);
-            day.setDate(start.getDate() + i);
+for (let i = 0; i < 7; i++) {
 
-            const dateStr = day.toISOString().split("T")[0];
-            const dayBookings = grouped[dateStr] || [];
+    const day = new Date(start);
+    day.setDate(start.getDate() + i);
 
-            html += `
-            <div 
-                style="border:1px solid #eee; height:60px; position:relative;"
-                onclick="openDayView('${dateStr}')"
-            >
-                ${
-                    dayBookings.map(b => `
-                        <div style="
-                            font-size:10px;
-                            background:#007bff;
-                            color:white;
-                            margin:2px;
-                            padding:2px;
-                            border-radius:3px;
-                        ">
-                            ${b.customer?.firstName || "No"}
-                        </div>
-                    `).join("")
-                }
-            </div>`;
+    const dateStr = day.toISOString().split("T")[0];
+    const dayBookings = grouped[dateStr] || [];
+
+    html += `
+    <div 
+        style="border:1px solid #eee; min-height:80px; padding:4px;"
+        onclick="openDayView('${dateStr}')"
+    >
+        ${
+            dayBookings.map(b => `
+                <div style="
+                    font-size:11px;
+                    background:#007bff;
+                    color:white;
+                    margin:3px 0;
+                    padding:4px;
+                    border-radius:4px;
+                ">
+                    ${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
+                </div>
+            `).join("")
         }
-
-    });
+    </div>`;
+}
 
     html += "</div>";
 
