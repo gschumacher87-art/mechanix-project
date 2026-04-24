@@ -23,17 +23,16 @@ data.forEach(b => {
     const v = b.vehicle || {};
 
     const card = `
-<div class="card" onclick="openBooking('${b._id}')">
-    <div class="title">Booking</div>
-    <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
-    ${v.make || ""} ${v.model || ""}<br>
-    <small>${b.duration ? b.duration + "h" : ""}</small><br><br>
-    ${
-        (b.services || []).map(s => `
-            <div>• ${s}</div>
-        `).join("")
-    }
-</div>`;
+    <div class="card" onclick="openBooking('${b._id}')">
+        <div class="title">Booking</div>
+        <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
+        ${v.make || ""} ${v.model || ""}<br><br>
+        ${
+            (b.services || []).map(s => `
+                <div>• ${s}</div>
+            `).join("")
+        }
+    </div>`;
 
    const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
 
@@ -61,13 +60,14 @@ async function openBooking(id) {
     document.getElementById("bookingCard").classList.add("active");
 
     currentJob = {
-        _id: booking._id,
-        title: booking.title,
-        customer: booking.customer || {},
-        vehicle: booking.vehicle || {},
-        description: booking.description || "",
-        services: booking.services || booking.summaries || []
-    };
+    _id: booking._id,
+    title: booking.title,
+    customer: booking.customer || {},
+    vehicle: booking.vehicle || {},
+    description: booking.description || "",
+    services: booking.services || booking.summaries || [],
+    duration: booking.duration || 0
+};
 
     renderBookingCard();
 }
@@ -79,11 +79,12 @@ function renderBookingCard() {
     const v = currentJob.vehicle || {};
 
     document.getElementById("bookingCardInfo").innerHTML = `
-    <div class="card">
-        <b>Status:</b> BOOKING<br>
-        <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
-        <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
-    </div>
+<div class="card">
+    <b>Status:</b> BOOKING<br>
+    <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
+    <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}<br>
+    <b>Time:</b> ${currentJob.duration ? currentJob.duration + "h" : ""}
+</div>
 
   <div class="card">
     <div class="title">Jobs</div>
@@ -169,6 +170,8 @@ function openBookingModal(date = null) {
 
     document.getElementById("bookingDate").value =
         date || new Date().toISOString().split("T")[0];
+
+    document.getElementById("bookingDuration").value = "";
 
     addJob();
 }
@@ -371,7 +374,7 @@ async function confirmBooking() {
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
-    const duration = document.getElementById("bookingDuration").value;
+    const duration = parseFloat(document.getElementById("bookingDuration").value);
 
     if (!bookingDate) {
         return;
@@ -381,7 +384,7 @@ async function confirmBooking() {
         return;
     }
 
-    if (!duration) {
+    if (!duration || duration <= 0) {
         return;
     }
 
@@ -396,7 +399,7 @@ async function confirmBooking() {
             vehicle: vehicleId,
             status: "booked",
             date: bookingDate,
-            duration: parseFloat(duration)
+            duration: duration
         })
     });
 
