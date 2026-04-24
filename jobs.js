@@ -49,7 +49,9 @@ ${vehicleName}
         else booked += card;
     });
 
-    jobList.innerHTML = `
+    jobs = data;
+
+jobList.innerHTML = `
         <div class="title">Booked</div>
         ${booked || "<div class='card'>No jobs</div>"}
 
@@ -62,6 +64,7 @@ ${vehicleName}
         <div class="title">Completed</div>
         ${completed || "<div class='card'>No completed jobs</div>"}
     `;
+    renderDashboard();
 }
 
 // ================= OPEN JOB =================
