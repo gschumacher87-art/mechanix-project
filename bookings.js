@@ -657,6 +657,7 @@ let selectedDate = null;
 function selectCalendarDate(date) {
 
     selectedDate = date;
+    openDayView(date);
 }
 
 function changeMonth(direction) {
