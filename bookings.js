@@ -648,6 +648,8 @@ function openDayView(dateStr) {
 
     selectedDate = dateStr;
 
+    closeCalendarPopup(); // 🔥 THIS FIXES YOUR ISSUE
+
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("dayView").classList.add("active");
 
