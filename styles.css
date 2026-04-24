@@ -485,3 +485,23 @@ letter-spacing: 1px;
     overflow: auto;
     background: #f0f2f5;
 }
+
+#dashboard .card {
+    display: block;
+}
+
+#dashboardToday,
+#dashboardActiveJobs,
+#dashboardPending,
+#dashboardCompleted {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#dashboardToday .card,
+#dashboardActiveJobs .card,
+#dashboardPending .card,
+#dashboardCompleted .card {
+    flex: 1 1 calc(50% - 10px);
+}
