@@ -509,7 +509,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
         const dayBookings = grouped[dateStr] || [];
-        const capacityPerDay = 40;
+        const capacityPerDay = 10;
 
 const totalHours = dayBookings.reduce((sum, b) => {
     return sum + (b.duration || 1);
