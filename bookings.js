@@ -388,7 +388,7 @@ async function confirmBooking() {
         return;
     }
 
-    const res = await fetch(API + "/bookings", {
+        const res = await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
@@ -403,8 +403,21 @@ async function confirmBooking() {
         })
     });
 
+    const data = await res.json();
+
+    if (!res.ok) {
+        return;
+    }
+
+    closeBookingModal();
+    show('bookings');
+    loadBookings();
+}
+
 // ================= JOB UI =================
 function addJob() {
+
+
     jobs.push({ mode: null, summary: "", description: "" });
     renderJobs();
 }
