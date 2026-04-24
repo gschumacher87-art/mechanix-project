@@ -62,18 +62,26 @@ function closeTemplateModal() {
 }
 
 async function saveTemplate() {
+
     const name = document.getElementById("templateName").value;
     const description = document.getElementById("templateDesc").value;
 
     if (!name) return;
 
-    await fetch(API + "/templates", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ name, description })
-});
+    const method = window.editingTemplateId ? "PUT" : "POST";
+    const url = window.editingTemplateId
+        ? API + "/templates/" + window.editingTemplateId
+        : API + "/templates";
+
+    await fetch(url, {
+        method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, description })
+    });
+
+    window.editingTemplateId = null;
 
     closeTemplateModal();
     loadTemplates();
