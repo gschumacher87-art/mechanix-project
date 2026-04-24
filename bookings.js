@@ -646,9 +646,12 @@ el.innerHTML = html;
 
 function openDayView(dateStr) {
 
-    openBookingModal();
+    selectedDate = dateStr;
 
-    document.getElementById('bookingDate').value = dateStr;
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("dayView").classList.add("active");
+
+    renderDayView();
 }
 
 let calendarView = "month";
@@ -658,6 +661,26 @@ function selectCalendarDate(date) {
 
     selectedDate = date;
     openDayView(date);
+}
+
+function renderDayView() {
+
+    const list = bookings.filter(b =>
+        (b.date || "").split("T")[0] === selectedDate
+    );
+
+    let html = "";
+
+    list.forEach(b => {
+        html += `
+        <div class="card" onclick="openBooking('${b._id}')">
+            <b>${b.customer?.firstName || ""} ${b.customer?.lastName || ""}</b><br>
+            ${(b.services || []).join(", ")}
+        </div>`;
+    });
+
+    document.getElementById("dayBookingList").innerHTML =
+        html || "<div class='card'>No bookings</div>";
 }
 
 function changeMonth(direction) {
