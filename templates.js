@@ -15,7 +15,7 @@ window.templatesCache = data;
     data.forEach(t => {
         html += `
     <div class="card">
-    <b onclick="useTemplate('${t._id}')">${t.name}</b>
+    <b onclick="editTemplate('${t._id}')">${t.name}</b>
     <button onclick="deleteTemplate('${t._id}')">Delete</button>
 </div>
 `;
@@ -109,4 +109,17 @@ function getTemplateChecklistByName(name) {
         text: line.trim(),
         done: false
     })).filter(x => x.text);
+}
+
+async function editTemplate(id) {
+
+    const t = window.templatesCache.find(x => x._id === id);
+    if (!t) return;
+
+    document.getElementById("templateName").value = t.name || "";
+    document.getElementById("templateDesc").value = t.description || "";
+
+    window.editingTemplateId = id;
+
+    document.getElementById("templateModal").style.display = "block";
 }
