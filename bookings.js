@@ -509,7 +509,8 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
         const dayBookings = grouped[dateStr] || [];
-        const capacityPerDay = 10;
+
+const capacityPerDay = 10;
 
 const totalHours = dayBookings.reduce((sum, b) => {
     return sum + (b.duration || 1);
@@ -776,6 +777,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         <div class="card"
             onclick="selectCalendarDate('${dateStr}')"
             style="min-height:80px;
+            background:${bg};
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
             <div><b>${d}</b></div>
