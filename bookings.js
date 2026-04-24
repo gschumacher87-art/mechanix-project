@@ -370,12 +370,17 @@ async function confirmBooking() {
 
     const vehicleId = document.getElementById("bookingVehicle").value;
     const bookingDate = document.getElementById("bookingDate").value;
+    const duration = document.getElementById("bookingDuration").value;
 
     if (!bookingDate) {
         return;
     }
 
     if (!vehicleId) {
+        return;
+    }
+
+    if (!duration) {
         return;
     }
 
@@ -389,20 +394,10 @@ async function confirmBooking() {
             customer: selectedCustomerId,
             vehicle: vehicleId,
             status: "booked",
-            date: bookingDate
+            date: bookingDate,
+            duration: parseFloat(duration)
         })
     });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-        return;
-    }
-
-    closeBookingModal();
-    show('bookings');
-    loadBookings();
-}
 
 // ================= JOB UI =================
 function addJob() {
