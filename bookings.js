@@ -666,6 +666,10 @@ function selectCalendarDate(date) {
 }
 
 function renderDayView() {
+    
+    const d = new Date(selectedDate);
+    const formatted = d.toLocaleDateString("en-GB");
+    document.getElementById("dayViewTitle").innerText = "Day View - " + formatted;
 
     const list = bookings.filter(b =>
         (b.date || "").split("T")[0] === selectedDate
