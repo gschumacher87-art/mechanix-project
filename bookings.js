@@ -774,13 +774,12 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         const dayBookings = grouped[dateStr] || [];
 
         html += `
-        <div class="card"
-            onclick="selectCalendarDate('${dateStr}')"
-            style="min-height:80px;
-            background:${bg};
+      <div class="card"
+    onclick="selectCalendarDate('${dateStr}')"
+    style="min-height:80px;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
-            <div><b>${d}</b></div>
+    <div><b>${d}</b></div>
 
             ${dayBookings.map(b => `
     <div 
