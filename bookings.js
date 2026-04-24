@@ -513,7 +513,7 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
 const capacityPerDay = 10;
 
 const totalHours = dayBookings.reduce((sum, b) => {
-    return sum + (b.duration || 1);
+    return sum + ((b.services || []).length || 1);
 }, 0);
 
 const load = totalHours / capacityPerDay;
@@ -524,14 +524,13 @@ else if (load > 0.7) bg = "#ffa94d";
 else if (load > 0.4) bg = "#ffd43b";
 else bg = "#69db7c";
 
-        html += `
-        <div class="card"
-    onclick="selectCalendarDate('${dateStr}')"
-    style="height:100px; overflow:hidden;
+html += `
+<div class="card"
+onclick="selectCalendarDate('${dateStr}')"
+style="height:100px; overflow:hidden;
 background:${bg};
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === selectedDate ? 'outline:2px solid #007bff;' : ''}">
-            
             <div><b>${d}</b></div>
 
             <div style="margin-top:4px;">
