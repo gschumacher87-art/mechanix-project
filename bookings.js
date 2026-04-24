@@ -23,16 +23,17 @@ data.forEach(b => {
     const v = b.vehicle || {};
 
     const card = `
-    <div class="card" onclick="openBooking('${b._id}')">
-        <div class="title">Booking</div>
-        <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
-        ${v.make || ""} ${v.model || ""}<br><br>
-        ${
-            (b.services || []).map(s => `
-                <div>• ${s}</div>
-            `).join("")
-        }
-    </div>`;
+<div class="card" onclick="openBooking('${b._id}')">
+    <div class="title">Booking</div>
+    <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
+    ${v.make || ""} ${v.model || ""}<br>
+    <small>${b.duration ? b.duration + "h" : ""}</small><br><br>
+    ${
+        (b.services || []).map(s => `
+            <div>• ${s}</div>
+        `).join("")
+    }
+</div>`;
 
    const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
 
