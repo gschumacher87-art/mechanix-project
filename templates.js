@@ -89,22 +89,19 @@ function editTemplate(id) {
     const html = `
         <div class="card">
             <div class="title">Edit Template</div>
-
-            <input id="templateName" value="${t.name || ""}" placeholder="Template name">
-
-            <br><br>
-
-            <textarea id="templateDesc" placeholder="Description">${t.description || ""}</textarea>
-
-            <br><br>
-
-            <button class="primary" onclick="saveTemplate()">Save</button>
-            <button class="secondary" onclick="loadTemplates()">Back</button>
+            <input id="templateName" value="${t.name || ""}">
+            <textarea id="templateDesc">${t.description || ""}</textarea>
+            <button onclick="saveTemplate()">Save</button>
+            <button onclick="loadTemplates()">Cancel</button>
         </div>
     `;
 
-    const el = document.getElementById("templateListModal");
-    if (el) el.innerHTML = html;
+    // Update BOTH if they exist, or just the one currently visible
+    const modalEl = document.getElementById("templateListModal");
+    const listEl = document.getElementById("templateList");
+    
+    if (modalEl) modalEl.innerHTML = html;
+    else if (listEl) listEl.innerHTML = html;
 }
 
 // ===== SAVE (CREATE OR UPDATE) =====
