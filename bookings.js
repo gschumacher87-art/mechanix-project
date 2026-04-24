@@ -509,13 +509,27 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
 
         const dayBookings = grouped[dateStr] || [];
+        const capacityPerDay = 40;
+
+const totalHours = dayBookings.reduce((sum, b) => {
+    return sum + (b.duration || 1);
+}, 0);
+
+const load = totalHours / capacityPerDay;
+
+let bg = "#e9ecef";
+if (load > 0.9) bg = "#ff6b6b";
+else if (load > 0.7) bg = "#ffa94d";
+else if (load > 0.4) bg = "#ffd43b";
+else bg = "#69db7c";
 
         html += `
-        <div class="card"
-            onclick="selectCalendarDate('${dateStr}')"
-            style="height:100px; overflow:hidden;
+        <<div class="card"
+    onclick="selectCalendarDate('${dateStr}')"
+    style="height:100px; overflow:hidden;
+background:${bg};
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
+${dateStr === selectedDate ? 'outline:2px solid #007bff;' : ''}">
             
             <div><b>${d}</b></div>
 
