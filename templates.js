@@ -18,7 +18,7 @@ data.forEach(t => {
     <div class="card">
         <b onclick="useTemplate('${t._id}')">${t.name}</b>
 
-        <button onclick="editTemplate('${t._id}')">Edit</button>
+        <button onclick="event.stopPropagation(); editTemplate('${t._id}')">Edit</button>
 
         <button onclick="deleteTemplate('${t._id}')">Delete</button>
     </div>
