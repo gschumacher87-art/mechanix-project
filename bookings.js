@@ -727,15 +727,14 @@ function openCalendarMonth() {
 
     const el = document.getElementById("calendarPopupContent");
 
-    // force month view render into popup
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
 
     let firstDay = new Date(year, month, 1).getDay();
-firstDay = (firstDay === 0 ? 6 : firstDay - 1);
+    firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
 
     const monthName = currentMonth.toLocaleString("default", { month: "long" });
     const grouped = groupBookingsByDate();
@@ -744,29 +743,29 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
     <button onclick="closeCalendarPopup()">← Back</button>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <button onclick="changeMonth(-1); renderCalendarMonthPopup()">←</button>
-<b>${monthName} ${year}</b>
-<button onclick="changeMonth(1); renderCalendarMonthPopup()">→</button>
+        <button onclick="changeMonth(-1); openCalendarMonth()">←</button>
+        <b>${monthName} ${year}</b>
+        <button onclick="changeMonth(1); openCalendarMonth()">→</button>
     </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
+    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
 
-<div style="font-weight:bold;text-align:center;">Mon</div>
-<div style="font-weight:bold;text-align:center;">Tue</div>
-<div style="font-weight:bold;text-align:center;">Wed</div>
-<div style="font-weight:bold;text-align:center;">Thu</div>
-<div style="font-weight:bold;text-align:center;">Fri</div>
-<div style="font-weight:bold;text-align:center;">Sat</div>
-<div style="font-weight:bold;text-align:center;">Sun</div>
+    <div style="font-weight:bold;text-align:center;">Mon</div>
+    <div style="font-weight:bold;text-align:center;">Tue</div>
+    <div style="font-weight:bold;text-align:center;">Wed</div>
+    <div style="font-weight:bold;text-align:center;">Thu</div>
+    <div style="font-weight:bold;text-align:center;">Fri</div>
+    <div style="font-weight:bold;text-align:center;">Sat</div>
+    <div style="font-weight:bold;text-align:center;">Sun</div>
 
-</div>
+    </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
-`;
+    <div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+    `;
 
     for (let i = 0; i < firstDay; i++) {
-    html += `<div class="card" style="visibility:hidden;"></div>`;
-}
+        html += `<div class="card" style="visibility:hidden;"></div>`;
+    }
 
     for (let d = 1; d <= daysInMonth; d++) {
 
@@ -774,25 +773,22 @@ firstDay = (firstDay === 0 ? 6 : firstDay - 1);
         const dayBookings = grouped[dateStr] || [];
 
         html += `
-      <div class="card"
-    onclick="selectCalendarDate('${dateStr}')"
-    style="min-height:80px;
-${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
-    <div><b>${d}</b></div>
+        <div class="card"
+            onclick="selectCalendarDate('${dateStr}')"
+            style="min-height:80px;
+            ${dateStr === today ? 'border:2px solid #007bff;' : ''}
+            ${dateStr === selectedDate ? 'background:#d0ebff;' : ''}">
+            
+            <div><b>${d}</b></div>
 
             ${dayBookings.map(b => `
-    <div 
-        style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
-        onclick="event.stopPropagation(); openBooking('${b._id}')"
-    >
-        ${b.customer?.firstName || "No"} 
-        ${b.customer?.lastName || ""}
-        <br>
-        <small>${(b.services || []).join(", ")}</small>
-    </div>
-`).join("")}
-            
+                <div 
+                    style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
+                    onclick="event.stopPropagation(); openBooking('${b._id}')"
+                >
+                    ${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
+                </div>
+            `).join("")}
 
         </div>`;
     }
