@@ -23,3 +23,10 @@ async function loadBookings() {
 }
 
 loadBookings();
+
+function openBookingModal(date = null) {
+    document.getElementById("bookingModal").style.display = "block";
+
+    document.getElementById("bookingDate").value =
+        date || new Date().toISOString().split("T")[0];
+}
