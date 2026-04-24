@@ -982,3 +982,52 @@ function createFromSelectedDay() {
     closeCalendarPopup();
     openBookingModal(selectedDate);
 }
+
+function renderDashboard() {
+
+    const today = new Date().toLocaleDateString("en-CA");
+
+    // TODAY BOOKINGS
+    let todayHtml = "";
+    bookings.forEach(b => {
+        const d = new Date(b.date).toLocaleDateString("en-CA");
+        if (d === today) {
+            todayHtml += `
+            <div class="card">
+                ${b.customer?.firstName || ""} ${b.customer?.lastName || ""}
+            </div>`;
+        }
+    });
+
+    document.getElementById("dashboardToday").innerHTML =
+        todayHtml || "<div class='card'>None</div>";
+
+    // JOBS
+    let active = "", pending = "", completed = "";
+
+    jobs.forEach(j => {
+
+        const name = j.customer?.firstName || "";
+
+        if (j.status === "in-progress" || j.status === "paused") {
+            active += `<div class="card">${name}</div>`;
+        }
+
+        if (j.status === "completed") {
+            pending += `<div class="card">${name}</div>`;
+        }
+
+        if (j.status === "invoiced") {
+            completed += `<div class="card">${name}</div>`;
+        }
+    });
+
+    document.getElementById("dashboardActiveJobs").innerHTML =
+        active || "<div class='card'>None</div>";
+
+    document.getElementById("dashboardPending").innerHTML =
+        pending || "<div class='card'>None</div>";
+
+    document.getElementById("dashboardCompleted").innerHTML =
+        completed || "<div class='card'>None</div>";
+}
