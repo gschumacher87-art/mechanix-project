@@ -9,7 +9,7 @@ async function loadTemplates() {
     const res = await fetch(API + "/templates");
 
     const data = await res.json();
-window.templatesCache = data;
+window.templatesCache = Array.isArray(data) ? data : [];
 
     let html = "";
     data.forEach(t => {
