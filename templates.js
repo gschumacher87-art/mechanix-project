@@ -126,11 +126,23 @@ function editTemplate(id) {
 
     const t = window.templatesCache.find(x => x._id === id);
     if (!t) return;
-    
+
     window.editingTemplateId = id;
 
-    document.getElementById("templateName").value = t.name || "";
-    document.getElementById("templateDesc").value = t.description || "";
+    document.getElementById("templateListModal").innerHTML = `
+        <div class="card">
+            <div class="title">Edit Template</div>
 
-    document.getElementById("templateModal").style.display = "block";
+            <input id="templateName" value="${t.name || ""}" placeholder="Template name">
+
+            <br><br>
+
+            <textarea id="templateDesc" placeholder="Description">${t.description || ""}</textarea>
+
+            <br><br>
+
+            <button class="primary" onclick="saveTemplate()">Save</button>
+            <button class="secondary" onclick="loadTemplates()">Back</button>
+        </div>
+    `;
 }
