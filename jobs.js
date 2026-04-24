@@ -64,7 +64,6 @@ jobList.innerHTML = `
         <div class="title">Completed</div>
         ${completed || "<div class='card'>No completed jobs</div>"}
     `;
-    renderDashboard();
 }
 
 // ================= OPEN JOB =================
