@@ -11,7 +11,9 @@ async function loadTemplates() {
     const data = await res.json();
 window.templatesCache = data;
 
-    let data.forEach(t => {
+    let html = "";
+
+data.forEach(t => {
     html += `
     <div class="card">
         <b onclick="useTemplate('${t._id}')">${t.name}</b>
@@ -69,13 +71,20 @@ async function saveTemplate() {
 
     if (!name) return;
 
-    await fetch(API + "/templates", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ name, description })
-});
+    const method = window.editingTemplateId ? "PUT" : "POST";
+    const url = window.editingTemplateId
+        ? API + "/templates/" + window.editingTemplateId
+        : API + "/templates";
+
+    await fetch(url, {
+        method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, description })
+    });
+
+    window.editingTemplateId = null;
 
     closeTemplateModal();
     loadTemplates();
@@ -117,6 +126,8 @@ function editTemplate(id) {
 
     const t = window.templatesCache.find(x => x._id === id);
     if (!t) return;
+    
+    window.editingTemplateId = id;
 
     document.getElementById("templateName").value = t.name || "";
     document.getElementById("templateDesc").value = t.description || "";
