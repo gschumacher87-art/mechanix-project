@@ -524,7 +524,7 @@ else if (load > 0.4) bg = "#ffd43b";
 else bg = "#69db7c";
 
         html += `
-        <<div class="card"
+        <div class="card"
     onclick="selectCalendarDate('${dateStr}')"
     style="height:100px; overflow:hidden;
 background:${bg};
