@@ -124,10 +124,24 @@ async function editTemplate(id) {
     const t = window.templatesCache.find(x => x._id === id);
     if (!t) return;
 
-    document.getElementById("templateName").value = t.name || "";
-    document.getElementById("templateDesc").value = t.description || "";
-
     window.editingTemplateId = id;
 
-    document.getElementById("templateModal").style.display = "block";
+    const el = document.getElementById("templateListModal");
+
+    el.innerHTML = `
+        <div class="card">
+            <div class="title">Edit Template</div>
+
+            <input id="templateName" value="${t.name || ""}" placeholder="Template name">
+
+            <br><br>
+
+            <textarea id="templateDesc" placeholder="Description">${t.description || ""}</textarea>
+
+            <br><br>
+
+            <button class="primary" onclick="saveTemplate()">Save</button>
+            <button class="secondary" onclick="loadTemplates()">Back</button>
+        </div>
+    `;
 }
