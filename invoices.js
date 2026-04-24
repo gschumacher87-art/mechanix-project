@@ -1,287 +1,112 @@
-async function loadInvoices() {
-    const res = await fetch(API + "/invoices");
-    const data = await res.json();
-
-    document.getElementById("invoiceList").innerHTML = data.map(i => {
-
-        const template = i.template || { items: [], labour: [] };
-
-        const subtotal =
-            (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
-            (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
-
-        const gst = subtotal * 0.10;
-        const total = subtotal + gst;
-
-        return `
-        <div class="card" onclick="openInvoice('${i._id}')">
-            <div class="title">$${total.toFixed(2)}</div>
-            <div>Tap to view</div>
-        </div>
-        `;
-    }).join("");
+function openTemplatePopup(i) {
+    window.selectedJobIndex = i;
+    document.getElementById("templateModal").style.display = "block";
+    loadTemplates();
 }
 
-async function openInvoice(id) {
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
+// ===== LOAD + RENDER =====
+async function loadTemplates() {
+    const res = await fetch(API + "/templates");
 
-    const template = invoice.template || { items: [], labour: [], notes: "" };
+    const data = await res.json();
+window.templatesCache = data;
 
-    const subtotal =
-        (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
-        (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
-
-    const gst = subtotal * 0.10;
-    const total = subtotal + gst;
-
-    let itemsHtml = "";
-    let labourHtml = "";
-
-    (template.items || []).forEach(i => {
-        itemsHtml += `
-        <div style="display:flex; justify-content:space-between; padding:6px 0;">
-            <span>${i.name} x${i.qty || 1}</span>
-            <span>$${(Number(i.price) * Number(i.qty || 1)).toFixed(2)}</span>
-        </div>`;
-    });
-
-    (template.labour || []).forEach(l => {
-        labourHtml += `
-        <div style="display:flex; justify-content:space-between; padding:6px 0;">
-            <span>${l.name} x${l.qty || 1}</span>
-            <span>$${(Number(l.price) * Number(l.qty || 1)).toFixed(2)}</span>
-        </div>`;
-    });
-
-    const locked = invoice.status === "finalised";
-
-    document.getElementById("invoiceList").innerHTML = `
-
-<div style="display:grid; grid-template-columns: minmax(0,2fr) minmax(300px,1fr); gap:15px; align-items:start;">
-
-    <!-- LEFT SIDE -->
-    <div>
-
-        <div class="card">
-            <div class="title">Customer Invoice ${locked ? "(FINAL)" : ""}</div>
-
-            <div style="margin-bottom:10px;">
-    <b>Invoice Summary</b>
-    <div style="color:#555;">
-        ${invoice.summary || template.notes || "No summary"}
-    </div>
-</div>
-
-        <div class="card">
-            <div class="title">Items</div>
-            ${itemsHtml || "<div style='color:#777;'>No items</div>"}
-        </div>
-
-        <div class="card">
-            <div class="title">Labour</div>
-            ${labourHtml || "<div style='color:#777;'>No labour</div>"}
-        </div>
-
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div>
-
-        <div class="card">
-            <div class="title">Invoice</div>
-
-            <div style="display:flex; justify-content:space-between; margin:6px 0;">
-                <span>Parts</span>
-                <span>$${(template.items || []).reduce((t,x)=>t+(Number(x.price||0)*Number(x.qty||1)),0).toFixed(2)}</span>
-            </div>
-
-            <div style="display:flex; justify-content:space-between; margin:6px 0;">
-                <span>Labour</span>
-                <span>$${(template.labour || []).reduce((t,x)=>t+(Number(x.price||0)*Number(x.qty||1)),0).toFixed(2)}</span>
-            </div>
-
-            <hr>
-
-            <div style="display:flex; justify-content:space-between;">
-                <span>Subtotal</span>
-                <span>$${subtotal.toFixed(2)}</span>
-            </div>
-
-            <div style="display:flex; justify-content:space-between;">
-                <span>GST</span>
-                <span>$${gst.toFixed(2)}</span>
-            </div>
-
-            <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:bold;">
-                <span>Total</span>
-                <span style="color:#2e7d32;">$${total.toFixed(2)}</span>
-            </div>
-
-            <br>
-
-            ${locked ? "" : `
-            <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
-            <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
-            <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
-            <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
-                Finalise Invoice
-            </button>
-            `}
-
-            <button class="secondary" onclick="deleteInvoice('${invoice._id}')">
-                Delete Invoice
-            </button>
-
-            <button class="secondary" onclick="loadInvoices()">Back</button>
-
-        </div>
-
-    </div>
-
+    let html = "";
+    data.forEach(t => {
+        html += `
+    <div class="card">
+    <b onclick="useTemplate('${t._id}')">${t.name}</b>
+    <button onclick="deleteTemplate('${t._id}')">Delete</button>
 </div>
 `;
+    });
+
+    const el1 = document.getElementById("templateList");
+if (el1) el1.innerHTML = html;
+
+const el2 = document.getElementById("templateListModal");
+if (el2) el2.innerHTML = html;
 }
 
-async function addItem(id) {
-
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
-
-    if (invoice.status === "finalised") return alert("Invoice locked");
-
-    const name = prompt("Item name:");
+// ===== CREATE =====
+async function createTemplate(name) {
     if (!name) return;
 
-    const price = Number(prompt("Price:"));
-    if (!price) return;
-
-    const qty = Number(prompt("Qty:")) || 1;
-
-    const template = {
-        items: [...(invoice.template?.items || [])],
-        labour: [...(invoice.template?.labour || [])],
-        notes: invoice.template?.notes || ""
-    };
-
-    template.items.push({ name, price, qty });
-
-    await fetch(API + "/invoices/" + id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            template: template
-        })
+    await fetch(API + "/templates", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
     });
 
-    openInvoice(id);
+    loadTemplates();
 }
 
-async function addLabour(id) {
+// ===== DELETE =====
+async function deleteTemplate(id) {
+    await fetch(API + "/templates/" + id, {
+    method: "DELETE"
+});
 
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
+    loadTemplates();
+}
 
-    if (invoice.status === "finalised") return alert("Invoice locked");
+function openTemplateModal() {
+    document.getElementById("templateModal").style.display = "block";
+    loadTemplates();
+}
 
-    const name = prompt("Labour description:");
+function closeTemplateModal() {
+    document.getElementById("templateModal").style.display = "none";
+}
+
+async function saveTemplate() {
+    const name = document.getElementById("templateName").value;
+    const description = document.getElementById("templateDesc").value;
+
     if (!name) return;
 
-    const price = Number(prompt("Price:"));
-    if (!price) return;
+    await fetch(API + "/templates", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, description })
+});
 
-    const qty = Number(prompt("Hours:")) || 1;
-
-    const template = {
-        items: [...(invoice.template?.items || [])],
-        labour: [...(invoice.template?.labour || [])],
-        notes: invoice.template?.notes || ""
-    };
-
-    template.labour.push({ name, price, qty });
-
-    await fetch(API + "/invoices/" + id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            template: template
-        })
-    });
-
-    openInvoice(id);
+    closeTemplateModal();
+    loadTemplates();
 }
 
-async function addNote(id) {
+function useTemplate(id) {
 
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
+    const t = window.templatesCache.find(x => x._id === id);
 
-    if (invoice.status === "finalised") return alert("Invoice locked");
+    if (!t) return;
 
-    const note = prompt("Note:");
-    if (!note) return;
+   const i = window.selectedJobIndex;
 
-    const template = {
-        items: [...(invoice.template?.items || [])],
-        labour: [...(invoice.template?.labour || [])],
-        notes: note
-    };
+jobs[i].summary = t.name || "";
+jobs[i].description = t.description || "";
 
-    await fetch(API + "/invoices/" + id, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            template: template
-        })
-    });
-
-    openInvoice(id);
+closeTemplateModal();
+renderJobs();
 }
 
-async function finaliseInvoice(id) {
+function getTemplateChecklistByName(name) {
 
-    const confirmDone = confirm("Finalise invoice? This cannot be edited.");
-    if (!confirmDone) return;
+    if (!window.templatesCache) return null;
 
-    const res = await fetch(API + "/invoices/" + id);
-    const invoice = await res.json();
+    const t = window.templatesCache.find(x =>
+        x.name.toLowerCase() === name.toLowerCase()
+    );
 
-    await fetch(API + "/invoices/" + id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            status: "finalised"
-        })
-    });
+    if (!t || !t.description) return null;
 
-    const jobRes = await fetch(API + "/jobs/" + invoice.job);
-    const job = await jobRes.json();
-
-    job.status = "completed";
-
-    await fetch(API + "/jobs/" + job._id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(job)
-    });
-
-    show("customers");
-
-    if (invoice.customer) {
-        openCustomer(invoice.customer);
-    }
-}
-
-async function deleteInvoice(id) {
-
-    const confirmDelete = confirm("Delete invoice?");
-    if (!confirmDelete) return;
-
-    document.getElementById("invoiceList").innerHTML = "Deleting...";
-
-    await fetch(API + "/invoices/" + id, {
-        method: "DELETE"
-    });
-
-    setTimeout(loadInvoices, 200);
+    // TURN DESCRIPTION INTO CHECKLIST (line by line)
+    return t.description.split("\n").map(line => ({
+        text: line.trim(),
+        done: false
+    })).filter(x => x.text);
 }
