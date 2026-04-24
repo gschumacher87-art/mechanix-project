@@ -9,19 +9,25 @@ async function loadTemplates() {
     const res = await fetch(API + "/templates");
 
     const data = await res.json();
-window.templatesCache = Array.isArray(data) ? data : [];
+window.templatesCache = data;
 
-    let html = "";
-    data.forEach(t => {
-        html += `
+    let data.forEach(t => {
+    html += `
     <div class="card">
-    <b onclick="editTemplate('${t._id}')">${t.name}</b>
-    <button onclick="deleteTemplate('${t._id}')">Delete</button>
-</div>
-`;
-    });
+        <b onclick="useTemplate('${t._id}')">${t.name}</b>
 
-   document.getElementById("templateListModal").innerHTML = html;
+        <button onclick="editTemplate('${t._id}')">Edit</button>
+
+        <button onclick="deleteTemplate('${t._id}')">Delete</button>
+    </div>
+    `;
+});
+
+    const el1 = document.getElementById("templateList");
+if (el1) el1.innerHTML = html;
+
+const el2 = document.getElementById("templateListModal");
+if (el2) el2.innerHTML = html;
 }
 
 // ===== CREATE =====
@@ -58,26 +64,18 @@ function closeTemplateModal() {
 }
 
 async function saveTemplate() {
-
     const name = document.getElementById("templateName").value;
     const description = document.getElementById("templateDesc").value;
 
     if (!name) return;
 
-    const method = window.editingTemplateId ? "PUT" : "POST";
-    const url = window.editingTemplateId
-        ? API + "/templates/" + window.editingTemplateId
-        : API + "/templates";
-
-    await fetch(url, {
-        method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, description })
-    });
-
-    window.editingTemplateId = null;
+    await fetch(API + "/templates", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, description })
+});
 
     closeTemplateModal();
     loadTemplates();
@@ -115,29 +113,13 @@ function getTemplateChecklistByName(name) {
     })).filter(x => x.text);
 }
 
-async function editTemplate(id) {
+function editTemplate(id) {
 
     const t = window.templatesCache.find(x => x._id === id);
     if (!t) return;
 
-    window.editingTemplateId = id;
+    document.getElementById("templateName").value = t.name || "";
+    document.getElementById("templateDesc").value = t.description || "";
 
-    const el = document.getElementById("templateListModal");
-
-    el.innerHTML = `
-        <div class="card">
-            <div class="title">Edit Template</div>
-
-            <input id="templateName" value="${t.name || ""}" placeholder="Template name">
-
-            <br><br>
-
-            <textarea id="templateDesc" placeholder="Description">${t.description || ""}</textarea>
-
-            <br><br>
-
-            <button class="primary" onclick="saveTemplate()">Save</button>
-            <button class="secondary" onclick="loadTemplates()">Back</button>
-        </div>
-    `;
+    document.getElementById("templateModal").style.display = "block";
 }
