@@ -1,5 +1,3 @@
-alert("CALENDAR FILE LOADED - render=" + typeof renderCalendar);
-
 // ================= CALENDAR STATE =================
 let currentMonth = new Date();
 window.selectedDate = window.selectedDate || null;
