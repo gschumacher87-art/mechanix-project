@@ -75,16 +75,16 @@ ${d}
         const dayBookings = grouped[dateStr] || [];
 
         const totalHours = dayBookings.reduce((sum, b) => {
-            return sum + ((b.services || []).length || 1);
-        }, 0);
+    return sum + ((b.services || []).length || 1);
+}, 0);
 
-        const load = totalHours / 10;
+let bg = "#69db7c"; // green
 
-        let bg = "#e9ecef";
-        if (load > 0.9) bg = "#ff6b6b";
-        else if (load > 0.7) bg = "#ffa94d";
-        else if (load > 0.4) bg = "#ffd43b";
-        else bg = "#69db7c";
+if (totalHours >= 7) {
+    bg = "#ff6b6b"; // red
+} else if (totalHours >= 5) {
+    bg = "#ffa94d"; // orange
+}
 
         html += `
 <div
@@ -95,7 +95,7 @@ height:100px;
 padding:6px;
 display:flex;
 flex-direction:column;
-background:#fff;
+background:${bg};
 overflow:hidden;
 cursor:pointer;
 ${dateStr === today ? 'outline:2px solid #007bff;' : ''}
