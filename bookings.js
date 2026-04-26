@@ -46,7 +46,7 @@ data.forEach(b => {
 
             document.getElementById("futureList").innerHTML = "";
 
-if (document.getElementById("calendar")) {
+if (document.getElementById("calendar") && typeof renderCalendar === "function") {
     renderCalendar();
 }
 
