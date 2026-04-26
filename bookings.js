@@ -569,7 +569,6 @@ ${dateStr === selectedDate ? 'outline:2px solid #007bff;' : ''}">
     el.innerHTML = html;
 }
 
-let calendarView = "month";
 let selectedDate = null;
 
 function selectCalendarDate(date) {
