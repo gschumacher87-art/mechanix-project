@@ -17,6 +17,7 @@ async function loadBookings() {
         const data = await res.json();
 
         bookings = data;
+window.bookings = data;
 
         let todayHtml = "";
 
