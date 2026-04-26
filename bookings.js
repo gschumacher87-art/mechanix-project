@@ -1,3 +1,4 @@
+alert("LOAD BOOKINGS RUNNING");
 let bookings = [];
 let selectedCustomerId = null;
 let jobs = [];
