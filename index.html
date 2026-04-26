@@ -62,11 +62,6 @@
 
     <div class="title">Dashboard</div>
 
-    <div class="card" onclick="openWeekView()" style="cursor:pointer;">
-        <div class="title">This Week</div>
-        <div id="dashboardWeek"></div>
-    </div>
-
 </div>
 <div id="bookings" class="screen">
     <div class="title">Bookings</div>
@@ -87,9 +82,7 @@
     <div class="booking-column">
         <div class="title">Calendar</div>
 
-        <div class="card" onclick="openCalendarMonth()" style="text-align:center; cursor:pointer;">
-            📅 Open Calendar
-        </div>
+<div id="calendar"></div>
     </div>
 
 </div>
@@ -119,8 +112,6 @@
         <div id="bookingCardActions"></div>
     </div>
 </div>
-
-<div id="dayView" class="screen">
 
     <div class="title" id="dayViewTitle">Day View</div>
 
@@ -308,23 +299,6 @@
 
         <button class="primary" onclick="createCustomer()">Create</button>
         <button class="secondary" onclick="document.getElementById('createCustomerModal').style.display='none'">Cancel</button>
-
-    </div>
-</div>
-<div id="calendarPopup" class="modal">
-    <div class="modal-content">
-
-        <div style="display:flex; align-items:center; gap:10px;">
-    <div class="title">Calendar</div>
-</div>
-
-        <div id="calendarPopupContent"></div>
-
-<button class="primary" onclick="createFromSelectedDay()" style="width:100%;">
-    + Create Booking
-</button>
-
-<button class="secondary" onclick="closeCalendarPopup()">Close</button>
 
     </div>
 </div>
