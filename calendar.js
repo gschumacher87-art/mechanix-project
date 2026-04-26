@@ -83,9 +83,11 @@ onclick="selectCalendarDate('${dateStr}')"
 style="
 height:90px;
 padding:6px;
-border-radius:8px;
-background:${bg};
-position:relative;
+border-radius:0;
+background:#fff;
+border:1px solid #ddd;
+display:flex;
+flex-direction:column;
 overflow:hidden;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}
