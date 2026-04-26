@@ -509,9 +509,3 @@ function createFromSelectedDay() {
 
     openBookingModal(selectedDate);
 }
-
-// ================= TEST =================
-alert(typeof renderCalendar);
-
-// ================= INIT =================
-loadBookings();
