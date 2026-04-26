@@ -49,6 +49,7 @@ data.forEach(b => {
 if (document.getElementById("calendar")) {
     renderCalendar();
 }
+}
 
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
