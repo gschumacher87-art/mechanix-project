@@ -1,4 +1,3 @@
-alert("LOAD BOOKINGS RUNNING");
 let bookings = [];
 let selectedCustomerId = null;
 let jobs = [];
@@ -10,7 +9,6 @@ async function loadBookings() {
         const res = await fetch(API + "/bookings?test=" + Date.now());
 
         if (!res.ok) {
-            alert("FETCH FAILED: " + res.status);
             return;
         }
 
@@ -55,7 +53,7 @@ window.bookings = data;
     if (typeof renderCalendar === "function") {
         renderCalendar();
     } else {
-        alert("renderCalendar missing");
+
     }
 }, 0);
 
