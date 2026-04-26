@@ -1,7 +1,8 @@
 alert("CALENDAR FILE LOADED");
+
 // ================= CALENDAR STATE =================
 let currentMonth = new Date();
-let selectedDate = null;
+window.selectedDate = window.selectedDate || null;
 
 // ================= GROUP BOOKINGS =================
 function groupBookingsByDate() {
@@ -84,7 +85,7 @@ onclick="selectCalendarDate('${dateStr}')"
 style="height:100px; overflow:hidden;
 background:${bg};
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === selectedDate ? 'outline:2px solid #007bff;' : ''}">
+${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}">
             
             <div><b>${d}</b></div>
 
@@ -127,7 +128,7 @@ ${dateStr === selectedDate ? 'outline:2px solid #007bff;' : ''}">
 
 // ================= SELECT DATE =================
 function selectCalendarDate(date) {
-    selectedDate = date;
+    window.selectedDate = date;
     openBookingModal(date);
 }
 
@@ -136,4 +137,8 @@ function changeMonth(direction) {
     currentMonth.setMonth(currentMonth.getMonth() + direction);
     renderCalendar();
 }
+
+// ================= EXPORT =================
 window.renderCalendar = renderCalendar;
+window.changeMonth = changeMonth;
+window.selectCalendarDate = selectCalendarDate;
