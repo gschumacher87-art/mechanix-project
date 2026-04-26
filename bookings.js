@@ -1,7 +1,6 @@
 let bookings = [];
 let selectedCustomerId = null;
 let jobs = [];
-let currentMonth = new Date();
 
 // ================= LOAD BOOKINGS =================
 async function loadBookings() {
