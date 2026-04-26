@@ -1,20 +1,3 @@
-// ================= CALENDAR STATE =================
-let currentMonth = new Date();
-window.selectedDate = window.selectedDate || null;
-
-// ================= GROUP BOOKINGS =================
-function groupBookingsByDate() {
-    const map = {};
-
-    (window.bookings || []).forEach(b => {
-        const date = (b.date || "").split("T")[0];
-        if (!map[date]) map[date] = [];
-        map[date].push(b);
-    });
-
-    return map;
-}
-
 // ================= RENDER CALENDAR =================
 function renderCalendar() {
 
@@ -33,29 +16,34 @@ function renderCalendar() {
     const today = new Date().toLocaleDateString("en-CA");
 
     let html = `
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
     <button onclick="changeMonth(-1)">←</button>
     <b>${monthName} ${year}</b>
     <button onclick="changeMonth(1)">→</button>
 </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin-bottom:6px;'>
+<div style="
+display:grid;
+grid-template-columns:repeat(7,1fr);
+border:1px solid #ccc;
+">
 
-<div style="font-weight:bold;text-align:center;">Mon</div>
-<div style="font-weight:bold;text-align:center;">Tue</div>
-<div style="font-weight:bold;text-align:center;">Wed</div>
-<div style="font-weight:bold;text-align:center;">Thu</div>
-<div style="font-weight:bold;text-align:center;">Fri</div>
-<div style="font-weight:bold;text-align:center;">Sat</div>
-<div style="font-weight:bold;text-align:center;">Sun</div>
-
+${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => `
+<div style="
+padding:8px;
+text-align:center;
+font-weight:600;
+border-bottom:1px solid #ccc;
+background:#f1f3f5;
+">
+${d}
 </div>
-
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:0;'>
+`).join("")}
 `;
 
+    // empty cells before month start
     for (let i = 0; i < firstDay; i++) {
-        html += `<div style="visibility:hidden;"></div>`;
+        html += `<div style="border:1px solid #eee; height:110px; background:#fafafa;"></div>`;
     }
 
     for (let d = 1; d <= daysInMonth; d++) {
@@ -81,76 +69,69 @@ function renderCalendar() {
 <div
 onclick="selectCalendarDate('${dateStr}')"
 style="
-height:90px;
+border:1px solid #eee;
+height:110px;
 padding:6px;
-border-radius:0;
-background:${bg};
-border:1px solid #ddd;
 display:flex;
 flex-direction:column;
-overflow:hidden;
-${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}
+background:${bg};
+position:relative;
+cursor:pointer;
+${dateStr === today ? 'outline:2px solid #007bff;' : ''}
+${dateStr === window.selectedDate ? 'outline:2px solid #000;' : ''}
 ">
-            
-    <div style="font-size:12px; font-weight:600;">${d}</div>
 
-    <div style="margin-top:4px; display:flex; flex-direction:column; gap:2px;">
-                ${
-                    (() => {
-                        const visible = dayBookings.slice(0, 3);
-                        const extra = dayBookings.length - visible.length;
+    <div style="
+    font-size:12px;
+    font-weight:600;
+    margin-bottom:4px;
+    ">
+        ${d}
+    </div>
 
-                        return `
-                            ${visible.map(b => `
+    <div style="
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    overflow:hidden;
+    ">
+        ${
+            (() => {
+                const visible = dayBookings.slice(0, 3);
+                const extra = dayBookings.length - visible.length;
+
+                return `
+                    ${visible.map(b => `
 <div 
-    onclick="event.stopPropagation(); openBooking('${b._id}')"
-    style="
-        font-size:10px;
-        background:#ffffffcc;
-        padding:3px 5px;
-        border-radius:4px;
-        line-height:1.2;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    "
->
-    ${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
+onclick="event.stopPropagation(); openBooking('${b._id}')"
+style="
+font-size:10px;
+background:#ffffffdd;
+padding:2px 4px;
+border-radius:3px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+">
+${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
 </div>
 `).join("")}
 
-                            ${extra > 0 ? `
-                                <div style="font-size:10px; color:#666;">
-                                    +${extra} more
-                                </div>
-                            ` : ""}
-                        `;
-                    })()
-                }
-            </div>
+                    ${extra > 0 ? `
+<div style="font-size:10px; color:#333;">
++${extra} more
+</div>
+` : ""}
+                `;
+            })()
+        }
+    </div>
 
-        </div>`;
+</div>`;
     }
 
-    html += "</div>";
+    html += `</div>`;
 
     el.innerHTML = html;
 }
-
-// ================= SELECT DATE =================
-function selectCalendarDate(date) {
-    window.selectedDate = date;
-    openBookingModal(date);
-}
-
-// ================= CHANGE MONTH =================
-function changeMonth(direction) {
-    currentMonth.setMonth(currentMonth.getMonth() + direction);
-    renderCalendar();
-}
-
-// ================= EXPORT =================
-window.renderCalendar = renderCalendar;
-window.changeMonth = changeMonth;
-window.selectCalendarDate = selectCalendarDate;
