@@ -55,7 +55,9 @@ window.bookings = data;
     }
 }, 0);
 
-
+    } catch (err) {
+        console.error(err);
+    }
 }
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
