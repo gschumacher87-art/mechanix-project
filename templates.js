@@ -13,14 +13,13 @@ window.templatesCache = data;
 
     let html = "";
     data.forEach(t => {
-    html += `
-<div class="card">
-<b onclick="useTemplate('${t._id}')">${t.name}</b>
-<button onclick="editTemplate('${t._id}')">Edit</button>
-<button onclick="deleteTemplate('${t._id}')">Delete</button>
+        html += `
+    <div class="card">
+    <b onclick="useTemplate('${t._id}')">${t.name}</b>
+    <button onclick="deleteTemplate('${t._id}')">Delete</button>
 </div>
 `;
-});
+    });
 
     const el1 = document.getElementById("templateList");
 if (el1) el1.innerHTML = html;
@@ -110,15 +109,4 @@ function getTemplateChecklistByName(name) {
         text: line.trim(),
         done: false
     })).filter(x => x.text);
-}
-
-function editTemplate(id) {
-
-    const t = window.templatesCache.find(x => x._id === id);
-    if (!t) return;
-
-    document.getElementById("templateName").value = t.name || "";
-    document.getElementById("templateDesc").value = t.description || "";
-
-    document.getElementById("templateModal").style.display = "block";
 }
