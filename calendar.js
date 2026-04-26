@@ -85,8 +85,7 @@ height:90px;
 padding:6px;
 border-radius:8px;
 background:${bg};
-display:flex;
-flex-direction:column;
+position:relative;
 overflow:hidden;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
 ${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}
