@@ -49,17 +49,13 @@ window.bookings = data;
 
         document.getElementById("futureList").innerHTML = "";
 
-       setTimeout(() => {
+      setTimeout(() => {
     if (typeof renderCalendar === "function") {
         renderCalendar();
-    } else {
-
     }
 }, 0);
 
-    } catch (err) {
-        alert("ERROR: " + err.message);
-    }
+
 }
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
