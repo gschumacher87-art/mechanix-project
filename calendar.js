@@ -55,7 +55,7 @@ function renderCalendar() {
 `;
 
     for (let i = 0; i < firstDay; i++) {
-        html += `<div class="card" style="visibility:hidden;"></div>`;
+        html += `<div style="visibility:hidden;"></div>`;
     }
 
     for (let d = 1; d <= daysInMonth; d++) {
@@ -78,16 +78,23 @@ function renderCalendar() {
         else bg = "#69db7c";
 
         html += `
-<div class="card"
+<div
 onclick="selectCalendarDate('${dateStr}')"
-style="height:100px; overflow:hidden;
+style="
+height:90px;
+padding:6px;
+border-radius:8px;
 background:${bg};
+display:flex;
+flex-direction:column;
+overflow:hidden;
 ${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}">
+${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}
+">
             
-            <div><b>${d}</b></div>
+    <div style="font-size:12px; font-weight:600;">${d}</div>
 
-            <div style="margin-top:4px;">
+    <div style="margin-top:4px; display:flex; flex-direction:column; gap:2px;">
                 ${
                     (() => {
                         const visible = dayBookings.slice(0, 3);
