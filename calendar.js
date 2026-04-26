@@ -75,7 +75,7 @@ ${d}
         const dayBookings = grouped[dateStr] || [];
 
         const totalHours = dayBookings.reduce((sum, b) => {
-    return sum + ((b.services || []).length || 1);
+    return sum + (b.duration || 1);
 }, 0);
 
 let bg = "#69db7c"; // green
