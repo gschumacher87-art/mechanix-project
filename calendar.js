@@ -1,5 +1,3 @@
-// TEST
-alert("calendar loaded");
 // ================= CALENDAR STATE =================
 let currentMonth = new Date();
 let selectedDate = null;
