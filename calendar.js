@@ -1,3 +1,4 @@
+alert("CALENDAR FILE LOADED");
 // ================= CALENDAR STATE =================
 let currentMonth = new Date();
 let selectedDate = null;
