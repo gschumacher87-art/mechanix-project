@@ -39,37 +39,46 @@ function renderCalendar() {
     <button onclick="changeMonth(1)">→</button>
 </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
+<div style="
+display:grid;
+grid-template-columns:repeat(7,1fr);
+border:1px solid #ccc;
+">
 
-<div style="font-weight:bold;text-align:center;">Mon</div>
-<div style="font-weight:bold;text-align:center;">Tue</div>
-<div style="font-weight:bold;text-align:center;">Wed</div>
-<div style="font-weight:bold;text-align:center;">Thu</div>
-<div style="font-weight:bold;text-align:center;">Fri</div>
-<div style="font-weight:bold;text-align:center;">Sat</div>
-<div style="font-weight:bold;text-align:center;">Sun</div>
-
+${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => `
+<div style="
+text-align:center;
+font-weight:bold;
+padding:6px;
+border:1px solid #ccc;
+background:#f1f3f5;
+">
+${d}
 </div>
-
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+`).join("")}
 `;
 
-    for (let i = 0; i < firstDay; i++) {
-        html += `<div style="visibility:hidden;"></div>`;
-    }
+    const totalCells = 42; // 6 rows x 7 days
+    let dayCounter = 1;
 
-    for (let d = 1; d <= daysInMonth; d++) {
+    for (let i = 0; i < totalCells; i++) {
 
+        const isEmpty = i < firstDay || dayCounter > daysInMonth;
+
+        if (isEmpty) {
+            html += `<div style="border:1px solid #eee; height:100px; background:#f8f9fa;"></div>`;
+            continue;
+        }
+
+        const d = dayCounter;
         const dateStr = new Date(year, month, d).toLocaleDateString("en-CA");
         const dayBookings = grouped[dateStr] || [];
-
-        const capacityPerDay = 10;
 
         const totalHours = dayBookings.reduce((sum, b) => {
             return sum + ((b.services || []).length || 1);
         }, 0);
 
-        const load = totalHours / capacityPerDay;
+        const load = totalHours / 10;
 
         let bg = "#e9ecef";
         if (load > 0.9) bg = "#ff6b6b";
@@ -81,62 +90,61 @@ function renderCalendar() {
 <div
 onclick="selectCalendarDate('${dateStr}')"
 style="
-height:90px;
-padding:6px;
-border-radius:0;
-background:#fff;
 border:1px solid #ddd;
+height:100px;
+padding:6px;
 display:flex;
 flex-direction:column;
+background:#fff;
 overflow:hidden;
-${dateStr === today ? 'border:2px solid #007bff;' : ''}
-${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}
+cursor:pointer;
+${dateStr === today ? 'outline:2px solid #007bff;' : ''}
+${dateStr === window.selectedDate ? 'outline:2px solid #000;' : ''}
 ">
-            
-    <div style="font-size:12px; font-weight:600;">${d}</div>
 
-    <div style="margin-top:4px; display:flex; flex-direction:column; gap:2px;">
-                ${
-                    (() => {
-                        const visible = dayBookings.slice(0, 3);
-                        const extra = dayBookings.length - visible.length;
+<div style="font-size:12px; font-weight:600;">${d}</div>
 
-                        return `
-                            ${visible.map(b => `
+<div style="margin-top:4px; display:flex; flex-direction:column; gap:2px;">
+${
+(() => {
+    const visible = dayBookings.slice(0, 3);
+    const extra = dayBookings.length - visible.length;
+
+    return `
+        ${visible.map(b => `
 <div 
-    onclick="event.stopPropagation(); openBooking('${b._id}')"
-    style="
-        font-size:10px;
-        background:#ffffffcc;
-        padding:3px 5px;
-        border-radius:4px;
-        line-height:1.2;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    "
->
-    ${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
+onclick="event.stopPropagation(); openBooking('${b._id}')"
+style="
+font-size:10px;
+background:#ffffffcc;
+padding:2px 4px;
+border-radius:3px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+">
+${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
 </div>
 `).join("")}
 
-                            ${extra > 0 ? `
-                                <div style="font-size:10px; color:#666;">
-                                    +${extra} more
-                                </div>
-                            ` : ""}
-                        `;
-                    })()
-                }
-            </div>
+        ${extra > 0 ? `<div style="font-size:10px; color:#666;">+${extra} more</div>` : ""}
+    `;
+})()
+}
+</div>
 
-        </div>`;
+</div>
+`;
+
+        dayCounter++;
     }
 
-    html += "</div>";
+    html += `</div>`;
 
     el.innerHTML = html;
 }
+
+
 
 // ================= SELECT DATE =================
 function selectCalendarDate(date) {
