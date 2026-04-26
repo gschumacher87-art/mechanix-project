@@ -39,7 +39,7 @@ function renderCalendar() {
     <button onclick="changeMonth(1)">→</button>
 </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;'>
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin-bottom:6px;'>
 
 <div style="font-weight:bold;text-align:center;">Mon</div>
 <div style="font-weight:bold;text-align:center;">Tue</div>
@@ -51,7 +51,7 @@ function renderCalendar() {
 
 </div>
 
-<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:4px;'>
+<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:0;'>
 `;
 
     for (let i = 0; i < firstDay; i++) {
@@ -84,7 +84,7 @@ style="
 height:90px;
 padding:6px;
 border-radius:0;
-background:#fff;
+background:${bg};
 border:1px solid #ddd;
 display:flex;
 flex-direction:column;
