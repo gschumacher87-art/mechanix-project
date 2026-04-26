@@ -377,15 +377,16 @@ async function confirmBooking() {
     }
 
     const vehicleId = document.getElementById("bookingVehicle").value;
-    const duration = parseFloat(document.getElementById("bookingDuration").value) || 1;
+const bookingDate = document.getElementById("bookingDate").value;
+const duration = parseFloat(document.getElementById("bookingDuration").value) || 1;
 
-    if (!bookingDate) {
-        return;
-    }
+if (!bookingDate) {
+    return;
+}
 
-    if (!vehicleId) {
-        return;
-    }
+if (!vehicleId) {
+    return;
+}
 
     const res = await fetch(API + "/bookings", {
         method:"POST",
