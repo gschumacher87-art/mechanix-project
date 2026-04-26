@@ -1,3 +1,11 @@
+html, body {
+    height: 100%;
+}
+
+#app {
+    height: 100%;
+}
+
 body { margin:0; font-family: Arial; background:#f0f2f5; }
 
 .nav { display:flex; background:#111; }
@@ -439,4 +447,61 @@ letter-spacing: 1px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* === NEW APP LAYOUT (SIDEBAR) === */
+
+#appLayout {
+    display: flex;
+    height: 100vh;
+}
+
+/* SIDEBAR */
+#sidebar {
+    width: 200px;
+    background: #0b0b0b;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAV ITEMS */
+.navItem {
+    padding: 14px;
+    margin-bottom: 8px;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.navItem.active {
+    background: #007bff;
+}
+
+/* MAIN CONTENT */
+#mainContent {
+    flex: 1;
+    overflow: auto;
+    background: #f0f2f5;
+}
+
+#dashboard .card {
+    display: block;
+}
+
+#dashboardToday,
+#dashboardActiveJobs,
+#dashboardPending,
+#dashboardCompleted {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#dashboardToday .card,
+#dashboardActiveJobs .card,
+#dashboardPending .card,
+#dashboardCompleted .card {
+    flex: 1 1 calc(50% - 10px);
 }
