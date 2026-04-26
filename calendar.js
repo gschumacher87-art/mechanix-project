@@ -136,3 +136,4 @@ function changeMonth(direction) {
     currentMonth.setMonth(currentMonth.getMonth() + direction);
     renderCalendar();
 }
+window.renderCalendar = renderCalendar;
