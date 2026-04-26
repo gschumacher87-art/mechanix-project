@@ -425,25 +425,29 @@ letter-spacing: 1px;
 /* === CALENDAR BOOKINGS STACK === */
 
 #calendar .card {
-    text-align: left;           /* stop center squashing */
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding: 6px;
+    height: 110px;
 }
 
-/* container inside each day */
+/* bookings container */
 #calendar .card > div:last-child {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    margin-top: 4px;
+    gap: 2px;
+    width: 100%;
+    overflow: hidden;
 }
 
-/* each booking block */
+/* each booking */
 #calendar .card .booking-item {
-    font-size: 11px;
+    font-size: 10px;
+    padding: 2px 4px;
     background: #ffe3e3;
-    padding: 3px 4px;
-    border-radius: 4px;
+    border-radius: 3px;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
