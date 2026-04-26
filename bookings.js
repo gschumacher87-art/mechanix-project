@@ -575,6 +575,8 @@ let selectedDate = null;
 function selectCalendarDate(date) {
 
     selectedDate = date;
+
+    openBookingModal(date);
 }
 
 function changeMonth(direction) {
