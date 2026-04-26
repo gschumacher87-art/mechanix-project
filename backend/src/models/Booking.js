@@ -27,7 +27,7 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
+    duration: { type: Number, default: 1 },
     checklist: [
         {
             text: String,
