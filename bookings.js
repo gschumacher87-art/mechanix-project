@@ -50,9 +50,13 @@ async function loadBookings() {
 
         document.getElementById("futureList").innerHTML = "";
 
-        if (document.getElementById("calendar") && typeof renderCalendar === "function") {
-            renderCalendar();
-        }
+       setTimeout(() => {
+    if (typeof renderCalendar === "function") {
+        renderCalendar();
+    } else {
+        alert("renderCalendar missing");
+    }
+}, 0);
 
     } catch (err) {
         alert("ERROR: " + err.message);
