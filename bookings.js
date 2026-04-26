@@ -636,6 +636,5 @@ function editBookingJob(i) {
 function createFromSelectedDay() {
     if (!selectedDate) return;
 
-    closeCalendarPopup();
     openBookingModal(selectedDate);
 }
