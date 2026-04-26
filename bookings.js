@@ -4,55 +4,59 @@ let jobs = [];
 
 // ================= LOAD BOOKINGS =================
 async function loadBookings() {
-    const res = await fetch(API + "/bookings?test=" + Date.now(), {
-        headers: {
-            Authorization: localStorage.getItem("token")
+    try {
+
+        const res = await fetch(API + "/bookings?test=" + Date.now());
+
+        if (!res.ok) {
+            alert("FETCH FAILED: " + res.status);
+            return;
         }
-    });
-    const data = await res.json();
 
-    bookings = data;
+        const data = await res.json();
 
-    let todayHtml = "";
+        bookings = data;
 
-const today = new Date().toLocaleDateString("en-CA");
+        let todayHtml = "";
 
-data.forEach(b => {
-    const c = b.customer || {};
-    const v = b.vehicle || {};
+        const today = new Date().toLocaleDateString("en-CA");
 
-    const card = `
-    <div class="card" onclick="openBooking('${b._id}')">
-        <div class="title">Booking</div>
-        <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
-        ${v.make || ""} ${v.model || ""}<br><br>
-        ${
-            (b.services || []).map(s => `
-                <div>• ${s}</div>
-            `).join("")
+        data.forEach(b => {
+            const c = b.customer || {};
+            const v = b.vehicle || {};
+
+            const card = `
+            <div class="card" onclick="openBooking('${b._id}')">
+                <div class="title">Booking</div>
+                <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
+                ${v.make || ""} ${v.model || ""}<br><br>
+                ${
+                    (b.services || []).map(s => `
+                        <div>• ${s}</div>
+                    `).join("")
+                }
+            </div>`;
+
+            const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
+
+            if (bookingDate === today) {
+                todayHtml += card;
+            }
+        });
+
+        document.getElementById("todayList").innerHTML =
+            todayHtml || "<div class='card'>No bookings today</div>";
+
+        document.getElementById("futureList").innerHTML = "";
+
+        if (document.getElementById("calendar") && typeof renderCalendar === "function") {
+            renderCalendar();
         }
-    </div>`;
 
-   const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
-
-    if (bookingDate === today) {
-        todayHtml += card;
+    } catch (err) {
+        alert("ERROR: " + err.message);
     }
-
-});
-
-    document.getElementById("todayList").innerHTML =
-        todayHtml || "<div class='card'>No bookings today</div>";
-
-            document.getElementById("futureList").innerHTML = "";
-
-if (document.getElementById("calendar") && typeof renderCalendar === "function") {
-    renderCalendar();
 }
-
-return;
-}
-
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
 
