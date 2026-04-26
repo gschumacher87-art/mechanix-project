@@ -7,7 +7,7 @@ let selectedDate = null;
 function groupBookingsByDate() {
     const map = {};
 
-    bookings.forEach(b => {
+    (window.bookings || []).forEach(b => {
         const date = (b.date || "").split("T")[0];
         if (!map[date]) map[date] = [];
         map[date].push(b);
