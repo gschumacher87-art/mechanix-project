@@ -44,9 +44,10 @@ data.forEach(b => {
     document.getElementById("todayList").innerHTML =
         todayHtml || "<div class='card'>No bookings today</div>";
 
-        document.getElementById("futureList").innerHTML = "";
+            document.getElementById("futureList").innerHTML = "";
 
-renderCalendar();
+if (document.getElementById("calendar")) {
+    renderCalendar();
 }
 
 // ================= OPEN BOOKING =================
