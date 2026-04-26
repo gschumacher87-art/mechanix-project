@@ -49,6 +49,8 @@ data.forEach(b => {
 if (document.getElementById("calendar")) {
     renderCalendar();
 }
+
+return;
 }
 
 // ================= OPEN BOOKING =================
