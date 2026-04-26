@@ -36,7 +36,12 @@ async function show(id, btn) {
     document.querySelectorAll(".navItem").forEach(b => b.classList.remove("active"));
     if (btn) btn.classList.add("active");
 
-    if (id === "bookings" && typeof loadBookings === "function") loadBookings();
+    if (id === "bookings" && typeof loadBookings === "function") {
+    loadBookings();
+    setTimeout(() => {
+        if (typeof renderCalendar === "function") renderCalendar();
+    }, 0);
+}
     if (id === "jobs" && typeof loadJobs === "function") loadJobs();
     if (id === "customers" && typeof loadCustomers === "function") loadCustomers();
     if (id === "invoices" && typeof loadInvoices === "function") loadInvoices();
