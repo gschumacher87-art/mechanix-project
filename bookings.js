@@ -377,7 +377,7 @@ async function confirmBooking() {
     }
 
     const vehicleId = document.getElementById("bookingVehicle").value;
-    const bookingDate = document.getElementById("bookingDate").value;
+    const duration = parseFloat(document.getElementById("bookingDuration").value) || 1;
 
     if (!bookingDate) {
         return;
@@ -391,14 +391,15 @@ async function confirmBooking() {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: jobs[0]?.summary || "Booking",
-            description: jobs.map(j => j.description).join("\n"),
-            services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
-            customer: selectedCustomerId,
-            vehicle: vehicleId,
-            status: "booked",
-            date: bookingDate
-        })
+    title: jobs[0]?.summary || "Booking",
+    description: jobs.map(j => j.description).join("\n"),
+    services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
+    customer: selectedCustomerId,
+    vehicle: vehicleId,
+    status: "booked",
+    date: bookingDate,
+    duration: duration
+})
     });
 
     const data = await res.json();
