@@ -103,13 +103,19 @@ ${dateStr === window.selectedDate ? 'outline:2px solid #007bff;' : ''}
                         return `
                             ${visible.map(b => `
 <div 
-    style="font-size:10px; background:#ffe3e3; margin:2px 0; padding:2px; border-radius:3px;"
     onclick="event.stopPropagation(); openBooking('${b._id}')"
+    style="
+        font-size:10px;
+        background:#ffffffcc;
+        padding:3px 5px;
+        border-radius:4px;
+        line-height:1.2;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    "
 >
-    ${b.customer?.firstName || "No"} 
-    ${b.customer?.lastName || ""}
-    <br>
-    <small>${(b.services || []).join(", ")}</small>
+    ${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
 </div>
 `).join("")}
 
