@@ -450,18 +450,6 @@ function openBookingCustomerSearch() {
 
 let selectedDate = null;
 
-function selectCalendarDate(date) {
-
-    selectedDate = date;
-
-    openBookingModal(date);
-}
-
-function changeMonth(direction) {
-    currentMonth.setMonth(currentMonth.getMonth() + direction);
-    renderCalendar();
-}
-
 function openTemplatePopup(i) {
     window.selectedJobIndex = i;
     document.getElementById("templateModal").style.display = "block";
