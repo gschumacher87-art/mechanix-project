@@ -505,3 +505,6 @@ function createFromSelectedDay() {
 
     openBookingModal(selectedDate);
 }
+
+// ================= INIT =================
+loadBookings();
