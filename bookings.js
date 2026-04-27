@@ -446,14 +446,26 @@ function renderJobs() {
             <input placeholder="Description" value="${job.description || ""}"
                 oninput="updateJobField(${i}, 'description', this.value)">
 
-            <button onclick="openTemplatePopup(${i})">Use Template</button>
+            <input placeholder="Search template..."
+                onfocus="showTemplateDropdown(${i})"
+                oninput="filterTemplateDropdown(${i}, this.value)">
+
+            <div id="templateDropdown${i}" style="display:none; max-height:150px; overflow:auto; border:1px solid #ddd; margin-top:5px;">
+                ${(window.templatesCache || []).map(t => `
+                    <div style="padding:8px; border-bottom:1px solid #eee;"
+                        onclick="applyTemplateToJob(${i}, '${t._id}')">
+                        <b>${t.name}</b><br>
+                        <small>${t.description || ""}</small>
+                    </div>
+                `).join("")}
+            </div>
+
         </div>
         `;
     });
 
     document.getElementById("jobsContainer").innerHTML = html;
 }
-
 
 function openBookingCustomerSearch() {
     bookingSearchCustomers();
