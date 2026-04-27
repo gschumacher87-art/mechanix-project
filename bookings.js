@@ -177,6 +177,8 @@ function openBookingModal(date = null) {
     document.getElementById("bookingDate").value =
         date || new Date().toISOString().split("T")[0];
 
+    loadTemplates(); // ✅ ADD THIS
+
     addJob();
 }
 
@@ -531,7 +533,11 @@ function createFromSelectedDay() {
 }
 
 function showTemplateDropdown(i) {
-    document.getElementById("templateDropdown" + i).style.display = "block";
+
+    const el = document.getElementById("templateDropdown" + i);
+    if (!el) return;
+
+    el.style.display = "block";
 }
 
 function filterTemplateDropdown(i, value) {
@@ -554,6 +560,9 @@ function applyTemplateToJob(i, id) {
 
     jobs[i].summary = t.name || "";
     jobs[i].description = t.description || "";
+
+    const el = document.getElementById("templateDropdown" + i);
+    if (el) el.style.display = "none";
 
     renderJobs();
 }
