@@ -177,8 +177,6 @@ function openBookingModal(date = null) {
     document.getElementById("bookingDate").value =
         date || new Date().toISOString().split("T")[0];
 
-    loadTemplates(); // ✅ ADD THIS
-
     addJob();
 }
 
@@ -448,26 +446,14 @@ function renderJobs() {
             <input placeholder="Description" value="${job.description || ""}"
                 oninput="updateJobField(${i}, 'description', this.value)">
 
-            <input placeholder="Search template..."
-                onfocus="showTemplateDropdown(${i})"
-                oninput="filterTemplateDropdown(${i}, this.value)">
-
-            <div id="templateDropdown${i}" style="display:none; max-height:150px; overflow:auto; border:1px solid #ddd; margin-top:5px;">
-                ${(window.templatesCache || []).map(t => `
-                    <div style="padding:8px; border-bottom:1px solid #eee;"
-                        onclick="applyTemplateToJob(${i}, '${t._id}')">
-                        <b>${t.name}</b><br>
-                        <small>${t.description || ""}</small>
-                    </div>
-                `).join("")}
-            </div>
-
+            <button onclick="openTemplatePopup(${i})">Use Template</button>
         </div>
         `;
     });
 
     document.getElementById("jobsContainer").innerHTML = html;
 }
+
 
 function openBookingCustomerSearch() {
     bookingSearchCustomers();
@@ -530,39 +516,4 @@ function createFromSelectedDay() {
     if (!selectedDate) return;
 
     openBookingModal(selectedDate);
-}
-
-function showTemplateDropdown(i) {
-
-    const el = document.getElementById("templateDropdown" + i);
-    if (!el) return;
-
-    el.style.display = "block";
-}
-
-function filterTemplateDropdown(i, value) {
-
-    const list = document.getElementById("templateDropdown" + i);
-    const items = list.children;
-
-    value = value.toLowerCase();
-
-    for (let el of items) {
-        const text = el.innerText.toLowerCase();
-        el.style.display = text.includes(value) ? "block" : "none";
-    }
-}
-
-function applyTemplateToJob(i, id) {
-
-    const t = (window.templatesCache || []).find(x => x._id === id);
-    if (!t) return;
-
-    jobs[i].summary = t.name || "";
-    jobs[i].description = t.description || "";
-
-    const el = document.getElementById("templateDropdown" + i);
-    if (el) el.style.display = "none";
-
-    renderJobs();
 }
