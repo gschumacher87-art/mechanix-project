@@ -503,3 +503,13 @@ letter-spacing: 1px;
 #dashboardCompleted .card {
     flex: 1 1 calc(50% - 10px);
 }
+
+.templateDropdown {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.templateDropdown div:hover {
+    background: #f2f2f2;
+}
