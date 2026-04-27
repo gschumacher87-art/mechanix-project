@@ -529,3 +529,31 @@ function createFromSelectedDay() {
 
     openBookingModal(selectedDate);
 }
+
+function showTemplateDropdown(i) {
+    document.getElementById("templateDropdown" + i).style.display = "block";
+}
+
+function filterTemplateDropdown(i, value) {
+
+    const list = document.getElementById("templateDropdown" + i);
+    const items = list.children;
+
+    value = value.toLowerCase();
+
+    for (let el of items) {
+        const text = el.innerText.toLowerCase();
+        el.style.display = text.includes(value) ? "block" : "none";
+    }
+}
+
+function applyTemplateToJob(i, id) {
+
+    const t = (window.templatesCache || []).find(x => x._id === id);
+    if (!t) return;
+
+    jobs[i].summary = t.name || "";
+    jobs[i].description = t.description || "";
+
+    renderJobs();
+}
