@@ -26,7 +26,14 @@ window.fetch = function(url, options = {}) {
         ...(token && { Authorization: "Bearer " + token })
     };
 
-    return originalFetch(url, options);
+    return originalFetch(url, options).then(res => {
+    if (res.status === 401) {
+        localStorage.removeItem("token");
+        location.reload();
+        return;
+    }
+    return res;
+});
 };
 
 async function show(id, btn) {
