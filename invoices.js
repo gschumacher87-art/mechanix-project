@@ -279,8 +279,18 @@ async function openPendingJob(id) {
 
 async function sendPendingBack(id) {
 
+    const summary = prompt("New job summary:");
+    if (!summary) return;
+
     const res = await fetch(API + "/jobs/" + id);
     const job = await res.json();
+
+    job.jobs = job.jobs || [];
+    job.jobs.push({
+        summary: summary,
+        description: "",
+        status: "pending"
+    });
 
     job.status = "arrived";
 
