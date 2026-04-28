@@ -28,6 +28,14 @@ async function openInvoice(id) {
 
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
+// LOAD JOB DATA
+let jobData = null;
+
+if (invoice.job) {
+    const jobRes = await fetch(API + "/jobs/" + invoice.job);
+    jobData = await jobRes.json();
+}
+
     const subtotal =
         (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
         (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
