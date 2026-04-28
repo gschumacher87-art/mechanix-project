@@ -59,7 +59,6 @@ ${vehicleName}
 
         if (j.status === "arrived") booked += card;
 else if (j.status === "in-progress") active += card;
-        else booked += card;
     });
 
     jobs = data;
