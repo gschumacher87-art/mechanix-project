@@ -6,7 +6,7 @@ async function loadJobs() {
     const res = await fetch(API + "/jobs");
     const data = await res.json();
 
-    let booked = "", active = "", pending = "", completed = "";
+    let let booked = "", active = "", completed = "";
 
     data.forEach(j => {
 
@@ -204,8 +204,6 @@ function selectSubJob(i) {
 
 // ================= FINISH JOB =================
 async function finishJob() {
-
-    currentJob.status = "pending-invoice";
 
     await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
