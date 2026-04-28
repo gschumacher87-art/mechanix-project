@@ -354,3 +354,30 @@ function removeLabour(index) {
     currentInvoice.template.labour.splice(index, 1);
     openInvoice(currentInvoice._id);
 }
+
+async function createInvoiceFromJob(jobId) {
+
+    const res = await fetch(API + "/jobs/" + jobId);
+    const job = await res.json();
+
+    const invoice = {
+        job: job._id,
+        status: "draft",
+        template: {
+            items: [],
+            labour: [],
+            notes: ""
+        },
+        summary: job.jobs?.map(j => j.summary).join(", ")
+    };
+
+    const createRes = await fetch(API + "/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(invoice)
+    });
+
+    const newInvoice = await createRes.json();
+
+    openInvoice(newInvoice._id);
+}
