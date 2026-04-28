@@ -64,7 +64,7 @@ if (invoice.job) {
         </div>`;
     });
 
-    const locked = invoice.status === "finalised";
+    const locked = false;
 
     document.getElementById("invoiceList").innerHTML = `
 
@@ -136,14 +136,12 @@ if (invoice.job) {
 
             <br>
 
-            ${locked ? "" : `
-            <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
-            <button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
-            <button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
-            <button class="primary" onclick="finaliseInvoice('${invoice._id}')">
-                Finalise Invoice
-            </button>
-            `}
+           <button class="primary" onclick="addItem('${invoice._id}')">+ Add Item</button>
+<button class="primary" onclick="addLabour('${invoice._id}')">+ Add Labour</button>
+<button class="primary" onclick="addNote('${invoice._id}')">+ Add Note</button>
+<button class="primary" onclick="finaliseInvoice('${invoice._id}')">
+    Finalise Invoice
+</button>
 
             <button class="secondary" onclick="deleteInvoice('${invoice._id}')">
                 Delete Invoice
@@ -163,8 +161,6 @@ async function addItem(id) {
 
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
-
-    if (invoice.status === "finalised") return alert("Invoice locked");
 
     const name = prompt("Item name:");
     if (!name) return;
@@ -198,8 +194,6 @@ async function addLabour(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    if (invoice.status === "finalised") return alert("Invoice locked");
-
     const name = prompt("Labour description:");
     if (!name) return;
 
@@ -232,8 +226,6 @@ async function addNote(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
-    if (invoice.status === "finalised") return alert("Invoice locked");
-
     const note = prompt("Note:");
     if (!note) return;
 
@@ -256,7 +248,7 @@ async function addNote(id) {
 
 async function finaliseInvoice(id) {
 
-    const confirmDone = confirm("Finalise invoice? This cannot be edited.");
+    const confirmDone = confirm("Finalise invoice?");
     if (!confirmDone) return;
 
     const res = await fetch(API + "/invoices/" + id);
@@ -281,11 +273,7 @@ async function finaliseInvoice(id) {
         body: JSON.stringify(job)
     });
 
-    show("customers");
-
-    if (invoice.customer) {
-        openCustomer(invoice.customer);
-    }
+    loadInvoices();
 }
 async function deleteInvoice(id) {
 
