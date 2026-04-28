@@ -27,7 +27,11 @@ async function loadJobs() {
         if (j.status === "completed") color = "green";
 
         const card = `
-<div class="card" onclick="openJobCard('${j._id}')" style="border-left:6px solid ${color}">
+<div class="card" onclick="${
+    j.status === 'pending-invoice'
+        ? `createInvoiceFromJob('${j._id}')`
+        : `openJobCard('${j._id}')`
+}" style="border-left:6px solid ${color}">
     <div class="title">${j.title}</div>
 <span class="status ${j.status}">${j.status}</span><br><br>
 
@@ -170,16 +174,25 @@ ${
 </div>
 
         <div class="card">
-            <div class="title">Selected Job</div>
-            <b>${selected.summary || ""}</b><br><br>
-            <div style="color:#555;">${selected.description || "No description"}</div>
+    <div class="title">Selected Job</div>
+    <b>${selected.summary || ""}</b><br><br>
+    <div style="color:#555;">${selected.description || "No description"}</div>
 
-            <br>
+    <br>
 
+    ${
+        currentJob.status === "pending-invoice"
+        ? `
+            <button class="primary" onclick="createInvoiceFromJob('${currentJob._id}')">Create Invoice</button>
+            <button class="secondary" onclick="addSubJobFromPending()">+ Add Job</button>
+          `
+        : `
             <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
-<button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
-<button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Finish</button>
-        </div>
+            <button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
+            <button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Finish</button>
+          `
+    }
+</div>
     `;
 
 }
