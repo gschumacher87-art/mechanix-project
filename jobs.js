@@ -184,7 +184,7 @@ ${
         currentJob.status === "pending-invoice"
         ? `
             <button class="primary" onclick="createInvoiceFromJob('${currentJob._id}')">Create Invoice</button>
-            <button class="secondary" onclick="addSubJobFromPending()">+ Add Job</button>
+            <button class="secondary" onclick="openJobCard('${currentJob._id}')">+ Add Job</button>
           `
         : `
             <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
