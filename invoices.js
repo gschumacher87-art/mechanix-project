@@ -276,3 +276,19 @@ async function openPendingJob(id) {
 </div>
 `;
 }
+
+async function sendPendingBack(id) {
+
+    const res = await fetch(API + "/jobs/" + id);
+    const job = await res.json();
+
+    job.status = "arrived";
+
+    await fetch(API + "/jobs/" + job._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(job)
+    });
+
+    loadJobs();
+}
