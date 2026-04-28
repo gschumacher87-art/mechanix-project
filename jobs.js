@@ -181,20 +181,25 @@ function selectSubJob(i) {
 // ================= FINISH JOB =================
 async function finishJob() {
 
+    currentJob.status = "pending-invoice";
+
     await fetch(API + "/jobs/" + currentJob._id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "pending-invoice" })
+        body: JSON.stringify({
+            status: currentJob.status,
+            jobs: currentJob.jobs
+        })
     });
 
-    await fetch(API + "/invoices/from-job/" + currentJob._id, {
+    const res = await fetch(API + "/invoices/from-job/" + currentJob._id, {
         method: "POST"
     });
 
-    show("jobs");
-    loadJobs();
-}
+    const invoice = await res.json();
 
+    openInvoice(invoice._id);
+}
 // ================= DELETE =================
 async function deleteJob(id) {
     if (!confirm("Delete this job?")) return;
