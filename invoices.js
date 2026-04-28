@@ -47,6 +47,8 @@ async function openInvoice(id) {
     const res = await fetch(API + "/invoices/" + id);
     const invoice = await res.json();
 
+    currentInvoice = invoice;
+
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
     let jobData = null;
@@ -323,6 +325,32 @@ async function sendPendingBack(id) {
     loadJobs();
 }
 
+let currentInvoice = null;
+
+function updateItem(index, field, value) {
+    currentInvoice.template.items[index][field] = value;
+}
+
+function addItem() {
+    currentInvoice.template.items.push({ name: "", qty: 1, price: 0 });
+    openInvoice(currentInvoice._id);
+}
+
+function removeItem(index) {
+    currentInvoice.template.items.splice(index, 1);
+    openInvoice(currentInvoice._id);
+}
+
 function updateLabour(index, field, value) {
     currentInvoice.template.labour[index][field] = value;
+}
+
+function addLabour() {
+    currentInvoice.template.labour.push({ name: "", qty: 1, price: 0 });
+    openInvoice(currentInvoice._id);
+}
+
+function removeLabour(index) {
+    currentInvoice.template.labour.splice(index, 1);
+    openInvoice(currentInvoice._id);
 }
