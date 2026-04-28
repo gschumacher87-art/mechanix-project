@@ -1,8 +1,16 @@
 async function loadInvoices() {
-    const res = await fetch(API + "/invoices");
-    const data = await res.json();
 
-    document.getElementById("invoiceList").innerHTML = data.map(i => {
+    // LOAD REAL INVOICES
+    const res = await fetch(API + "/invoices");
+    const invoices = await res.json();
+
+    // LOAD JOBS (for pending cards)
+    const jobRes = await fetch(API + "/jobs");
+    const jobsData = await jobRes.json();
+
+    const pendingJobs = jobsData.filter(j => j.status === "pending-invoice");
+
+    const invoiceCards = invoices.map(i => {
 
         const template = i.template || { items: [], labour: [] };
 
@@ -16,10 +24,23 @@ async function loadInvoices() {
         return `
         <div class="card" onclick="openInvoice('${i._id}')">
             <div class="title">$${total.toFixed(2)}</div>
-            <div>Tap to view</div>
+            <div>Invoice</div>
         </div>
         `;
-    }).join("");
+    });
+
+    const pendingCards = pendingJobs.map(j => {
+
+        return `
+        <div class="card" onclick="openPendingJob('${j._id}')" style="border-left:6px solid purple;">
+            <div class="title">${j.title}</div>
+            <div>Pending Invoice</div>
+        </div>
+        `;
+    });
+
+    document.getElementById("invoiceList").innerHTML =
+        [...pendingCards, ...invoiceCards].join("");
 }
 
 async function openInvoice(id) {
@@ -199,4 +220,8 @@ async function deleteInvoice(id) {
     });
 
     loadInvoices();
+}
+
+async function openPendingJob(id) {
+    openJobCard(id);
 }
