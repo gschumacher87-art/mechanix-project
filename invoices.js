@@ -261,12 +261,14 @@ async function finaliseInvoice(id) {
     const invoice = await res.json();
 
     await fetch(API + "/invoices/" + id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            status: "finalised"
-        })
-    });
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        status: "finalised",
+        vehicle: invoice.vehicle,
+        customer: invoice.customer
+    })
+});
 
     const jobRes = await fetch(API + "/jobs/" + invoice.job);
     const job = await jobRes.json();
