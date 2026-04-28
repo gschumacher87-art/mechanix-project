@@ -394,6 +394,11 @@ async function createInvoiceFromJob(id) {
         method: "POST"
     });
 
+    if (!res.ok) {
+        alert("Invoice create failed: " + res.status);
+        return;
+    }
+
     const invoice = await res.json();
 
     openInvoice(invoice._id);
