@@ -387,3 +387,14 @@ function deleteJobCard() {
     });
 
 }
+
+async function createInvoiceFromJob(id) {
+
+    const res = await fetch(API + "/invoices/from-job/" + id, {
+        method: "POST"
+    });
+
+    const invoice = await res.json();
+
+    openInvoice(invoice._id);
+}
