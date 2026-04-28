@@ -347,13 +347,8 @@ async function finishSubJob(i) {
         })
     });
 
-    const res = await fetch(API + "/invoices/from-job/" + currentJob._id, {
-        method: "POST"
-    });
-
-    const invoice = await res.json();
-
-    openInvoice(invoice._id);
+    renderJobCard();
+    loadJobs();
 
     return;
 
