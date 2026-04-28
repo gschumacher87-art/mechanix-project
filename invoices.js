@@ -66,21 +66,41 @@ async function openInvoice(id) {
     let itemsHtml = "";
     let labourHtml = "";
 
-    (template.items || []).forEach(i => {
-        itemsHtml += `
-        <div style="display:flex; justify-content:space-between; padding:6px 0;">
-            <span>${i.name} x${i.qty || 1}</span>
-            <span>$${(Number(i.price) * Number(i.qty || 1)).toFixed(2)}</span>
-        </div>`;
-    });
+    (template.items || []).forEach((i, index) => {
+    itemsHtml += `
+    <div style="display:flex; gap:6px; margin-bottom:6px;">
+        <input value="${i.name || ""}" placeholder="Part" 
+            onchange="updateItem(${index}, 'name', this.value)">
 
-    (template.labour || []).forEach(l => {
-        labourHtml += `
-        <div style="display:flex; justify-content:space-between; padding:6px 0;">
-            <span>${l.name} x${l.qty || 1}</span>
-            <span>$${(Number(l.price) * Number(l.qty || 1)).toFixed(2)}</span>
-        </div>`;
-    });
+        <input type="number" value="${i.qty || 1}" style="width:60px"
+            onchange="updateItem(${index}, 'qty', this.value)">
+
+        <input type="number" value="${i.price || 0}" style="width:80px"
+            onchange="updateItem(${index}, 'price', this.value)">
+
+        <button onclick="removeItem(${index})">X</button>
+    </div>`;
+});
+
+itemsHtml += `<button onclick="addItem()">+ Add Part</button>`;
+
+    (template.labour || []).forEach((l, index) => {
+    labourHtml += `
+    <div style="display:flex; gap:6px; margin-bottom:6px;">
+        <input value="${l.name || ""}" placeholder="Labour"
+            onchange="updateLabour(${index}, 'name', this.value)">
+
+        <input type="number" value="${l.qty || 1}" style="width:60px"
+            onchange="updateLabour(${index}, 'qty', this.value)">
+
+        <input type="number" value="${l.price || 0}" style="width:80px"
+            onchange="updateLabour(${index}, 'price', this.value)">
+
+        <button onclick="removeLabour(${index})">X</button>
+    </div>`;
+});
+
+labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
 
     document.getElementById("invoiceList").innerHTML = `
 
@@ -301,4 +321,8 @@ async function sendPendingBack(id) {
     });
 
     loadJobs();
+}
+
+function updateLabour(index, field, value) {
+    currentInvoice.template.labour[index][field] = value;
 }
