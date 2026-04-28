@@ -75,9 +75,15 @@ if (invoice.job) {
             <div class="title">Customer Invoice ${locked ? "(FINAL)" : ""}</div>
 
             <div style="margin-bottom:10px;">
-    <b>Invoice Summary</b>
+    <b>Jobs</b>
     <div style="color:#555;">
-        ${invoice.summary || template.notes || "No summary"}
+        ${
+            jobData && jobData.jobs
+                ? jobData.jobs.map((j, i) =>
+                    `Job ${i + 1}: ${j.summary || ""}`
+                  ).join("<br>")
+                : (invoice.summary || template.notes || "No jobs")
+        }
     </div>
 </div>
 
