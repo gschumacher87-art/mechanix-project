@@ -317,13 +317,32 @@ function finishSubJob(i) {
     const allDone = currentJob.jobs.every(j => j.status === "done");
 
     if (allDone) {
-        currentJob.status = "pending-invoice";
-    } else {
-        // FIXED
-        const anyRunning = currentJob.jobs.some(j => j.startedAt);
 
-        currentJob.status = anyRunning ? "in-progress" : "arrived";
-    }
+    currentJob.status = "pending-invoice";
+
+    await fetch(API + "/jobs/" + currentJob._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            jobs: currentJob.jobs,
+            status: currentJob.status
+        })
+    });
+
+    const res = await fetch(API + "/invoices/from-job/" + currentJob._id, {
+        method: "POST"
+    });
+
+    const invoice = await res.json();
+
+    openInvoice(invoice._id);
+
+    return;
+
+} else {
+
+    const anyRunning = currentJob.jobs.some(j => j.startedAt);
+    currentJob.status = anyRunning ? "in-progress" : "arrived";
 
     saveSubJobs();
 }
