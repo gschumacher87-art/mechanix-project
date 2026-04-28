@@ -6,7 +6,7 @@ async function loadJobs() {
     const res = await fetch(API + "/jobs");
     const data = await res.json();
 
-    let let booked = "", active = "", completed = "";
+    let booked = "", active = "", completed = "";
 
     data.forEach(j => {
 
