@@ -27,7 +27,11 @@ async function loadJobs() {
         if (j.status === "completed") color = "green";
 
         const card = `
-<div class="card" onclick="handleJobClick('${j._id}')"
+<div class="card" onclick="${
+    j.status === 'pending-invoice'
+        ? `createInvoiceFromJob('${j._id}')`
+        : `openJobCard('${j._id}')`
+}" style="border-left:6px solid ${color}">
     <div class="title">${j.title}</div>
 <span class="status ${j.status}">${j.status}</span><br><br>
 
@@ -180,7 +184,7 @@ ${
         currentJob.status === "pending-invoice"
         ? `
             <button class="primary" onclick="createInvoiceFromJob('${currentJob._id}')">Create Invoice</button>
-            <button class="secondary" onclick="openJobCard('${currentJob._id}')">+ Add Job</button>
+            <button class="secondary" onclick="addSubJobFromPending()">+ Add Job</button>
           `
         : `
             <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
@@ -381,27 +385,5 @@ function deleteJobCard() {
         show("jobs");
         loadJobs();
     });
-
-}
-
-async function createInvoiceFromJob(id) {
-
-    const res = await fetch(API + "/invoices/from-job/" + id, {
-        method: "POST"
-    });
-
-    if (!res.ok) {
-        alert("Invoice create failed: " + res.status);
-        return;
-    }
-
-    const invoice = await res.json();
-
-    openInvoice(invoice._id);
-}
-
-function handleJobClick(id, status) {
-
-    openJobCard(id);
 
 }
