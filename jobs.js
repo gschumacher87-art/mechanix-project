@@ -58,8 +58,7 @@ ${vehicleName}
 </div>`;
 
         if (j.status === "arrived") booked += card;
-        else if (j.status === "in-progress") active += card;
-        else if (j.status === "completed") completed += card;
+else if (j.status === "in-progress") active += card;
         else booked += card;
     });
 
@@ -71,9 +70,6 @@ jobList.innerHTML = `
 
         <div class="title">In Workshop</div>
         ${active || "<div class='card'>No active jobs</div>"}
-
-        <div class="title">Completed</div>
-        ${completed || "<div class='card'>No completed jobs</div>"}
     `;
 }
 
