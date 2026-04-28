@@ -72,9 +72,6 @@ jobList.innerHTML = `
         <div class="title">In Workshop</div>
         ${active || "<div class='card'>No active jobs</div>"}
 
-        <div class="title">Pending</div>
-        ${pending || "<div class='card'>No pending jobs</div>"}
-
         <div class="title">Completed</div>
         ${completed || "<div class='card'>No completed jobs</div>"}
     `;
