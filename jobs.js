@@ -402,10 +402,6 @@ async function createInvoiceFromJob(id) {
 
 function handleJobClick(id, status) {
 
-    if (status === "pending-invoice") {
-        createInvoiceFromJob(id);
-    } else {
-        openJobCard(id);
-    }
+    openJobCard(id);
 
 }
