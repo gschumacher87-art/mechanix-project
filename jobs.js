@@ -36,11 +36,13 @@ ${
         <div style="font-size:14px;">
             • ${x.summary}
             ${
-                x.startedAt
-                ? `<span style="color:#28a745; font-weight:bold;"> (running)</span>`
-                : x.timeSpent
-                    ? `<span style="color:#ffc107;"> (paused)</span>`
-                    : ``
+                x.status === "done"
+? `<span style="color:#6c757d;"> (done)</span>`
+: x.startedAt
+    ? `<span style="color:#28a745; font-weight:bold;"> (running)</span>`
+    : x.timeSpent
+        ? `<span style="color:#ffc107;"> (paused)</span>`
+        : ``
             }
         </div>
     `).join("")
