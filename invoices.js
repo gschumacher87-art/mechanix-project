@@ -223,5 +223,56 @@ async function deleteInvoice(id) {
 }
 
 async function openPendingJob(id) {
-    openJobCard(id);
+
+    const res = await fetch(API + "/jobs/" + id);
+    const job = await res.json();
+
+    document.getElementById("invoiceList").innerHTML = `
+
+<div style="display:grid; grid-template-columns: minmax(0,2fr) minmax(300px,1fr); gap:15px; align-items:start;">
+
+    <div>
+
+        <div class="card">
+            <div class="title">Pending Invoice</div>
+
+            <div style="margin-bottom:10px;">
+                <b>Customer</b><br>
+                ${job.customer?.firstName || ""} ${job.customer?.lastName || ""}
+            </div>
+
+            <div style="margin-bottom:10px;">
+                <b>Vehicle</b><br>
+                ${job.vehicle?.make || ""} ${job.vehicle?.model || ""}
+            </div>
+
+            <div>
+                <b>Jobs</b><br>
+                ${
+                    (job.jobs || []).map((j, i) =>
+                        `Job ${i + 1}: ${j.summary || ""}`
+                    ).join("<br>") || "No jobs"
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+
+        <div class="card">
+
+            <button class="primary" onclick="sendPendingBack('${job._id}')">+ Add Job</button>
+            <button class="primary" onclick="createInvoiceFromJob('${job._id}')">Create Invoice</button>
+
+            <br><br>
+
+            <button class="secondary" onclick="loadInvoices()">Back</button>
+
+        </div>
+
+    </div>
+
+</div>
+`;
 }
