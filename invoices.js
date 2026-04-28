@@ -2,24 +2,26 @@ async function loadInvoices() {
     const res = await fetch(API + "/invoices");
     const data = await res.json();
 
-    document.getElementById("invoiceList").innerHTML = data.map(i => {
+    document.getElementById("invoiceList").innerHTML = data
+        .filter(i => i.status !== "finalised")
+        .map(i => {
 
-        const template = i.template || { items: [], labour: [] };
+            const template = i.template || { items: [], labour: [] };
 
-        const subtotal =
-            (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
-            (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
+            const subtotal =
+                (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
+                (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
 
-        const gst = subtotal * 0.10;
-        const total = subtotal + gst;
+            const gst = subtotal * 0.10;
+            const total = subtotal + gst;
 
-        return `
-        <div class="card" onclick="openInvoice('${i._id}')">
-            <div class="title">$${total.toFixed(2)}</div>
-            <div>Tap to view</div>
-        </div>
-        `;
-    }).join("");
+            return `
+            <div class="card" onclick="openInvoice('${i._id}')">
+                <div class="title">$${total.toFixed(2)}</div>
+                <div>Tap to view</div>
+            </div>
+            `;
+        }).join("");
 }
 
 async function openInvoice(id) {
@@ -261,14 +263,12 @@ async function finaliseInvoice(id) {
     const invoice = await res.json();
 
     await fetch(API + "/invoices/" + id, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-        status: "finalised",
-        vehicle: invoice.vehicle,
-        customer: invoice.customer
-    })
-});
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            status: "finalised"
+        })
+    });
 
     const jobRes = await fetch(API + "/jobs/" + invoice.job);
     const job = await jobRes.json();
@@ -287,7 +287,6 @@ async function finaliseInvoice(id) {
         openCustomer(invoice.customer);
     }
 }
-
 async function deleteInvoice(id) {
 
     const confirmDelete = confirm("Delete invoice?");
