@@ -27,7 +27,7 @@ async function loadJobs() {
         if (j.status === "completed") color = "green";
 
         const card = `
-<div class="card" onclick="handleJobClick('${j._id}', '${j.status}')" style="border-left:6px solid ${color}">
+<div class="card" onclick="handleJobClick('${j._id}')"
     <div class="title">${j.title}</div>
 <span class="status ${j.status}">${j.status}</span><br><br>
 
