@@ -246,6 +246,8 @@ async function saveSubJobs() {
     });
 
     renderJobCard();
+    
+    loadJobs();
 }
 
 function editSubJob(i) {
