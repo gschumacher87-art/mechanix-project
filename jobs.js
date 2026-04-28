@@ -29,8 +29,8 @@ async function loadJobs() {
         const card = `
 <div class="card" onclick="${
     j.status === 'pending-invoice'
-        ? `createInvoiceFromJob('${j._id}')`
-        : `openJobCard('${j._id}')`
+        ? `createInvoiceFromJob(\"${j._id}\")`
+        : `openJobCard(\"${j._id}\")`
 }" style="border-left:6px solid ${color}">
     <div class="title">${j.title}</div>
 <span class="status ${j.status}">${j.status}</span><br><br>
