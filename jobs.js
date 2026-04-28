@@ -304,7 +304,7 @@ function clockOff(i) {
     saveSubJobs();
 }
 
-function finishSubJob(i) {
+async function finishSubJob(i) {
 
     const now = Date.now();
 
@@ -350,6 +350,7 @@ function finishSubJob(i) {
     currentJob.status = anyRunning ? "in-progress" : "arrived";
 
     saveSubJobs();
+}
 }
 
 function deleteJobCard() {
