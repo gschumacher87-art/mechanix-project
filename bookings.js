@@ -173,13 +173,13 @@ function openBookingModal(date = null) {
     document.getElementById("displayLastName").value = "";
     document.getElementById("displayPhone").value = "";
     document.getElementById("displayRego").value = "";
+    document.getElementById("displayVin").value = "";
 
     document.getElementById("bookingDate").value =
         date || new Date().toISOString().split("T")[0];
 
     addJob();
 }
-
 function closeBookingModal() {
     document.getElementById("bookingModal").style.display = "none";
 }
@@ -267,10 +267,12 @@ async function selectCustomer(id) {
     const vehicles = await vRes.json();
 
     if (vehicles.length) {
-        document.getElementById("displayRego").value = vehicles[0].rego || "";
-    } else {
-        document.getElementById("displayRego").value = "";
-    }
+    document.getElementById("displayRego").value = vehicles[0].rego || "";
+    document.getElementById("displayVin").value = vehicles[0].vin || "";
+} else {
+    document.getElementById("displayRego").value = "";
+    document.getElementById("displayVin").value = "";
+}
 
     let options = `<option value="">Select vehicle</option>`;
 
