@@ -126,36 +126,39 @@ labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:12px;">
 
     <div>
-        <b>Customer Details</b><br><br>
+    <b>Customer Details</b><br><br>
 
-        <div>Name</div>
-        <input value="${customer.firstName || ""} ${customer.lastName || ""}">
+    <div>First Name</div>
+    <input value="${customer.firstName || ""}">
 
-        <div>Contact</div>
-        <input value="${customer.phone || ""}">
+    <div>Last Name</div>
+    <input value="${customer.lastName || ""}">
 
-        <div>Email</div>
-        <input value="${customer.email || ""}">
-    </div>
+    <div>Contact</div>
+    <input value="${customer.phone || ""}">
+
+    <div>Email</div>
+    <input value="${customer.email || ""}">
+</div>
 
     <div>
-        <b>Vehicle</b><br><br>
+    <b>Vehicle</b><br><br>
 
-        <div>Make</div>
-        <input value="${vehicle.make || ""}">
+    <div>Make</div>
+    <input value="${vehicle.make || ""}">
 
-        <div>Model</div>
-        <input value="${vehicle.model || ""}">
+    <div>Model</div>
+    <input value="${vehicle.model || ""}">
 
-        <div>MM/YYYY</div>
-        <input value="${vehicle.year || ""}">
+    <div>Year</div>
+    <input value="${vehicle.year || ""}">
 
-        <div>VIN</div>
-        <input value="${vehicle.vin || ""}">
+    <div>VIN</div>
+    <input value="${vehicle.vin || ""}">
 
-        <div>ODO</div>
-        <input value="${vehicle.odometer || ""}">
-    </div>
+    <div>Odometer</div>
+    <input value="${vehicle.odometer || ""}">
+</div>
 
 </div>
 
