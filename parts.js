@@ -4,9 +4,9 @@ function loadParts() {
     <div class="card">
         <div class="title">Parts</div>
 
-        <input id="partName" placeholder="Name (e.g. Engine Oil)">
-        <input id="partNumber" placeholder="Part Number">
-        <input id="partPrice" type="number" placeholder="Price">
+        <input id="partCategory" placeholder="Category (e.g. Engine Oil)">
+<input id="partName" placeholder="Item (e.g. 5W30 / WCO5)">
+<input id="partPrice" type="number" placeholder="Price">
 
         <button class="primary">Save</button>
     </div>
