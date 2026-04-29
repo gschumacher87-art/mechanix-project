@@ -156,17 +156,40 @@ labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
     </div>
 
     <div style="margin-bottom:10px;">
-        <b>Jobs</b>
-        <div style="color:#555;">
-            ${
-                jobData && jobData.jobs
-                    ? jobData.jobs.map((j, i) =>
-                        `Job ${i + 1}: ${j.summary || ""}`
-                      ).join("<br>")
-                    : (invoice.summary || template.notes || "No jobs")
-            }
-        </div>
+    <b>Jobs</b>
+
+    <div style="color:#555;">
+
+    ${
+        jobData && jobData.jobs
+        ? jobData.jobs.map((j, i) => `
+            
+            <div style="margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #eee;">
+                
+                <div><b>Job ${i + 1} Summary/Title</b><br>${j.summary || ""}</div>
+
+                <div style="margin-top:6px;">
+                    <b>Parts Replaced</b><br>
+                    ${
+                        (j.parts || []).length
+                        ? j.parts.map(p => `${p.name || ""}`).join("<br>")
+                        : "None"
+                    }
+                </div>
+
+                <div style="margin-top:6px;">
+                    <b>Description</b><br>
+                    ${j.description || ""}
+                </div>
+
+            </div>
+
+        `).join("")
+        : "No jobs"
+    }
+
     </div>
+</div>
 
 </div>
 
