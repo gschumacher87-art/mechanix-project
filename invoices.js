@@ -52,11 +52,16 @@ async function openInvoice(id) {
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
     let jobData = null;
+let customer = {};
+let vehicle = {};
 
-    if (invoice.job) {
-        const jobRes = await fetch(API + "/jobs/" + invoice.job);
-        jobData = await jobRes.json();
-    }
+if (invoice.job) {
+    const jobRes = await fetch(API + "/jobs/" + invoice.job);
+    jobData = await jobRes.json();
+
+    customer = jobData.customer || {};
+    vehicle = jobData.vehicle || {};
+}
 
     const subtotal =
         (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
@@ -111,22 +116,59 @@ labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
     <div>
 
         <div class="card">
-            <div class="title">Pending Invoice</div>
+    <div class="title">Tax Invoice</div>
 
-            <div style="margin-bottom:10px;">
-                <b>Jobs</b>
-                <div style="color:#555;">
-                    ${
-                        jobData && jobData.jobs
-                            ? jobData.jobs.map((j, i) =>
-                                `Job ${i + 1}: ${j.summary || ""}`
-                              ).join("<br>")
-                            : (invoice.summary || template.notes || "No jobs")
-                    }
-                </div>
-            </div>
+    <div style="margin-bottom:12px;">
+        <b>Date</b><br>
+        ${new Date().toLocaleDateString()}
+    </div>
 
+    <div style="margin-bottom:12px;">
+        <b>Customer</b><br>
+
+        <input placeholder="Full Name"
+            value="${customer.firstName || ""} ${customer.lastName || ""}">
+
+        <input placeholder="Phone"
+            value="${customer.phone || ""}">
+
+        <input placeholder="Email"
+            value="${customer.email || ""}">
+    </div>
+
+    <div style="margin-bottom:12px;">
+        <b>Vehicle</b><br>
+
+        <input placeholder="Make"
+            value="${vehicle.make || ""}">
+
+        <input placeholder="Model"
+            value="${vehicle.model || ""}">
+
+        <input placeholder="Rego"
+            value="${vehicle.rego || ""}">
+
+        <input placeholder="VIN"
+            value="${vehicle.vin || ""}">
+
+        <input placeholder="Odometer"
+            value="${vehicle.odometer || ""}">
+    </div>
+
+    <div style="margin-bottom:10px;">
+        <b>Jobs</b>
+        <div style="color:#555;">
+            ${
+                jobData && jobData.jobs
+                    ? jobData.jobs.map((j, i) =>
+                        `Job ${i + 1}: ${j.summary || ""}`
+                      ).join("<br>")
+                    : (invoice.summary || template.notes || "No jobs")
+            }
         </div>
+    </div>
+
+</div>
 
         <div class="card">
             <div class="title">Items</div>
