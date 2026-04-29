@@ -1,7 +1,12 @@
 async function loadParts() {
 
+    alert("loadParts running");
+
     const res = await fetch(API + "/parts");
+    alert("status: " + res.status);
+
     const parts = await res.json();
+    alert("parts: " + parts.length);
 
     let html = `
 
