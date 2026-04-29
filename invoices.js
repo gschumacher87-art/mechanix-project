@@ -71,8 +71,8 @@ if (invoice.job) {
         jobData = await jobRes.json();
     }
 
-    customer = jobData.customer || {};
-    vehicle = jobData.vehicle || {};
+    customer = typeof jobData.customer === "object" ? jobData.customer : {};
+vehicle = typeof jobData.vehicle === "object" ? jobData.vehicle : {};
 }
 
     const subtotal =
