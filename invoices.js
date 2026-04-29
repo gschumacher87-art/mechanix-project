@@ -62,10 +62,27 @@ async function openInvoice(id) {
 let customer = {};
 let vehicle = {};
 
+let jobId = null;
+
 if (invoice.job) {
+    jobId = invoice.job._id || invoice.job;
+}
 
-    const jobId = invoice.job._id || invoice.job;
+// 🔥 FALLBACK: try find matching pending job
+if (!jobId) {
+    const jobRes = await fetch(API + "/jobs");
+    const jobs = await jobRes.json();
 
+    const match = jobs.find(j =>
+        j.summary === invoice.summary ||
+        j.title === invoice.summary
+    );
+
+    if (match) jobId = match._id;
+}
+
+// 🔥 LOAD JOB IF FOUND
+if (jobId) {
     const jobRes = await fetch(API + "/jobs/" + jobId);
     jobData = await jobRes.json();
 
