@@ -17,11 +17,12 @@ function formatCategory(name) {
 router.post("/", auth, async (req, res) => {
     try {
 
+        const category = formatCategory(req.body.category);
         const name = formatCategory(req.body.name);
 
         const part = new Part({
-            category: name,
-            name: name,
+            category,
+            name,
             partNumber: req.body.partNumber,
             price: req.body.price || 0
         });
@@ -43,13 +44,24 @@ router.get("/", auth, async (req, res) => {
         const parts = await Part.find();
 
         const filtered = parts.filter(p =>
-            p.name.toLowerCase().includes(q) ||
-            p.partNumber.toLowerCase().includes(q) ||
-            p.category.toLowerCase().includes(q)
+            (p.name || "").toLowerCase().includes(q) ||
+            (p.partNumber || "").toLowerCase().includes(q) ||
+            (p.category || "").toLowerCase().includes(q)
         );
 
         res.json(filtered);
 
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET SINGLE PART
+router.get("/:id", auth, async (req, res) => {
+    try {
+        const part = await Part.findById(req.params.id);
+        if (!part) return res.status(404).json({ error: "Not found" });
+        res.json(part);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -69,6 +81,16 @@ router.put("/:id", auth, async (req, res) => {
 
     } catch (err) {
         res.status(400).json({ error: err.message });
+    }
+});
+
+// DELETE PART
+router.delete("/:id", auth, async (req, res) => {
+    try {
+        await Part.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
