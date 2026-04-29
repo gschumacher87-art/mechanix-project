@@ -7,8 +7,6 @@ async function loadInvoices() {
     // LOAD JOBS (for pending cards)
     const jobRes = await fetch(API + "/jobs");
     const jobsData = await jobRes.json();
-    
-    console.log("JOBS DATA:", jobsData);
 
     const pendingJobs = jobsData.filter(j => j.status === "pending-invoice");
 
@@ -36,10 +34,6 @@ async function loadInvoices() {
     return `
     <div class="card" onclick="openPendingJob('${j._id}')" style="border-left:6px solid purple;">
         <div class="title">${j.title}</div>
-
-        <div>Customer RAW: ${JSON.stringify(j.customer)}</div>
-        <div>Vehicle RAW: ${JSON.stringify(j.vehicle)}</div>
-
         <div>Pending Invoice</div>
     </div>
     `;
