@@ -30,6 +30,7 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/templates", templateRoutes);
+app.use("/api/parts", require("./routes/parts"));
 
 app.use("/api/users", require("./api/users"));
 
