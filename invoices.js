@@ -64,16 +64,13 @@ let vehicle = {};
 
 if (invoice.job) {
 
-    // handle populated job OR id
-    if (typeof invoice.job === "object") {
-        jobData = invoice.job;
-    } else {
-        const jobRes = await fetch(API + "/jobs/" + invoice.job);
-        jobData = await jobRes.json();
-    }
+    const jobId = invoice.job._id || invoice.job;
 
-    customer = typeof jobData.customer === "object" ? jobData.customer : {};
-vehicle = typeof jobData.vehicle === "object" ? jobData.vehicle : {};
+    const jobRes = await fetch(API + "/jobs/" + jobId);
+    jobData = await jobRes.json();
+
+    customer = jobData.customer || {};
+    vehicle = jobData.vehicle || {};
 }
 
     const subtotal =
