@@ -456,28 +456,8 @@ function removeLabour(index) {
 
 async function createInvoiceFromJob(jobId) {
 
-    const res = await fetch(API + "/jobs/" + jobId);
-    const job = await res.json();
-
-    const invoice = {
-    job: job._id,
-    status: "draft",
-    template: {
-        items: [],
-        labour: (job.jobs || []).map(j => ({
-            name: j.summary || "",
-            qty: Math.max(1, Math.floor((j.timeSpent || 0) / 3600000)), // hours
-            price: 0
-        })),
-        notes: (job.jobs || []).map(j => j.description || "").join("\n")
-    },
-    summary: job.jobs?.map(j => j.summary).join(", ")
-};
-
-    const createRes = await fetch(API + "/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(invoice)
+    const createRes = await fetch(API + "/invoices/from-job/" + jobId, {
+        method: "POST"
     });
 
     const newInvoice = await createRes.json();
