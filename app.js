@@ -53,6 +53,7 @@ async function show(id, btn) {
     if (id === "customers" && typeof loadCustomers === "function") loadCustomers();
     if (id === "invoices" && typeof loadInvoices === "function") loadInvoices();
     if (id === "templates" && typeof loadTemplates === "function") loadTemplates();
+    if (id === "parts" && typeof loadParts === "function") loadParts();
 }
 
 async function login() {
