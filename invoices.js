@@ -33,13 +33,17 @@ async function loadInvoices() {
 
     const pendingCards = pendingJobs.map(j => {
 
-        return `
-        <div class="card" onclick="openPendingJob('${j._id}')" style="border-left:6px solid purple;">
-            <div class="title">${j.title}</div>
-            <div>Pending Invoice</div>
-        </div>
-        `;
-    });
+    return `
+    <div class="card" onclick="openPendingJob('${j._id}')" style="border-left:6px solid purple;">
+        <div class="title">${j.title}</div>
+
+        <div>Customer RAW: ${JSON.stringify(j.customer)}</div>
+        <div>Vehicle RAW: ${JSON.stringify(j.vehicle)}</div>
+
+        <div>Pending Invoice</div>
+    </div>
+    `;
+});
 
     document.getElementById("invoiceList").innerHTML =
         [...pendingCards, ...invoiceCards].join("");
