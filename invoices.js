@@ -487,7 +487,9 @@ async function updateVehicleField(field, value) {
 
     if (!currentInvoice?.job) return;
 
-    const jobRes = await fetch(API + "/jobs/" + currentInvoice.job);
+    const jobId = currentInvoice.job?._id || currentInvoice.job;
+
+    const jobRes = await fetch(API + "/jobs/" + jobId);
     const job = await jobRes.json();
 
     const vehicleId = job.vehicle?._id || job.vehicle;
