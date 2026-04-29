@@ -3,14 +3,12 @@ const router = express.Router();
 const Part = require("../models/Part");
 const auth = require("../middleware/auth");
 
-// NORMALISE
+// NORMALISE (CASE INSENSITIVE, CLEAN)
 function formatCategory(name) {
     return (name || "")
-        .toLowerCase()
         .trim()
-        .split(" ")
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" ");
+        .toLowerCase()
+        .replace(/\s+/g, " ");
 }
 
 // CREATE / ADD PART
@@ -18,14 +16,13 @@ router.post("/", auth, async (req, res) => {
     try {
 
         const category = formatCategory(req.body.category);
-        const category = formatCategory(req.body.category);
 
-const part = new Part({
-    category: category,
-    name: req.body.name,
-    partNumber: req.body.partNumber,
-    price: req.body.price || 0
-});
+        const part = new Part({
+            category: category,
+            name: req.body.name,
+            partNumber: req.body.partNumber,
+            price: req.body.price || 0
+        });
 
         await part.save();
         res.json(part);
@@ -71,9 +68,14 @@ router.get("/:id", auth, async (req, res) => {
 router.put("/:id", auth, async (req, res) => {
     try {
 
+        const update = {
+            ...req.body,
+            ...(req.body.category && { category: formatCategory(req.body.category) })
+        };
+
         const part = await Part.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            update,
             { new: true }
         );
 
