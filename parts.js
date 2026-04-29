@@ -6,7 +6,6 @@ function loadParts() {
 
         <input id="partName" placeholder="Name (e.g. Engine Oil)">
         <input id="partNumber" placeholder="Part Number">
-        <input id="partCategory" placeholder="Category">
         <input id="partPrice" type="number" placeholder="Price">
 
         <button class="primary">Save</button>
