@@ -1,3 +1,21 @@
 function loadParts() {
-    document.getElementById("partsScreen").innerHTML = "Parts screen";
+    document.getElementById("partsScreen").innerHTML = `
+
+    <div class="card">
+        <div class="title">Parts</div>
+
+        <input id="partName" placeholder="Name (e.g. Engine Oil)">
+        <input id="partNumber" placeholder="Part Number">
+        <input id="partCategory" placeholder="Category">
+        <input id="partPrice" type="number" placeholder="Price">
+
+        <button class="primary">Save</button>
+    </div>
+
+    <div class="card">
+        <div class="title">Saved Parts</div>
+        <div style="color:#777;">No parts yet</div>
+    </div>
+
+    `;
 }
