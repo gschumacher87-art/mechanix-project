@@ -10,15 +10,16 @@ async function loadParts() {
 
     let html = `
 
-    <div class="card">
-        <div class="title">Add Part</div>
+<div class="card">
+    <div class="title">Add Part</div>
 
-        <input id="partCategory" placeholder="Category (e.g. Engine Oil)">
-        <input id="partName" placeholder="Item (e.g. 5W30 / WCO5)">
-        <input id="partPrice" type="number" placeholder="Price">
+    <input id="partCategory" placeholder="Category (e.g. Engine Oil)">
+    <input id="partName" placeholder="Item (e.g. 5W30 / WCO5)">
+    <input id="partNumber" placeholder="Part Number (e.g. WCO5)">
+    <input id="partPrice" type="number" placeholder="Price">
 
-        <button class="primary" onclick="createPart()">Save</button>
-    </div>
+    <button class="primary" onclick="createPart()">Save</button>
+</div>
 
     <div class="card">
         <div class="title">Saved Parts</div>
@@ -48,10 +49,11 @@ async function loadParts() {
 async function createPart() {
 
     const part = {
-        category: document.getElementById("partCategory").value,
-        name: document.getElementById("partName").value,
-        price: Number(document.getElementById("partPrice").value)
-    };
+    category: document.getElementById("partCategory").value,
+    name: document.getElementById("partName").value,
+    partNumber: document.getElementById("partNumber").value,
+    price: Number(document.getElementById("partPrice").value)
+};
 
     if (!part.category || !part.name) {
         alert("Missing data");
