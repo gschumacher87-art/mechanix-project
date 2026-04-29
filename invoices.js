@@ -129,35 +129,35 @@ labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
     <b>Customer Details</b><br><br>
 
     <div>First Name</div>
-    <input value="${customer.firstName || ""}">
+    <input value="${customer.firstName || ""}" onchange="updateCustomerField('firstName', this.value)">
 
     <div>Last Name</div>
-    <input value="${customer.lastName || ""}">
+    <input value="${customer.lastName || ""}" onchange="updateCustomerField('lastName', this.value)">
 
     <div>Contact</div>
-    <input value="${customer.phone || ""}">
+    <input value="${customer.phone || ""}" onchange="updateCustomerField('phone', this.value)">
 
     <div>Email</div>
-    <input value="${customer.email || ""}">
+    <input value="${customer.email || ""}" onchange="updateCustomerField('email', this.value)">
 </div>
 
     <div>
     <b>Vehicle</b><br><br>
 
     <div>Make</div>
-    <input value="${vehicle.make || ""}">
+    <input value="${vehicle.make || ""}" onchange="updateVehicleField('make', this.value)">
 
     <div>Model</div>
-    <input value="${vehicle.model || ""}">
+    <input value="${vehicle.model || ""}" onchange="updateVehicleField('model', this.value)">
 
     <div>Year</div>
-    <input value="${vehicle.year || ""}">
+    <input value="${vehicle.year || ""}" onchange="updateVehicleField('year', this.value)">
 
     <div>VIN</div>
-    <input value="${vehicle.vin || ""}">
+    <input value="${vehicle.vin || ""}" onchange="updateVehicleField('vin', this.value)">
 
     <div>Odometer</div>
-    <input value="${vehicle.odometer || ""}">
+    <input value="${vehicle.odometer || ""}" onchange="updateVehicleField('odometer', this.value)">
 </div>
 
 </div>
@@ -456,4 +456,38 @@ async function createInvoiceFromJob(jobId) {
     const newInvoice = await createRes.json();
 
     openInvoice(newInvoice._id);
+}
+
+async function updateCustomerField(field, value) {
+
+    if (!currentInvoice?.job) return;
+
+    const jobRes = await fetch(API + "/jobs/" + currentInvoice.job);
+    const job = await jobRes.json();
+
+    const customerId = job.customer?._id || job.customer;
+    if (!customerId) return;
+
+    await fetch(API + "/customers/" + customerId, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value })
+    });
+}
+
+async function updateVehicleField(field, value) {
+
+    if (!currentInvoice?.job) return;
+
+    const jobRes = await fetch(API + "/jobs/" + currentInvoice.job);
+    const job = await jobRes.json();
+
+    const vehicleId = job.vehicle?._id || job.vehicle;
+    if (!vehicleId) return;
+
+    await fetch(API + "/vehicles/" + vehicleId, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value })
+    });
 }
