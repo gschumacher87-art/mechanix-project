@@ -56,11 +56,23 @@ let customer = {};
 let vehicle = {};
 
 if (invoice.job) {
+
     const jobRes = await fetch(API + "/jobs/" + invoice.job);
     jobData = await jobRes.json();
 
-    customer = jobData.customer || {};
-    vehicle = jobData.vehicle || {};
+    // 🔥 FORCE LOAD FULL CUSTOMER
+    if (jobData.customer) {
+        const customerId = jobData.customer._id || jobData.customer;
+        const cRes = await fetch(API + "/customers/" + customerId);
+        customer = await cRes.json();
+    }
+
+    // 🔥 FORCE LOAD FULL VEHICLE
+    if (jobData.vehicle) {
+        const vehicleId = jobData.vehicle._id || jobData.vehicle;
+        const vRes = await fetch(API + "/vehicles/" + vehicleId);
+        vehicle = await vRes.json();
+    }
 }
 
     const subtotal =
