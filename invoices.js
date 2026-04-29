@@ -468,7 +468,9 @@ async function updateCustomerField(field, value) {
 
     if (!currentInvoice?.job) return;
 
-    const jobRes = await fetch(API + "/jobs/" + currentInvoice.job);
+    const jobId = currentInvoice.job?._id || currentInvoice.job;
+
+    const jobRes = await fetch(API + "/jobs/" + jobId);
     const job = await jobRes.json();
 
     const customerId = job.customer?._id || job.customer;
