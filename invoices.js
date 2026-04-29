@@ -123,37 +123,41 @@ labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
         ${new Date().toLocaleDateString()}
     </div>
 
-    <div style="margin-bottom:12px;">
-        <b>Customer</b><br>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:12px;">
 
-        <input placeholder="Full Name"
-            value="${customer.firstName || ""} ${customer.lastName || ""}">
+    <div>
+        <b>Customer Details</b><br><br>
 
-        <input placeholder="Phone"
-            value="${customer.phone || ""}">
+        <div>Name</div>
+        <input value="${customer.firstName || ""} ${customer.lastName || ""}">
 
-        <input placeholder="Email"
-            value="${customer.email || ""}">
+        <div>Contact</div>
+        <input value="${customer.phone || ""}">
+
+        <div>Email</div>
+        <input value="${customer.email || ""}">
     </div>
 
-    <div style="margin-bottom:12px;">
-        <b>Vehicle</b><br>
+    <div>
+        <b>Vehicle</b><br><br>
 
-        <input placeholder="Make"
-            value="${vehicle.make || ""}">
+        <div>Make</div>
+        <input value="${vehicle.make || ""}">
 
-        <input placeholder="Model"
-            value="${vehicle.model || ""}">
+        <div>Model</div>
+        <input value="${vehicle.model || ""}">
 
-        <input placeholder="Rego"
-            value="${vehicle.rego || ""}">
+        <div>MM/YYYY</div>
+        <input value="${vehicle.year || ""}">
 
-        <input placeholder="VIN"
-            value="${vehicle.vin || ""}">
+        <div>VIN</div>
+        <input value="${vehicle.vin || ""}">
 
-        <input placeholder="Odometer"
-            value="${vehicle.odometer || ""}">
+        <div>ODO</div>
+        <input value="${vehicle.odometer || ""}">
     </div>
+
+</div>
 
     <div style="margin-bottom:10px;">
     <b>Jobs</b>
