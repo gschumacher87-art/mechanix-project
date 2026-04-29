@@ -7,6 +7,8 @@ async function loadInvoices() {
     // LOAD JOBS (for pending cards)
     const jobRes = await fetch(API + "/jobs");
     const jobsData = await jobRes.json();
+    
+    console.log("JOBS DATA:", jobsData);
 
     const pendingJobs = jobsData.filter(j => j.status === "pending-invoice");
 
