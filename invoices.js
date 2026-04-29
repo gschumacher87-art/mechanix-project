@@ -31,9 +31,16 @@ async function loadInvoices() {
 
     const pendingCards = pendingJobs.map(j => {
 
+    const c = j.customer || {};
+    const v = j.vehicle || {};
+
     return `
     <div class="card" onclick="openPendingJob('${j._id}')" style="border-left:6px solid purple;">
         <div class="title">${j.title}</div>
+
+        <b>${c.firstName || ""} ${c.lastName || ""}</b><br>
+        ${v.make || ""} ${v.model || ""}<br><br>
+
         <div>Pending Invoice</div>
     </div>
     `;
