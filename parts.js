@@ -1,43 +1,56 @@
 async function loadParts() {
 
-    alert("loadParts running");
-
     const res = await fetch(API + "/parts");
-    alert("status: " + res.status);
-
     const parts = await res.json();
-    alert("parts: " + parts.length);
+
+    // GROUP BY CATEGORY
+    const grouped = {};
+
+    parts.forEach(p => {
+        const cat = p.category || "Other";
+
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(p);
+    });
 
     let html = `
 
-<div class="card">
-    <div class="title">Add Part</div>
+    <div class="card">
+        <div class="title">Add Part</div>
 
-    <input id="partCategory" placeholder="Category (e.g. Engine Oil)">
-    <input id="partName" placeholder="Item (e.g. 5W30 / WCO5)">
-    <input id="partNumber" placeholder="Part Number (e.g. WCO5)">
-    <input id="partPrice" type="number" placeholder="Price">
+        <input id="partCategory" placeholder="Category (e.g. Engine Oil)">
+        <input id="partName" placeholder="Part Number (e.g. 5W30)">
+        <input id="partNumber" placeholder="Optional Code (e.g. WCO5)">
+        <input id="partPrice" type="number" placeholder="Price">
 
-    <button class="primary" onclick="createPart()">Save</button>
-</div>
+        <button class="primary" onclick="createPart()">Save</button>
+    </div>
 
     <div class="card">
         <div class="title">Saved Parts</div>
     `;
 
-    parts.forEach(p => {
-        html += `
-        <div style="border-bottom:1px solid #eee; padding:10px 0;">
-            <b>${p.category || ""}</b><br>
-            ${p.name || ""}<br>
-            $${p.price || 0}
+    // LOOP CATEGORIES
+    Object.keys(grouped).forEach(cat => {
 
-            <br><br>
+        html += `<div style="margin-bottom:15px;"><b>${cat}</b></div>`;
 
-            <button onclick="editPart('${p._id}')">Edit</button>
-            <button onclick="deletePart('${p._id}')">Delete</button>
-        </div>
-        `;
+        grouped[cat].forEach(p => {
+
+            html += `
+            <div style="padding-left:10px; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                
+                ${p.name || ""} ${p.partNumber ? "(" + p.partNumber + ")" : ""}<br>
+                $${p.price || 0}
+
+                <br><br>
+
+                <button onclick="editPart('${p._id}')">Edit</button>
+                <button onclick="deletePart('${p._id}')">Delete</button>
+            </div>
+            `;
+        });
+
     });
 
     html += `</div>`;
