@@ -53,15 +53,26 @@ async function createPart() {
         price: Number(document.getElementById("partPrice").value)
     };
 
-    if (!part.category || !part.name) return;
+    if (!part.category || !part.name) {
+        alert("Missing data");
+        return;
+    }
 
-    await fetch(API + "/parts", {
+    const res = await fetch(API + "/parts", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(part)
     });
+
+    alert("status: " + res.status);
+
+    if (!res.ok) {
+        const err = await res.text();
+        alert("error: " + err);
+        return;
+    }
 
     loadParts();
 }
