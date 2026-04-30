@@ -39,8 +39,8 @@ async function loadParts() {
             html += `
             <div style="padding-left:10px; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px;">
                 
-                ${p.category} - ${p.partNumber}
-                $${p.price || 0}
+                ${p.partNumber}
+$${p.price || 0}
 
                 <br><br>
 
