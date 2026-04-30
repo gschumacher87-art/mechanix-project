@@ -151,7 +151,7 @@ if ((template.labour || []).length === 0) {
 
         <button type="button" onclick="removeLabour(${index})">X</button>
     </div>`;
-});});
+});
 labourHtml += `<button type="button" onclick="addLabour()">+ Add Labour</button>`;
 
     document.getElementById("invoiceList").innerHTML = `
