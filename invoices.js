@@ -107,7 +107,12 @@ if (jobId) {
     let itemsHtml = "";
     let labourHtml = "";
 
-    (template.items || []).forEach((i, index) => {
+// EMPTY STATE
+if ((template.items || []).length === 0) {
+    itemsHtml = `<div style="color:#777; margin-bottom:10px;">No parts added</div>`;
+}
+
+(template.items || []).forEach((i, index) => {
     itemsHtml += `
     <div style="display:flex; gap:6px; margin-bottom:6px;">
         <input value="${i.name || ""}" placeholder="Part" 
@@ -125,7 +130,12 @@ if (jobId) {
 
 itemsHtml += `<button onclick="addItem()">+ Add Part</button>`;
 
-    (template.labour || []).forEach((l, index) => {
+// EMPTY STATE
+if ((template.labour || []).length === 0) {
+    labourHtml = `<div style="color:#777; margin-bottom:10px;">No labour added</div>`;
+}
+
+(template.labour || []).forEach((l, index) => {
     labourHtml += `
     <div style="display:flex; gap:6px; margin-bottom:6px;">
         <input value="${l.name || ""}" placeholder="Labour"
