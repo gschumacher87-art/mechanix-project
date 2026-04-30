@@ -222,18 +222,18 @@ labourHtml += `<button type="button" onclick="addLabour()">+ Add Labour</button>
     <b>Details of Repair</b>
 
     ${
-        jobData && jobData.jobs
-        ? jobData.jobs.map((j, i) => `
+        template.jobs && template.jobs.length
+? template.jobs.map((j, i) => `
 
             <div style="margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #eee;">
 
                 <div><b>Job ${i + 1}</b></div>
 
-                <input value="${j.summary || ""}" 
-                    onchange="updateInvoiceJobTitle(${i}, this.value)">
+                <input value="${j.title || ""}" 
+    onchange="updateInvoiceJobTitle(${i}, this.value)">
 
-                <textarea rows="4" style="width:100%; margin-top:6px;"
-                    onchange="updateInvoiceJobDesc(${i}, this.value)">${j.description || ""}</textarea>
+<textarea rows="4" style="width:100%; margin-top:6px;"
+    onchange="updateInvoiceJobDesc(${i}, this.value)">${j.description || ""}</textarea>
 
             </div>
 
