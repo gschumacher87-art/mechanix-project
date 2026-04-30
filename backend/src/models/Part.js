@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const PartSchema = new mongoose.Schema({
     category: { type: String, required: true },
-    name: { type: String, required: true },
     partNumber: { type: String, required: true },
     price: { type: Number, default: 0 }
 }, { timestamps: true });
