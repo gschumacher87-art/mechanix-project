@@ -451,7 +451,7 @@ function updateItem(index, field, value) {
 
 function addItem() {
     currentInvoice.template.items.push({ name: "", qty: 1, price: 0 });
-    saveInvoice();
+    renderTotals();
 }
 
 function removeItem(index) {
@@ -466,7 +466,7 @@ function updateLabour(index, field, value) {
 
 function addLabour() {
     currentInvoice.template.labour.push({ name: "", qty: 1, price: 0 });
-    saveInvoice();
+    renderTotals();
 }
 
 function removeLabour(index) {
