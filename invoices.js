@@ -212,40 +212,35 @@ labourHtml += `<button type="button" onclick="addLabour()">+ Add Labour</button>
 
 </div>
 
-    <div style="margin-bottom:10px;">
-    <b>Jobs</b>
+    <div style="margin-bottom:12px;">
+    <b>Summary (Job Titles)</b><br>
+    <textarea rows="3" style="width:100%;"
+        onchange="updateInvoiceSummary(this.value)">${invoice.summary || ""}</textarea>
+</div>
 
-    <div style="color:#555;">
+<div style="margin-bottom:10px;">
+    <b>Details of Repair</b>
 
     ${
         jobData && jobData.jobs
         ? jobData.jobs.map((j, i) => `
-            
+
             <div style="margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #eee;">
-                
-                <div><b>Job ${i + 1} Summary/Title</b><br>${j.summary || ""}</div>
 
-                <div style="margin-top:6px;">
-                    <b>Parts Replaced</b><br>
-                    ${
-                        (j.parts || []).length
-                        ? j.parts.map(p => `${p.name || ""}`).join("<br>")
-                        : "None"
-                    }
-                </div>
+                <div><b>Job ${i + 1}</b></div>
 
-                <div style="margin-top:6px;">
-                    <b>Description</b><br>
-                    ${j.description || ""}
-                </div>
+                <input value="${j.summary || ""}" 
+                    onchange="updateInvoiceJobTitle(${i}, this.value)">
+
+                <textarea rows="4" style="width:100%; margin-top:6px;"
+                    onchange="updateInvoiceJobDesc(${i}, this.value)">${j.description || ""}</textarea>
 
             </div>
 
         `).join("")
-        : "No jobs"
+        : "<div style='color:#777;'>No jobs</div>"
     }
 
-    </div>
 </div>
 
 </div>
@@ -513,9 +508,13 @@ async function createInvoiceFromJob(jobId) {
 
     // BUILD DEFAULT TEMPLATE FROM JOB
     const template = {
-        items: [],
-        labour: []
-    };
+    items: [],
+    labour: [],
+    jobs: (job.jobs || []).map(j => ({
+        title: j.summary || "",
+        description: j.description || ""
+    }))
+};
 
     // 🔥 AUTO ADD LABOUR (from job entries)
     (job.jobs || []).forEach(j => {
@@ -541,10 +540,10 @@ async function createInvoiceFromJob(jobId) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            job: jobId,
-            summary: job.title,
-            template: template
-        })
+    job: jobId,
+    summary: (job.jobs || []).map(j => j.summary).join("\n"),
+    template: template
+})
     });
 
     const newInvoice = await createRes.json();
@@ -625,4 +624,21 @@ function renderTotals() {
     if (subEl) subEl.innerText = "$" + subtotal.toFixed(2);
     if (gstEl) gstEl.innerText = "$" + gst.toFixed(2);
     if (totalEl) totalEl.innerText = "$" + total.toFixed(2);
+}
+
+function updateInvoiceSummary(value) {
+    currentInvoice.summary = value;
+    saveInvoice();
+}
+
+function updateInvoiceJobTitle(index, value) {
+    if (!currentInvoice.template.jobs) return;
+    currentInvoice.template.jobs[index].title = value;
+    saveInvoice();
+}
+
+function updateInvoiceJobDesc(index, value) {
+    if (!currentInvoice.template.jobs) return;
+    currentInvoice.template.jobs[index].description = value;
+    saveInvoice();
 }
