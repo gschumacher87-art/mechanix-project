@@ -58,6 +58,9 @@ async function openInvoice(id) {
 
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
+// 🔥 SYNC TEMPLATE BACK TO CURRENT INVOICE (FIXES SAVE BUG)
+currentInvoice.template = template;
+
 // 🔥 ENSURE STRUCTURE EXISTS
 template.items = template.items || [];
 template.labour = template.labour || [];
