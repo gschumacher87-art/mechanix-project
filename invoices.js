@@ -58,6 +58,10 @@ async function openInvoice(id) {
 
     const template = invoice.template || { items: [], labour: [], notes: "" };
 
+// 🔥 ENSURE STRUCTURE EXISTS
+template.items = template.items || [];
+template.labour = template.labour || [];
+
     let jobData = null;
 let customer = {};
 let vehicle = {};
@@ -428,6 +432,7 @@ let currentInvoice = null;
 
 function updateItem(index, field, value) {
     currentInvoice.template.items[index][field] = value;
+    saveInvoice();
 }
 
 function addItem() {
@@ -456,8 +461,43 @@ function removeLabour(index) {
 
 async function createInvoiceFromJob(jobId) {
 
-    const createRes = await fetch(API + "/invoices/from-job/" + jobId, {
-        method: "POST"
+    const jobRes = await fetch(API + "/jobs/" + jobId);
+    const job = await jobRes.json();
+
+    // BUILD DEFAULT TEMPLATE FROM JOB
+    const template = {
+        items: [],
+        labour: []
+    };
+
+    // 🔥 AUTO ADD LABOUR (from job entries)
+    (job.jobs || []).forEach(j => {
+        template.labour.push({
+            name: j.summary || "Labour",
+            qty: 1,
+            price: 0
+        });
+    });
+
+    // 🔥 AUTO ADD PARTS (if exist on job)
+    (job.jobs || []).forEach(j => {
+        (j.parts || []).forEach(p => {
+            template.items.push({
+                name: p.name || "",
+                qty: p.qty || 1,
+                price: p.price || 0
+            });
+        });
+    });
+
+    const createRes = await fetch(API + "/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            job: jobId,
+            summary: job.title,
+            template: template
+        })
     });
 
     const newInvoice = await createRes.json();
@@ -501,4 +541,19 @@ async function updateVehicleField(field, value) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ [field]: value })
     });
+}
+
+async function saveInvoice() {
+
+    if (!currentInvoice?._id) return;
+
+    await fetch(API + "/invoices/" + currentInvoice._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            template: currentInvoice.template
+        })
+    });
+
+    openInvoice(currentInvoice._id);
 }
