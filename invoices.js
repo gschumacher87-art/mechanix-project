@@ -569,7 +569,7 @@ async function saveInvoice() {
         })
     });
 
-    renderTotals();
+    openInvoice(currentInvoice._id);
 }
 
 function renderTotals() {
