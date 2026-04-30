@@ -19,9 +19,8 @@ async function loadParts() {
         <div class="title">Add Part</div>
 
         <input id="partCategory" placeholder="Category (e.g. Engine Oil)">
-        <input id="partName" placeholder="Part Number (e.g. 5W30)">
-        <input id="partNumber" placeholder="Optional Code (e.g. WCO5)">
-        <input id="partPrice" type="number" placeholder="Price">
+<input id="partNumber" placeholder="Part Number (e.g. 5W30)">
+<input id="partPrice" type="number" placeholder="Price">
 
         <button class="primary" onclick="createPart()">Save</button>
     </div>
@@ -40,7 +39,7 @@ async function loadParts() {
             html += `
             <div style="padding-left:10px; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px;">
                 
-                ${p.name || ""} ${p.partNumber ? "(" + p.partNumber + ")" : ""}<br>
+                ${p.category} - ${p.partNumber}
                 $${p.price || 0}
 
                 <br><br>
@@ -63,7 +62,6 @@ async function createPart() {
 
     const part = {
     category: document.getElementById("partCategory").value,
-    name: document.getElementById("partName").value,
     partNumber: document.getElementById("partNumber").value,
     price: Number(document.getElementById("partPrice").value)
 };
