@@ -275,17 +275,17 @@ labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
 
             <div style="display:flex; justify-content:space-between;">
                 <span>Subtotal</span>
-                <span>$${subtotal.toFixed(2)}</span>
+                <span id="subtotal">$${subtotal.toFixed(2)}</span>
             </div>
 
             <div style="display:flex; justify-content:space-between;">
                 <span>GST</span>
-                <span>$${gst.toFixed(2)}</span>
+                <span id="gst">$${gst.toFixed(2)}</span>
             </div>
 
             <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:bold;">
                 <span>Total</span>
-                <span style="color:#2e7d32;">$${total.toFixed(2)}</span>
+                <span id="total" style="color:#2e7d32;">$${total.toFixed(2)}</span>
             </div>
 
             <br>
@@ -569,5 +569,27 @@ async function saveInvoice() {
         })
     });
 
-    openInvoice(currentInvoice._id);
+    renderTotals();
+}
+
+function renderTotals() {
+
+    if (!currentInvoice?.template) return;
+
+    const template = currentInvoice.template;
+
+    const subtotal =
+        (template.items || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0) +
+        (template.labour || []).reduce((t, x) => t + (Number(x.price || 0) * Number(x.qty || 1)), 0);
+
+    const gst = subtotal * 0.10;
+    const total = subtotal + gst;
+
+    const subEl = document.getElementById("subtotal");
+    const gstEl = document.getElementById("gst");
+    const totalEl = document.getElementById("total");
+
+    if (subEl) subEl.innerText = "$" + subtotal.toFixed(2);
+    if (gstEl) gstEl.innerText = "$" + gst.toFixed(2);
+    if (totalEl) totalEl.innerText = "$" + total.toFixed(2);
 }
