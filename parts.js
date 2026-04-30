@@ -94,19 +94,16 @@ async function editPart(id) {
     const category = prompt("Category:", part.category || "");
     if (category === null) return;
 
-    const name = prompt("Item:", part.name || "");
-    if (name === null) return;
-
     const price = prompt("Price:", part.price || 0);
 
     await fetch(API + "/parts/" + id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            category,
-            name,
-            price: Number(price)
-        })
+    category,
+    partNumber: part.partNumber,
+    price: Number(price)
+})
     });
 
     loadParts();
