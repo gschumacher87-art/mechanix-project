@@ -124,11 +124,11 @@ if ((template.items || []).length === 0) {
         <input type="number" value="${i.price || 0}" style="width:80px"
             onchange="updateItem(${index}, 'price', this.value)">
 
-        <button onclick="removeItem(${index})">X</button>
+        <button type="button" onclick="removeItem(${index})">X</button>
     </div>`;
 });
 
-itemsHtml += `<button onclick="addItem()">+ Add Part</button>`;
+<button type="button" onclick="addItem()">+ Add Part</button>
 
 // EMPTY STATE
 if ((template.labour || []).length === 0) {
@@ -147,11 +147,11 @@ if ((template.labour || []).length === 0) {
         <input type="number" value="${l.price || 0}" style="width:80px"
             onchange="updateLabour(${index}, 'price', this.value)">
 
-        <button onclick="removeLabour(${index})">X</button>
+        <button type="button" onclick="removeLabour(${index})">X</button>
     </div>`;
 });
 
-labourHtml += `<button onclick="addLabour()">+ Add Labour</button>`;
+<button type="button" onclick="addLabour()">+ Add Labour</button>
 
     document.getElementById("invoiceList").innerHTML = `
 
