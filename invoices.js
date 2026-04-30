@@ -1,3 +1,10 @@
+window.addItem = addItem;
+window.addLabour = addLabour;
+window.removeItem = removeItem;
+window.removeLabour = removeLabour;
+window.updateItem = updateItem;
+window.updateLabour = updateLabour;
+
 async function loadInvoices() {
 
     // LOAD REAL INVOICES
