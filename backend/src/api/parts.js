@@ -40,7 +40,6 @@ router.get("/", auth, async (req, res) => {
         const parts = await Part.find();
 
         const filtered = parts.filter(p =>
-            (p.name || "").toLowerCase().includes(q) ||
             (p.partNumber || "").toLowerCase().includes(q) ||
             (p.category || "").toLowerCase().includes(q)
         );
