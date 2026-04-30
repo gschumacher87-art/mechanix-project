@@ -128,7 +128,7 @@ if ((template.items || []).length === 0) {
     </div>`;
 });
 
-<button type="button" onclick="addItem()">+ Add Part</button>
+<button type="button" onclick="addLabour()">+ Add Labour</button>
 
 // EMPTY STATE
 if ((template.labour || []).length === 0) {
