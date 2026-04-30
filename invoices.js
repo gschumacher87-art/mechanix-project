@@ -437,26 +437,27 @@ function updateItem(index, field, value) {
 
 function addItem() {
     currentInvoice.template.items.push({ name: "", qty: 1, price: 0 });
-    openInvoice(currentInvoice._id);
+    saveInvoice();
 }
 
 function removeItem(index) {
     currentInvoice.template.items.splice(index, 1);
-    openInvoice(currentInvoice._id);
+    saveInvoice();
 }
 
 function updateLabour(index, field, value) {
     currentInvoice.template.labour[index][field] = value;
+    saveInvoice();
 }
 
 function addLabour() {
     currentInvoice.template.labour.push({ name: "", qty: 1, price: 0 });
-    openInvoice(currentInvoice._id);
+    saveInvoice();
 }
 
 function removeLabour(index) {
     currentInvoice.template.labour.splice(index, 1);
-    openInvoice(currentInvoice._id);
+    saveInvoice();
 }
 
 async function createInvoiceFromJob(jobId) {
