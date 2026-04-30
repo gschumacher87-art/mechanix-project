@@ -126,9 +126,11 @@ if ((template.items || []).length === 0) {
 
         <button type="button" onclick="removeItem(${index})">X</button>
     </div>`;
-});
 
-<button type="button" onclick="addLabour()">+ Add Labour</button>
+});
+itemsHtml += `<button type="button" onclick="addItem()">+ Add Part</button>`;
+
+
 
 // EMPTY STATE
 if ((template.labour || []).length === 0) {
@@ -149,9 +151,8 @@ if ((template.labour || []).length === 0) {
 
         <button type="button" onclick="removeLabour(${index})">X</button>
     </div>`;
-});
-
-<button type="button" onclick="addLabour()">+ Add Labour</button>
+});});
+labourHtml += `<button type="button" onclick="addLabour()">+ Add Labour</button>`;
 
     document.getElementById("invoiceList").innerHTML = `
 
