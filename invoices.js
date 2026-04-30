@@ -71,6 +71,7 @@ currentInvoice.template = template;
 // 🔥 ENSURE STRUCTURE EXISTS
 template.items = template.items || [];
 template.labour = template.labour || [];
+template.jobs = template.jobs || [];
 
     let jobData = null;
 let customer = {};
