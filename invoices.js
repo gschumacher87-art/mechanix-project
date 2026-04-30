@@ -456,7 +456,7 @@ function updateItem(index, field, value) {
 
 function addItem() {
 
-    const index = currentInvoice.template.items.length;
+    const index = document.querySelectorAll("#itemsContainer > div").length;
 
     currentInvoice.template.items.push({ category: "", partNumber: "", qty: 1, price: 0 });
 
@@ -484,8 +484,11 @@ function addItem() {
 }
 
 function removeItem(index) {
+
     currentInvoice.template.items.splice(index, 1);
-    saveInvoice();
+
+    // 🔥 FORCE CLEAN RELOAD (FIX INDEX + TOTAL BUG)
+    openInvoice(currentInvoice._id);
 }
 
 function updateLabour(index, field, value) {
