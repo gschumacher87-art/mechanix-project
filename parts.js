@@ -66,11 +66,6 @@ async function createPart() {
     price: Number(document.getElementById("partPrice").value)
 };
 
-    if (!part.category || !part.name) {
-        alert("Missing data");
-        return;
-    }
-
     const res = await fetch(API + "/parts", {
         method: "POST",
         headers: {
