@@ -18,11 +18,10 @@ router.post("/", auth, async (req, res) => {
         const category = formatCategory(req.body.category);
 
         const part = new Part({
-            category: category,
-            name: req.body.name,
-            partNumber: req.body.partNumber,
-            price: req.body.price || 0
-        });
+    category: category,
+    partNumber: req.body.partNumber,
+    price: req.body.price || 0
+});
 
         await part.save();
         res.json(part);
