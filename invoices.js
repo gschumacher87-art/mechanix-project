@@ -117,9 +117,8 @@ let labourHtml = "";
 (template.items || []).forEach((i, index) => {
     itemsHtml += `
     <div style="display:flex; gap:6px; margin-bottom:6px;">
-        <input value="${i.name || ""}" placeholder="Part" 
-            onchange="updateItem(${index}, 'name', this.value)">
-
+        <input value="${i.partNumber || ""}" placeholder="Part Number" 
+    onchange="updateItem(${index}, 'partNumber', this.value)">
         <input type="number" value="${i.qty || 1}" style="width:60px"
             onchange="updateItem(${index}, 'qty', this.value)">
 
@@ -456,12 +455,12 @@ function addItem() {
 
     const index = currentInvoice.template.items.length;
 
-    currentInvoice.template.items.push({ name: "", qty: 1, price: 0 });
+    currentInvoice.template.items.push({ partNumber: "", qty: 1, price: 0 });
 
     const row = `
     <div style="display:flex; gap:6px; margin-bottom:6px;">
-        <input placeholder="Part"
-            onchange="updateItem(${index}, 'name', this.value)">
+        <input placeholder="Part Number"
+    onchange="updateItem(${index}, 'partNumber', this.value)">
 
         <input type="number" value="1" style="width:60px"
             onchange="updateItem(${index}, 'qty', this.value)">
