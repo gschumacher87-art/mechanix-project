@@ -111,13 +111,8 @@ if (jobId) {
     const gst = subtotal * 0.10;
     const total = subtotal + gst;
 
-    let itemsHtml = "";
-    let labourHtml = "";
-
-// EMPTY STATE
-if ((template.items || []).length === 0) {
-    itemsHtml = `<div style="color:#777; margin-bottom:10px;">No parts added</div>`;
-}
+    let itemsHtml = `<div id="itemsContainer">`;
+let labourHtml = "";
 
 (template.items || []).forEach((i, index) => {
     itemsHtml += `
@@ -133,9 +128,10 @@ if ((template.items || []).length === 0) {
 
         <button type="button" onclick="removeItem(${index})">X</button>
     </div>`;
-
 });
-itemsHtml += `<button type="button" onclick="addItem()">+ Add Part</button>`;
+
+itemsHtml += `</div>
+<button type="button" onclick="addItem()">+ Add Part</button>`;
 
 
 
@@ -457,7 +453,28 @@ function updateItem(index, field, value) {
 }
 
 function addItem() {
+
+    const index = currentInvoice.template.items.length;
+
     currentInvoice.template.items.push({ name: "", qty: 1, price: 0 });
+
+    const row = `
+    <div style="display:flex; gap:6px; margin-bottom:6px;">
+        <input placeholder="Part"
+            onchange="updateItem(${index}, 'name', this.value)">
+
+        <input type="number" value="1" style="width:60px"
+            onchange="updateItem(${index}, 'qty', this.value)">
+
+        <input type="number" value="0" style="width:80px"
+            onchange="updateItem(${index}, 'price', this.value)">
+
+        <button type="button" onclick="removeItem(${index})">X</button>
+    </div>`;
+
+    document.getElementById("itemsContainer")
+        .insertAdjacentHTML("beforeend", row);
+
     renderTotals();
 }
 
