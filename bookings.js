@@ -253,8 +253,6 @@ async function bookingSearchCustomers() {
 // ================= SELECT CUSTOMER =================
 async function selectCustomer(id) {
 
-    selectedCustomerId = id;
-
     const res = await fetch(API + "/customers/" + id);
     const customer = await res.json();
 
@@ -392,7 +390,6 @@ if (!vehicleId) {
     title: jobs[0]?.summary || "Booking",
     description: jobs.map(j => j.description).join("\n"),
     services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
-    customer: selectedCustomerId,
     vehicle: vehicleId,
     status: "booked",
     date: bookingDate,
