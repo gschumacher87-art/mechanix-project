@@ -228,8 +228,9 @@ async function confirmBooking() {
     const data = await res.json();
 
     if (!res.ok) {
-        return;
-    }
+    alert("Booking failed");
+    return;
+}
 
     closeBookingModal();
     show('bookings');
