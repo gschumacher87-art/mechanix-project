@@ -135,14 +135,22 @@ const descriptions = (currentJob.description || "").split("\n");
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-            title: "Job Card",
-            jobs: (currentJob.services || []).map((s, i) => ({
-                summary: s,
-                description: descriptions[i] || ""
-            })),
-            
-            status: "arrived"
-        })
+    title: "Job Card",
+
+    customer: currentJob.customer || null,
+    vehicle: currentJob.vehicle || null,
+
+    customerName: currentJob.customerName || "",
+    phone: currentJob.phone || "",
+    rego: currentJob.rego || "",
+
+    jobs: (currentJob.services || []).map((s, i) => ({
+        summary: s,
+        description: descriptions[i] || ""
+    })),
+
+    status: "arrived"
+})
     });
 
     const job = await jobRes.json();
