@@ -205,27 +205,59 @@ async function confirmBooking() {
         ).trim();
 
     const phone = document.getElementById("displayPhone").value || "";
-    const rego = document.getElementById("displayRego").value || "";
-    const vehicle = document.getElementById("displayVin").value || "";
+const rego = document.getElementById("displayRego").value || "";
+const vehicle = document.getElementById("displayVin").value || "";
 
-    try {
+let matchedCustomer = null;
 
-    const res = await fetch(API + "/bookings", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-            title: jobs[0]?.summary || "Booking",
-            customerName,
-            phone,
-            rego,
-            vehicle,
-            description: jobs.map(j => j.description).join("\n"),
-            services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
-            status: "booked",
-            date: bookingDate,
-            duration: duration
-        })
-    });
+try {
+
+    const cRes = await fetch(API + "/customers");
+    const customers = await cRes.json();
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    const matchedVehicle = vehicles.find(v =>
+        (v.rego || "").toLowerCase() === rego.toLowerCase()
+    );
+
+    if (matchedVehicle) {
+
+        matchedCustomer = customers.find(c =>
+            (c._id || "").toString() ===
+            ((matchedVehicle.customer?._id || matchedVehicle.customer || "").toString())
+        );
+
+        if (matchedCustomer) {
+
+            document.getElementById("displayFirstName").value =
+                matchedCustomer.firstName || "";
+
+            document.getElementById("displayLastName").value =
+                matchedCustomer.lastName || "";
+
+            document.getElementById("displayPhone").value =
+                matchedCustomer.phone || "";
+        }
+    }
+
+const res = await fetch(API + "/bookings", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+        title: jobs[0]?.summary || "Booking",
+        customer: matchedCustomer?._id || null,
+        customerName,
+        phone,
+        rego,
+        description: jobs.map(j => j.description).join("\n"),
+        services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
+        status: "booked",
+        date: bookingDate,
+        duration: duration
+    })
+});
 
     const text = await res.text();
 
