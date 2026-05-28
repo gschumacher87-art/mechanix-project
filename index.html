@@ -196,35 +196,48 @@
         <div class="booking-grid">
 
             <!-- LEFT COLUMN -->
-            <div>
+<div>
 
-                <div class="card">
-    <div class="title">Appointment</div>
+    <div class="card">
+        <div class="title">Appointment</div>
 
-    <input type="date" id="bookingDate">
+        <input type="date" id="bookingDate">
 
-    <input id="bookingDuration" type="number" step="0.1" placeholder="Hours" required>
+        <input id="bookingDuration"
+               type="number"
+               step="0.1"
+               placeholder="Hours"
+               required>
+    </div>
 
-    <input id="displayFirstName" placeholder="First Name">
+    <div class="card">
+        <div class="title">Customer</div>
 
-    <input id="displayLastName" placeholder="Last Name">
+        <input id="displayFirstName" placeholder="First Name">
 
-    <input id="displayPhone" placeholder="Contact Number">
+        <input id="displayLastName" placeholder="Last Name">
 
-    <input id="displayRego" placeholder="Rego">
+        <input id="displayPhone" placeholder="Contact Number">
 
-    <input id="displayVin" placeholder="Vehicle">
+        <input id="displayRego" placeholder="Rego">
 
-    <div id="jobsContainer"></div>
-
-    <button class="secondary" onclick="addJob()">+ Add Job</button>
+        <input id="displayVin" placeholder="Vehicle">
+    </div>
 
 </div>
 
-            </div>
-
             <!-- RIGHT COLUMN -->
 <div>
+
+    <div class="card">
+        <div class="title">Jobs</div>
+
+        <div id="jobsContainer"></div>
+
+        <button class="secondary" onclick="addJob()">
+            + Add Job
+        </button>
+    </div>
 
     <div class="card">
         <div class="title">Notes</div>
@@ -238,27 +251,6 @@
 
         <button class="primary" onclick="confirmBooking()">Create Booking</button>
         <button class="secondary" onclick="closeBookingModal()">Close</button>
-
-    </div>
-</div>
-
-<div id="customerPopup" class="modal">
-    <div class="modal-content">
-
-        <div class="title">Find Customer</div>
-
-        <input id="searchFirstName" placeholder="First Name">
-        <input id="searchLastName" placeholder="Last Name">
-        <input id="searchPhone" placeholder="Contact Number">
-        <input id="searchRego" placeholder="Rego">
-
-        <button class="primary" onclick="bookingSearchCustomers()">
-            Search
-        </button>
-
-        <div id="customerPopupList"></div>
-
-        <button class="secondary" onclick="closeCustomerPopup()">Close</button>
 
     </div>
 </div>
