@@ -165,6 +165,8 @@ function openBookingModal(date = null) {
     document.getElementById("bookingModal").style.display = "block";
 
     jobs = [];
+    
+    document.getElementById("jobsContainer").innerHTML = "";
 
     document.getElementById("displayFirstName").value = "";
     document.getElementById("displayLastName").value = "";
