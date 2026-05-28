@@ -228,7 +228,8 @@ async function confirmBooking() {
     const data = await res.json();
 
     if (!res.ok) {
-    alert("Booking failed");
+    const error = await res.text();
+    alert(error);
     return;
 }
 
