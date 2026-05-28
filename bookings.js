@@ -165,7 +165,6 @@ async function deleteBooking(id) {
 function openBookingModal(date = null) {
     document.getElementById("bookingModal").style.display = "block";
 
-    selectedCustomerId = null;
     jobs = [];
 
     document.getElementById("bookingVehicle").innerHTML = "";
@@ -369,10 +368,6 @@ async function selectCustomerFromPopup(id) {
 
 // ================= CREATE BOOKING =================
 async function confirmBooking() {
-
-    if (!selectedCustomerId) {
-        return;
-    }
 
     if (!jobs.length) {
         return;
