@@ -68,11 +68,23 @@ async function openBooking(id) {
 
     currentJob = {
     _id: booking._id,
+
+    customer: booking.customer || null,
+    vehicle: booking.vehicle || null,
+
     title: booking.title,
     customerName: booking.customerName || "",
     phone: booking.phone || "",
     rego: booking.rego || "",
-    vehicle: booking.vehicle || "",
+
+    vehicleName:
+        booking.vehicleName ||
+        (
+            booking.vehicle && typeof booking.vehicle === "object"
+                ? ((booking.vehicle.make || "") + " " + (booking.vehicle.model || "")).trim()
+                : ""
+        ),
+
     description: booking.description || "",
     services: booking.services || booking.summaries || []
 };
