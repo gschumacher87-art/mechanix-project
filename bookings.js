@@ -218,14 +218,7 @@ async function confirmBooking() {
         return;
     }
 
-    const customerName =
-        (
-            (document.getElementById("displayFirstName").value || "") + " " +
-            (document.getElementById("displayLastName").value || "")
-        ).trim();
-
-    const phone = document.getElementById("displayPhone").value || "";
-const rego = document.getElementById("displayRego").value || "";
+    const rego = document.getElementById("displayRego").value || "";
 const vehicle = document.getElementById("displayVin").value || "";
 
 let matchedCustomer = null;
@@ -262,7 +255,13 @@ if (matchedVehicle) {
         }
     }
 
-const res = await fetch(API + "/bookings", {
+const customerName =
+(
+    (document.getElementById("displayFirstName").value || "") + " " +
+    (document.getElementById("displayLastName").value || "")
+).trim();
+
+const phone = document.getElementById("displayPhone").value || "";
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify({
