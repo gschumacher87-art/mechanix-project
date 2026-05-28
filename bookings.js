@@ -219,9 +219,8 @@ try {
     const vehicles = await vRes.json();
 
     const matchedVehicle = vehicles.find(v =>
-        (v.rego || "").toLowerCase() === rego.toLowerCase()
-    );
-
+    (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
+);
     if (matchedVehicle) {
 
         matchedCustomer = customers.find(c =>
@@ -246,17 +245,25 @@ const res = await fetch(API + "/bookings", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify({
-        title: jobs[0]?.summary || "Booking",
-        customer: matchedCustomer?._id || null,
-        customerName,
-        phone,
-        rego,
-        description: jobs.map(j => j.description).join("\n"),
-        services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
-        status: "booked",
-        date: bookingDate,
-        duration: duration
-    })
+    title: jobs[0]?.summary || "Booking",
+
+    customer: matchedCustomer?._id || null,
+    vehicle: matchedVehicle?._id || null,
+
+    customerName,
+    phone,
+    rego,
+    vehicleName: vehicle,
+
+    description: jobs.map(j => j.description).join("\n"),
+
+    services: jobs.map(j => j.summary || "")
+        .filter(s => s.trim() !== ""),
+
+    status: "booked",
+    date: bookingDate,
+    duration: duration
+})
 });
 
     const text = await res.text();
