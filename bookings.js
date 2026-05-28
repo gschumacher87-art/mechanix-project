@@ -262,6 +262,8 @@ const customerName =
 ).trim();
 
 const phone = document.getElementById("displayPhone").value || "";
+
+const res = await fetch(API + "/bookings", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify({
