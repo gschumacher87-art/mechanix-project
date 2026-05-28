@@ -370,30 +370,38 @@ async function confirmBooking() {
         return;
     }
 
-    const vehicleId = document.getElementById("bookingVehicle").value;
-const bookingDate = document.getElementById("bookingDate").value;
-const duration = parseFloat(document.getElementById("bookingDuration").value) || 1;
+    const bookingDate = document.getElementById("bookingDate").value;
+    const duration = parseFloat(document.getElementById("bookingDuration").value) || 1;
 
-if (!bookingDate) {
-    return;
-}
+    if (!bookingDate) {
+        return;
+    }
 
-if (!vehicleId) {
-    return;
-}
+    const customerName =
+        (
+            (document.getElementById("displayFirstName").value || "") + " " +
+            (document.getElementById("displayLastName").value || "")
+        ).trim();
+
+    const phone = document.getElementById("displayPhone").value || "";
+    const rego = document.getElementById("displayRego").value || "";
+    const vehicle = document.getElementById("displayVin").value || "";
 
     const res = await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
-    title: jobs[0]?.summary || "Booking",
-    description: jobs.map(j => j.description).join("\n"),
-    services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
-    vehicle: vehicleId,
-    status: "booked",
-    date: bookingDate,
-    duration: duration
-})
+            title: jobs[0]?.summary || "Booking",
+            customerName,
+            phone,
+            rego,
+            vehicle,
+            description: jobs.map(j => j.description).join("\n"),
+            services: jobs.map(j => j.summary || "").filter(s => s.trim() !== ""),
+            status: "booked",
+            date: bookingDate,
+            duration: duration
+        })
     });
 
     const data = await res.json();
