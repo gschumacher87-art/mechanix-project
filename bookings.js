@@ -218,10 +218,11 @@ try {
     const vRes = await fetch(API + "/vehicles");
     const vehicles = await vRes.json();
 
-    const matchedVehicle = vehicles.find(v =>
+    let matchedVehicle = vehicles.find(v =>
     (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
 );
-    if (matchedVehicle) {
+
+if (matchedVehicle) {
 
         matchedCustomer = customers.find(c =>
             (c._id || "").toString() ===
