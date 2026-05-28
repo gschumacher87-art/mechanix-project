@@ -208,6 +208,8 @@ async function confirmBooking() {
     const rego = document.getElementById("displayRego").value || "";
     const vehicle = document.getElementById("displayVin").value || "";
 
+    try {
+
     const res = await fetch(API + "/bookings", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -225,11 +227,16 @@ async function confirmBooking() {
         })
     });
 
-    const data = await res.json();
+    const text = await res.text();
+
+    alert(text);
 
     if (!res.ok) {
-    const error = await res.text();
-    alert(error);
+        return;
+    }
+
+} catch (err) {
+    alert(err);
     return;
 }
 
