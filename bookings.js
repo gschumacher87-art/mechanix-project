@@ -1,5 +1,4 @@
 let bookings = [];
-let selectedCustomerId = null;
 let jobs = [];
 
 // ================= LOAD BOOKINGS =================
@@ -26,10 +25,10 @@ window.bookings = data;
             const v = b.vehicle || {};
 
             const card = `
-            <div class="card" onclick="openBooking('${b._id}')">
-                <div class="title">Booking</div>
-                <b>${c.firstName || "No"} ${c.lastName || "Customer"}</b><br>
-                ${v.make || ""} ${v.model || ""}<br><br>
+<div class="card" onclick="openBooking('${b._id}')">
+    <div class="title">Booking</div>
+    <b>${b.customerName || "No Customer"}</b><br>
+    ${b.vehicle || ""}<br><br>
                 ${
                     (b.services || []).map(s => `
                         <div>• ${s}</div>
@@ -68,13 +67,15 @@ async function openBooking(id) {
     document.getElementById("bookingCard").classList.add("active");
 
     currentJob = {
-        _id: booking._id,
-        title: booking.title,
-        customer: booking.customer || {},
-        vehicle: booking.vehicle || {},
-        description: booking.description || "",
-        services: booking.services || booking.summaries || []
-    };
+    _id: booking._id,
+    title: booking.title,
+    customerName: booking.customerName || "",
+    phone: booking.phone || "",
+    rego: booking.rego || "",
+    vehicle: booking.vehicle || "",
+    description: booking.description || "",
+    services: booking.services || booking.summaries || []
+};
 
     renderBookingCard();
 }
@@ -82,15 +83,14 @@ async function openBooking(id) {
 // ================= RENDER =================
 function renderBookingCard() {
 
-    const c = currentJob.customer || {};
-    const v = currentJob.vehicle || {};
-
     document.getElementById("bookingCardInfo").innerHTML = `
-    <div class="card">
-        <b>Status:</b> BOOKING<br>
-        <b>Customer:</b> ${c.firstName || ""} ${c.lastName || ""}<br>
-        <b>Vehicle:</b> ${v.make || ""} ${v.model || ""}
-    </div>
+<div class="card">
+    <b>Status:</b> BOOKING<br>
+    <b>Customer:</b> ${currentJob.customerName || ""}<br>
+    <b>Phone:</b> ${currentJob.phone || ""}<br>
+    <b>Rego:</b> ${currentJob.rego || ""}<br>
+    <b>Vehicle:</b> ${currentJob.vehicle || ""}
+</div>
 
   <div class="card">
     <div class="title">Jobs</div>
