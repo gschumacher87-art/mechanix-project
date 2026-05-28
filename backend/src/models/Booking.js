@@ -7,16 +7,16 @@ const BookingSchema = new mongoose.Schema({
     services: [String],
 
     customer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Customer",
-        required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Customer",
+    default: null
+},
 
-    vehicle: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Vehicle",
-        required: true
-    },
+vehicle: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Vehicle",
+    default: null
+},
 
     status: {
         type: String,
