@@ -16,14 +16,23 @@ router.post("/", auth, async (req, res) => {
 
         const booking = new Booking({
     title: req.body.title,
+
     description: req.body.description || "",
     jobs: req.body.jobs || [],
     services: req.body.services || [],
+
+    customerName: req.body.customerName || "",
+    phone: req.body.phone || "",
+    rego: req.body.rego || "",
+    vehicleName: req.body.vehicleName || "",
+
     customer: req.body.customer,
     vehicle: req.body.vehicle,
+
     status: req.body.status || "booked",
     date: req.body.date,
     duration: req.body.duration || 1,
+
     checklist: checklist
 });
 
