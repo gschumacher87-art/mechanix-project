@@ -123,7 +123,14 @@ white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 ">
-${b.customer?.firstName || "No"} ${b.customer?.lastName || ""}
+${
+    b.customerName ||
+    (
+        ((b.customer?.firstName || "") + " " +
+         (b.customer?.lastName || "")).trim()
+    ) ||
+    "No Customer"
+}
 </div>
 `).join("")}
 
