@@ -6,17 +6,22 @@ const BookingSchema = new mongoose.Schema({
     description: String,
     services: [String],
 
-    customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer",
-    default: null
-},
+    customerName: String,
+    phone: String,
+    rego: String,
+    vehicleName: String,
 
-vehicle: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Vehicle",
-    default: null
-},
+    customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Customer",
+        default: null
+    },
+
+    vehicle: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vehicle",
+        default: null
+    },
 
     status: {
         type: String,
@@ -27,11 +32,19 @@ vehicle: {
         type: String,
         required: true
     },
-    duration: { type: Number, default: 1 },
+
+    duration: {
+        type: Number,
+        default: 1
+    },
+
     checklist: [
         {
             text: String,
-            done: { type: Boolean, default: false }
+            done: {
+                type: Boolean,
+                default: false
+            }
         }
     ]
 
