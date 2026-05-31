@@ -238,6 +238,8 @@ try {
     (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
 );
 
+alert(JSON.stringify(matchedVehicle));
+
 if (matchedVehicle) {
 
         matchedCustomer = customers.find(c =>
