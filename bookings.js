@@ -272,8 +272,8 @@ const res = await fetch(API + "/bookings", {
     body: JSON.stringify({
     title: jobs[0]?.summary || "Booking",
 
-    customer: matchedCustomer?._id || null,
-    vehicle: matchedVehicle?._id || null,
+    customer: matchedCustomer || null,
+vehicle: matchedVehicle || null,
 
     customerName,
     phone,
