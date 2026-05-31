@@ -386,14 +386,19 @@ async function openPendingJob(id) {
                 ${job.vehicle?.make || ""} ${job.vehicle?.model || ""}
             </div>
 
-            <div>
-                <b>Jobs</b><br>
-                ${
-                    (job.jobs || []).map((j, i) =>
-                        `Job ${i + 1}: ${j.summary || ""}`
-                    ).join("<br>") || "No jobs"
-                }
-            </div>
+           <div>
+    <b>Jobs</b><br>
+    ${
+        (job.jobs && job.jobs.length)
+            ? job.jobs.map((j, i) =>
+                `Job ${i + 1}: ${j.summary || ""}`
+              ).join("<br>")
+            : `
+                <b>${job.title || ""}</b><br>
+                ${job.description || ""}
+              `
+    }
+</div>
         </div>
 
     </div>
