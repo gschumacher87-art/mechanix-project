@@ -510,7 +510,9 @@ function removeLabour(index) {
 async function createInvoiceFromJob(jobId) {
 
     const jobRes = await fetch(API + "/jobs/" + jobId);
-    const job = await jobRes.json();
+const job = await jobRes.json();
+
+alert(JSON.stringify(job));
 
     // BUILD DEFAULT TEMPLATE FROM JOB
     const template = {
