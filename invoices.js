@@ -101,8 +101,15 @@ if (jobId) {
     const jobRes = await fetch(API + "/jobs/" + jobId);
     jobData = await jobRes.json();
 
-    customer = jobData.customer || {};
-    vehicle = jobData.vehicle || {};
+    customer = jobData.customer || {
+        firstName: jobData.customerName || "",
+        phone: jobData.phone || ""
+    };
+
+    vehicle = jobData.vehicle || {
+        make: jobData.vehicleName || "",
+        rego: jobData.rego || ""
+    };
 }
 
     const subtotal =
