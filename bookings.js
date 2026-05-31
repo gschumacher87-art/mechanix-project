@@ -107,7 +107,8 @@ function renderBookingCard() {
     <b>Customer:</b> ${currentJob.customerName || ""}<br>
     <b>Phone:</b> ${currentJob.phone || ""}<br>
     <b>Rego:</b> ${currentJob.rego || ""}<br>
-    <b>Vehicle:</b> ${currentJob.vehicleName || ""}
+    <b>Vehicle:</b>
+${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}
 </div>
 
   <div class="card">
