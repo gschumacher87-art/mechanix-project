@@ -2,10 +2,15 @@ const mongoose = require("mongoose");
 
 const jobSchema = new mongoose.Schema(
 {
+    customerName: String,
+    phone: String,
+    rego: String,
+    vehicleName: String,
+
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Customer",
-        required: true
+        default: null
     },
 
     bookingId: {
@@ -17,7 +22,7 @@ const jobSchema = new mongoose.Schema(
     vehicle: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Vehicle",
-        required: true
+        default: null
     },
     technician: {
         type: mongoose.Schema.Types.ObjectId,
