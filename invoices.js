@@ -549,6 +549,10 @@ async function createInvoiceFromJob(jobId) {
     job: jobId,
     customer: job.customer?._id || job.customer,
     vehicle: job.vehicle?._id || job.vehicle,
+
+    customerName: job.customerName || "",
+    vehicleName: job.vehicleName || "",
+
     summary: (job.jobs || []).map(j => j.summary).join("\n"),
     template: template
 })
