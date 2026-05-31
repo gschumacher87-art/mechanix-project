@@ -79,13 +79,17 @@ alert(JSON.stringify(booking));
     phone: booking.phone || "",
     rego: booking.rego || "",
 
-    vehicleName:
-        booking.vehicleName ||
-        (
-            booking.vehicle && typeof booking.vehicle === "object"
-                ? ((booking.vehicle.make || "") + " " + (booking.vehicle.model || "")).trim()
-                : ""
-        ),
+    make: booking.make || "",
+model: booking.model || "",
+buildDate: booking.buildDate || "",
+
+vehicleName:
+    booking.vehicleName ||
+    (
+        booking.vehicle && typeof booking.vehicle === "object"
+            ? ((booking.vehicle.make || "") + " " + (booking.vehicle.model || "")).trim()
+            : ""
+    ),
 
     description: booking.description || "",
     services: booking.services || booking.summaries || []
@@ -224,11 +228,9 @@ async function confirmBooking() {
     }
 
     const rego = document.getElementById("displayRego").value || "";
-const vehicle =
-(
-    (document.getElementById("displayMake").value || "") + " " +
-    (document.getElementById("displayModel").value || "")
-).trim();
+const make = document.getElementById("displayMake").value || "";
+const model = document.getElementById("displayModel").value || "";
+const buildDate = document.getElementById("displayBuildDate").value || "";
 
 let matchedCustomer = null;
 
@@ -284,11 +286,16 @@ const res = await fetch(API + "/bookings", {
 vehicle: matchedVehicle || null,
 
     customerName,
-    phone,
-    rego,
-    vehicleName: vehicle,
+phone,
+rego,
 
-    description: jobs.map(j => j.description).join("\n"),
+make,
+model,
+buildDate,
+
+vehicleName: `${make} ${model}`.trim(),
+
+description: jobs.map(j => j.description).join("\n"),
 
     services: jobs.map(j => j.summary || "")
         .filter(s => s.trim() !== ""),
