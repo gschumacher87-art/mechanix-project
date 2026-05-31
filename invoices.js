@@ -47,8 +47,8 @@ alert(JSON.stringify(pendingJobs[0]));
     <div class="card" onclick="openPendingJob('${j._id}')" style="border-left:6px solid purple;">
         <div class="title">${j.title}</div>
 
-        <b>${c.firstName || ""} ${c.lastName || ""}</b><br>
-        ${v.make || ""} ${v.model || ""}<br><br>
+        <b>${j.customerName || `${c.firstName || ""} ${c.lastName || ""}`}</b><br>
+${j.vehicleName || `${v.make || ""} ${v.model || ""}`}
 
         <div>Pending Invoice</div>
     </div>
