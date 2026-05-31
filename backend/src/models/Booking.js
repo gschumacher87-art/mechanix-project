@@ -9,7 +9,10 @@ const BookingSchema = new mongoose.Schema({
     customerName: String,
     phone: String,
     rego: String,
-    vehicleName: String,
+
+    make: String,
+    model: String,
+    buildDate: String,
 
     customer: {
         type: mongoose.Schema.Types.ObjectId,
