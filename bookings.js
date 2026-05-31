@@ -61,7 +61,9 @@ window.bookings = data;
 // ================= OPEN BOOKING =================
 async function openBooking(id) {
 
-    const booking = bookings.find(b => b._id === id); // ✅ USE EXISTING DATA
+    const booking = bookings.find(b => b._id === id);
+
+alert(JSON.stringify(booking));
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("bookingCard").classList.add("active");
