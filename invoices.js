@@ -380,7 +380,7 @@ async function openPendingJob(id) {
 
             <div style="margin-bottom:10px;">
                 <b>Customer</b><br>
-                $${job.customerName || ""}
+                ${job.customerName || ""}
             </div>
 
             <div style="margin-bottom:10px;">
