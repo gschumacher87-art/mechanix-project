@@ -294,7 +294,6 @@ const res = await fetch(API + "/bookings", {
     }
 
 } catch (err) {
-    alert(err);
     return;
 }
 
