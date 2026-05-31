@@ -108,9 +108,10 @@ if (jobId) {
 };
 
     vehicle = jobData.vehicle || {
-        make: jobData.vehicleName || "",
-        rego: jobData.rego || ""
-    };
+    make: jobData.make || "",
+    model: jobData.model || "",
+    year: jobData.buildDate || ""
+};
 }
 
     const subtotal =
@@ -209,12 +210,8 @@ labourHtml += `<button type="button" onclick="addLabour()">+ Add Labour</button>
     <div>Model</div>
     <input value="${vehicle.model || ""}" onchange="updateVehicleField('model', this.value)">
 
-    <div>Year</div>
-    <input value="${vehicle.year || ""}" onchange="updateVehicleField('year', this.value)">
-
-    <div>VIN</div>
-    <input value="${vehicle.vin || ""}" onchange="updateVehicleField('vin', this.value)">
-
+    <div>Build Date</div>
+<input value="${vehicle.year || ""}" onchange="updateVehicleField('buildDate', this.value)">
     <div>Odometer</div>
     <input value="${vehicle.odometer || ""}" onchange="updateVehicleField('odometer', this.value)">
 </div>
