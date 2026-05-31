@@ -556,7 +556,9 @@ async function createInvoiceFromJob(jobId) {
 
     const newInvoice = await createRes.json();
 
-    openInvoice(newInvoice._id);
+    alert(JSON.stringify(newInvoice));
+
+openInvoice(newInvoice._id);
 }
 
 async function updateCustomerField(field, value) {
