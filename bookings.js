@@ -153,8 +153,9 @@ const descriptions = (currentJob.description || "").split("\n");
     vehicle: currentJob.vehicle || null,
 
     customerName: currentJob.customerName || "",
-    phone: currentJob.phone || "",
-    rego: currentJob.rego || "",
+phone: currentJob.phone || "",
+rego: currentJob.rego || "",
+vehicleName: currentJob.vehicleName || "",
 
     jobs: (currentJob.services || []).map((s, i) => ({
         summary: s,
