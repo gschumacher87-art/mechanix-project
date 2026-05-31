@@ -11,14 +11,20 @@ async function loadJobs() {
     data.forEach(j => {
 
         const customerName =
-            j.customer && typeof j.customer === "object"
-                ? j.customer.firstName + " " + j.customer.lastName
-                : "No customer";
+    j.customerName ||
+    (
+        j.customer && typeof j.customer === "object"
+            ? j.customer.firstName + " " + j.customer.lastName
+            : "No customer"
+    );
 
         const vehicleName =
-            j.vehicle && typeof j.vehicle === "object"
-                ? j.vehicle.make + " " + j.vehicle.model
-                : "";
+    j.vehicleName ||
+    (
+        j.vehicle && typeof j.vehicle === "object"
+            ? j.vehicle.make + " " + j.vehicle.model
+            : ""
+    );
 
         let color = "#ccc";
         if (j.status === "arrived") color = "orange";
@@ -92,8 +98,15 @@ function renderJobCard() {
 
     document.getElementById("jobCardInfo").innerHTML = `
         <div class="card">
-    <b>Customer:</b> ${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}<br>
-    <b>Vehicle:</b> ${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}<br>
+    <b>Customer:</b> ${
+    currentJob.customerName ||
+    `${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}`
+}<br>
+
+<b>Vehicle:</b> ${
+    currentJob.vehicleName ||
+    `${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}`
+}<br>
     <b>Status:</b> ${currentJob.status}<br><br>
 
     <button class="secondary" onclick="deleteJobCard()">Delete Job Card</button>
