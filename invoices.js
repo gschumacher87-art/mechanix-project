@@ -17,8 +17,6 @@ async function loadInvoices() {
 
     const pendingJobs = jobsData.filter(j => j.status === "pending-invoice");
 
-alert(JSON.stringify(pendingJobs[0]));
-
     const invoiceCards = invoices.map(i => {
 
         const template = i.template || { items: [], labour: [] };
