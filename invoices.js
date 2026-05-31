@@ -102,9 +102,10 @@ if (jobId) {
     jobData = await jobRes.json();
 
     customer = jobData.customer || {
-        firstName: jobData.customerName || "",
-        phone: jobData.phone || ""
-    };
+    firstName: (jobData.customerName || "").split(" ")[0] || "",
+    lastName: (jobData.customerName || "").split(" ").slice(1).join(" "),
+    phone: jobData.phone || ""
+};
 
     vehicle = jobData.vehicle || {
         make: jobData.vehicleName || "",
