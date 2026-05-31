@@ -8,15 +8,15 @@ const invoiceSchema = new mongoose.Schema(
         required: true
     },
     customer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Customer",
-        required: true
-    },
-    vehicle: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Vehicle",
-        required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Customer",
+    default: null
+},
+vehicle: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Vehicle",
+    default: null
+},
     labourCost: {
         type: Number,
         default: 0
