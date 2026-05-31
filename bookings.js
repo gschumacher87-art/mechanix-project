@@ -195,7 +195,9 @@ function openBookingModal(date = null) {
     document.getElementById("displayLastName").value = "";
     document.getElementById("displayPhone").value = "";
     document.getElementById("displayRego").value = "";
-    document.getElementById("displayVin").value = "";
+    document.getElementById("displayMake").value = "";
+document.getElementById("displayModel").value = "";
+document.getElementById("displayBuildDate").value = "";
 
     document.getElementById("bookingDate").value =
         date || new Date().toISOString().split("T")[0];
@@ -222,7 +224,11 @@ async function confirmBooking() {
     }
 
     const rego = document.getElementById("displayRego").value || "";
-const vehicle = document.getElementById("displayVin").value || "";
+const vehicle =
+(
+    (document.getElementById("displayMake").value || "") + " " +
+    (document.getElementById("displayModel").value || "")
+).trim();
 
 let matchedCustomer = null;
 
