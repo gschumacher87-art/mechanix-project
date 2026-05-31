@@ -289,10 +289,6 @@ const res = await fetch(API + "/bookings", {
 })
 });
 
-    const text = await res.text();
-
-    alert(text);
-
     if (!res.ok) {
         return;
     }
