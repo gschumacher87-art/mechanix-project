@@ -22,12 +22,17 @@ router.post("/", auth, async (req, res) => {
     services: req.body.services || [],
 
     customerName: req.body.customerName || "",
-    phone: req.body.phone || "",
-    rego: req.body.rego || "",
-    vehicleName: req.body.vehicleName || "",
+phone: req.body.phone || "",
+rego: req.body.rego || "",
 
-    customer: req.body.customer,
-    vehicle: req.body.vehicle,
+make: req.body.make || "",
+model: req.body.model || "",
+buildDate: req.body.buildDate || "",
+
+vehicleName: req.body.vehicleName || "",
+
+customer: req.body.customer,
+vehicle: req.body.vehicle,
 
     status: req.body.status || "booked",
     date: req.body.date,
