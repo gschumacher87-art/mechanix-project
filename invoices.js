@@ -547,6 +547,8 @@ async function createInvoiceFromJob(jobId) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
     job: jobId,
+    customer: job.customer?._id || job.customer,
+    vehicle: job.vehicle?._id || job.vehicle,
     summary: (job.jobs || []).map(j => j.summary).join("\n"),
     template: template
 })
