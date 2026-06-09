@@ -63,8 +63,6 @@ async function openBooking(id) {
 
     const booking = bookings.find(b => b._id === id);
 
-alert(JSON.stringify(booking));
-
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("bookingCard").classList.add("active");
 
@@ -246,8 +244,6 @@ try {
     let matchedVehicle = vehicles.find(v =>
     (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
 );
-
-alert(JSON.stringify(matchedVehicle));
 
 if (matchedVehicle) {
 
