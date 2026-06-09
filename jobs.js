@@ -18,11 +18,14 @@ async function loadJobs() {
             : "No customer"
     );
 
-        const vehicleName =
+       const vehicleName =
+    (
+        `${j.make || ""} ${j.model || ""} ${j.buildDate || ""}`.trim()
+    ) ||
     j.vehicleName ||
     (
         j.vehicle && typeof j.vehicle === "object"
-            ? j.vehicle.make + " " + j.vehicle.model
+            ? `${j.vehicle.make || ""} ${j.vehicle.model || ""}`.trim()
             : ""
     );
 
@@ -104,6 +107,9 @@ function renderJobCard() {
 }<br>
 
 <b>Vehicle:</b> ${
+    (
+        `${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}`.trim()
+    ) ||
     currentJob.vehicleName ||
     `${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}`
 }<br>
