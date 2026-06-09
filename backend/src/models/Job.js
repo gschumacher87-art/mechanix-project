@@ -3,9 +3,14 @@ const mongoose = require("mongoose");
 const jobSchema = new mongoose.Schema(
 {
     customerName: String,
-    phone: String,
-    rego: String,
-    vehicleName: String,
+phone: String,
+rego: String,
+
+make: String,
+model: String,
+buildDate: String,
+
+vehicleName: String,
 
     customer: {
         type: mongoose.Schema.Types.ObjectId,
