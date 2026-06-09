@@ -167,6 +167,11 @@ const jobRes = await fetch(API + "/jobs", {
     customerName: currentJob.customerName || "",
 phone: currentJob.phone || "",
 rego: currentJob.rego || "",
+
+make: currentJob.make || "",
+model: currentJob.model || "",
+buildDate: currentJob.buildDate || "",
+
 vehicleName: currentJob.vehicleName || "",
 
     jobs: (currentJob.services || []).map((s, i) => ({
