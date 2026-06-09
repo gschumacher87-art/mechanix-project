@@ -148,7 +148,14 @@ async function arrivedBooking(id) {
 
 const descriptions = (currentJob.description || "").split("\n");
 
-    const jobRes = await fetch(API + "/jobs", {
+alert(JSON.stringify({
+    vehicleName: currentJob.vehicleName,
+    make: currentJob.make,
+    model: currentJob.model,
+    vehicle: currentJob.vehicle
+}));
+
+const jobRes = await fetch(API + "/jobs", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body: JSON.stringify({
