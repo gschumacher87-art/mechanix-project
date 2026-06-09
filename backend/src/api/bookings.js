@@ -122,12 +122,22 @@ router.post("/:id/convert", auth, async (req, res) => {
         }
 
         const job = new Job({
-            title: booking.title,
-            customer: booking.customer,
-            vehicle: booking.vehicle,
-            status: "booked",
-            checklist: []
-        });
+    title: booking.title,
+
+    customerName: booking.customerName,
+    phone: booking.phone,
+    rego: booking.rego,
+    vehicleName: booking.vehicleName,
+
+    customer: booking.customer,
+    vehicle: booking.vehicle,
+
+    description: booking.description,
+    jobs: booking.jobs || [],
+    checklist: booking.checklist || [],
+
+    status: "arrived"
+});
 
         await job.save();
 
