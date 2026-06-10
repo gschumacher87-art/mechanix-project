@@ -80,13 +80,6 @@ async function openBooking(id) {
         model: booking.model || "",
         buildDate: booking.buildDate || "",
 
-        vehicleName:
-            booking.vehicleName ||
-            (
-                booking.vehicle && typeof booking.vehicle === "object"
-                    ? ((booking.vehicle.make || "") + " " + (booking.vehicle.model || "")).trim()
-                    : ""
-            ),
 
         description: booking.description || "",
         services: booking.services || booking.summaries || []
@@ -139,8 +132,6 @@ async function arrivedBooking(id) {
 
     const descriptions = (currentJob.description || "").split("\n");
 
-    alert(JSON.stringify({
-        vehicleName: currentJob.vehicleName,
         make: currentJob.make,
         model: currentJob.model,
         vehicle: currentJob.vehicle
