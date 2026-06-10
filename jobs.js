@@ -203,13 +203,36 @@ ${
 
         <div class="card">
     <div class="title">Selected Job</div>
+
     <b>${selected.summary || ""}</b><br><br>
 
-    <br>
+    ${
+        (() => {
+
+            const repairType =
+                (window.repairTypes || []).find(x =>
+                    (x.summaryMatch || "").toLowerCase() ===
+                    (selected.summary || "").toLowerCase()
+                );
+
+            if (!repairType) {
+                return "<div>No Repair Type Found</div><br>";
+            }
+
+            return repairType.steps.map(step => `
+                <div style="margin-bottom:8px;">
+                    ${step.photoRequired ? "📷 " : ""}
+                    ${step.text}
+                </div>
+            `).join("") + "<br>";
+
+        })()
+    }
 
     <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
-<button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
-<button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Complete</button>
+    <button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
+    <button class="primary" onclick="finishSubJob(selectedSubJobIndex)">Complete</button>
+
 </div>
     `;
 
