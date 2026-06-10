@@ -210,10 +210,10 @@ ${
         (() => {
 
             const repairType =
-                (window.repairTypes || []).find(x =>
-                    (x.summaryMatch || "").toLowerCase() ===
-                    (selected.summary || "").toLowerCase()
-                );
+    (repairTypes || []).find(x =>
+        (x.summaryMatch || "").toLowerCase() ===
+        (selected.summary || "").toLowerCase()
+    );
 
             if (!repairType) {
                 return "<div>No Repair Type Found</div><br>";
