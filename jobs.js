@@ -206,28 +206,10 @@ ${
 
     <b>${selected.summary || ""}</b><br><br>
 
-    ${
-        (() => {
+    <button class="secondary">+ Add Line</button>
+    <button class="secondary">+ Add Photo</button>
 
-            const repairType =
-    (repairTypes || []).find(x =>
-        (x.summaryMatch || "").toLowerCase() ===
-        (selected.summary || "").toLowerCase()
-    );
-
-            if (!repairType) {
-                return "<div>No Repair Type Found</div><br>";
-            }
-
-            return repairType.steps.map(step => `
-                <div style="margin-bottom:8px;">
-                    ${step.photoRequired ? "📷 " : ""}
-                    ${step.text}
-                </div>
-            `).join("") + "<br>";
-
-        })()
-    }
+    <br><br>
 
     <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
     <button class="secondary" onclick="clockOff(selectedSubJobIndex)">Clock Off</button>
