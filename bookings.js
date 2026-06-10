@@ -323,7 +323,7 @@ async function confirmBooking() {
 }
 
 function addJob() {
-    jobs.push({ mode: null, summary: "", description: "" });
+    jobs.push({ mode: null, summary: "" });
     renderJobs();
 }
 
@@ -348,10 +348,7 @@ function renderJobs() {
             <div class="title">Job ${i + 1}</div>
 
             <input placeholder="Summary" value="${job.summary || ""}"
-                oninput="updateJobField(${i}, 'summary', this.value)">
-
-            <input placeholder="Description" value="${job.description || ""}"
-                oninput="updateJobField(${i}, 'description', this.value)">
+    oninput="updateJobField(${i}, 'summary', this.value)">
 
         </div>
         `;
