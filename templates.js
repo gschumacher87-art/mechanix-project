@@ -1,35 +1,31 @@
-function openTemplatePopup(i) {
-    window.selectedJobIndex = i;
-    document.getElementById("templateModal").style.display = "block";
-    loadTemplates();
-}
+let templates = [];
 
-// ===== LOAD + RENDER =====
+// ===== LOAD =====
 async function loadTemplates() {
-    const res = await fetch(API + "/templates");
 
-    const data = await res.json();
-window.templatesCache = data;
+    const res = await fetch(API + "/templates");
+    templates = await res.json();
 
     let html = "";
-    data.forEach(t => {
+
+    templates.forEach(t => {
         html += `
-    <div class="card">
-    <b onclick="useTemplate('${t._id}')">${t.name}</b>
+<div class="card">
+    <b>${t.name}</b>
     <button onclick="deleteTemplate('${t._id}')">Delete</button>
 </div>
 `;
     });
 
-    const el1 = document.getElementById("templateList");
-if (el1) el1.innerHTML = html;
-
-const el2 = document.getElementById("templateListModal");
-if (el2) el2.innerHTML = html;
+    const el = document.getElementById("templateList");
+    if (el) el.innerHTML = html;
 }
 
 // ===== CREATE =====
-async function createTemplate(name) {
+async function createTemplate() {
+
+    const name = document.getElementById("templateName").value.trim();
+
     if (!name) return;
 
     await fetch(API + "/templates", {
@@ -37,76 +33,33 @@ async function createTemplate(name) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name })
+        body: JSON.stringify({
+            name
+        })
     });
+
+    document.getElementById("templateName").value = "";
 
     loadTemplates();
 }
 
 // ===== DELETE =====
 async function deleteTemplate(id) {
+
     await fetch(API + "/templates/" + id, {
-    method: "DELETE"
-});
+        method: "DELETE"
+    });
 
     loadTemplates();
 }
 
-function openTemplateModal() {
-    document.getElementById("templateModal").style.display = "block";
-    loadTemplates();
-}
+// ===== CHECK JOB SUMMARY =====
+function getTemplateBySummary(summary) {
 
-function closeTemplateModal() {
-    document.getElementById("templateModal").style.display = "none";
-}
+    if (!summary) return null;
 
-async function saveTemplate() {
-    const name = document.getElementById("templateName").value;
-    const description = document.getElementById("templateDesc").value;
-
-    if (!name) return;
-
-    await fetch(API + "/templates", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ name, description })
-});
-
-    closeTemplateModal();
-    loadTemplates();
-}
-
-function useTemplate(id) {
-
-    const t = window.templatesCache.find(x => x._id === id);
-
-    if (!t) return;
-
-   const i = window.selectedJobIndex;
-
-jobs[i].summary = t.name || "";
-jobs[i].description = t.description || "";
-
-closeTemplateModal();
-renderJobs();
-}
-
-function getTemplateChecklistByName(name) {
-
-    if (!window.templatesCache) return null;
-
-    const t = window.templatesCache.find(x =>
-        x.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (!t || !t.description) return null;
-
-    // TURN DESCRIPTION INTO CHECKLIST (line by line)
-    return t.description.split("\n").map(line => ({
-        text: line.trim(),
-        done: false
-    })).filter(x => x.text);
+    return templates.find(t =>
+        (t.name || "").toLowerCase().trim() ===
+        summary.toLowerCase().trim()
+    ) || null;
 }
