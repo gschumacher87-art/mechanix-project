@@ -87,22 +87,6 @@ async function openJobCard(id) {
     currentJob = await res.json();
     selectedSubJobIndex = 0;
 
-    const selected = currentJob.jobs?.[0];
-
-    if (selected) {
-
-        const template = getTemplateBySummary(selected.summary);
-
-        if (template) {
-
-            alert("Known Type: " + template.name);
-
-        } else {
-
-            alert("Normal Repair");
-
-        }
-    }
 
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("jobCard").classList.add("active");
