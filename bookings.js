@@ -1,7 +1,6 @@
 let bookings = [];
 let jobs = [];
 
-// ================= LOAD BOOKINGS =================
 async function loadBookings() {
     try {
 
@@ -14,7 +13,7 @@ async function loadBookings() {
         const data = await res.json();
 
         bookings = data;
-window.bookings = data;
+        window.bookings = data;
 
         let todayHtml = "";
 
@@ -29,12 +28,12 @@ window.bookings = data;
     <div class="title">Booking</div>
     <b>${b.customerName || "No Customer"}</b><br>
     ${b.vehicle || ""}<br><br>
-                ${
-                    (b.services || []).map(s => `
-                        <div>• ${s}</div>
-                    `).join("")
-                }
-            </div>`;
+    ${
+        (b.services || []).map(s => `
+            <div>• ${s}</div>
+        `).join("")
+    }
+</div>`;
 
             const bookingDate = new Date(b.date).toLocaleDateString("en-CA");
 
@@ -48,17 +47,17 @@ window.bookings = data;
 
         document.getElementById("futureList").innerHTML = "";
 
-      setTimeout(() => {
-    if (typeof renderCalendar === "function") {
-        renderCalendar();
-    }
-}, 0);
+        setTimeout(() => {
+            if (typeof renderCalendar === "function") {
+                renderCalendar();
+            }
+        }, 0);
 
     } catch (err) {
         console.error(err);
     }
 }
-// ================= OPEN BOOKING =================
+
 async function openBooking(id) {
 
     const booking = bookings.find(b => b._id === id);
@@ -67,36 +66,35 @@ async function openBooking(id) {
     document.getElementById("bookingCard").classList.add("active");
 
     currentJob = {
-    _id: booking._id,
+        _id: booking._id,
 
-    customer: booking.customer || null,
-    vehicle: booking.vehicle || null,
+        customer: booking.customer || null,
+        vehicle: booking.vehicle || null,
 
-    title: booking.title,
-    customerName: booking.customerName || "",
-    phone: booking.phone || "",
-    rego: booking.rego || "",
+        title: booking.title,
+        customerName: booking.customerName || "",
+        phone: booking.phone || "",
+        rego: booking.rego || "",
 
-    make: booking.make || "",
-model: booking.model || "",
-buildDate: booking.buildDate || "",
+        make: booking.make || "",
+        model: booking.model || "",
+        buildDate: booking.buildDate || "",
 
-vehicleName:
-    booking.vehicleName ||
-    (
-        booking.vehicle && typeof booking.vehicle === "object"
-            ? ((booking.vehicle.make || "") + " " + (booking.vehicle.model || "")).trim()
-            : ""
-    ),
+        vehicleName:
+            booking.vehicleName ||
+            (
+                booking.vehicle && typeof booking.vehicle === "object"
+                    ? ((booking.vehicle.make || "") + " " + (booking.vehicle.model || "")).trim()
+                    : ""
+            ),
 
-    description: booking.description || "",
-    services: booking.services || booking.summaries || []
-};
+        description: booking.description || "",
+        services: booking.services || booking.summaries || []
+    };
 
     renderBookingCard();
 }
 
-// ================= RENDER =================
 function renderBookingCard() {
 
     document.getElementById("bookingCardInfo").innerHTML = `
@@ -109,7 +107,7 @@ function renderBookingCard() {
 ${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}
 </div>
 
-  <div class="card">
+<div class="card">
     <div class="title">Jobs</div>
     ${
         (() => {
@@ -143,67 +141,64 @@ ${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}
 `;
 }
 
-// ================= ARRIVED =================
 async function arrivedBooking(id) {
 
-const descriptions = (currentJob.description || "").split("\n");
+    const descriptions = (currentJob.description || "").split("\n");
 
-alert(JSON.stringify({
-    vehicleName: currentJob.vehicleName,
-    make: currentJob.make,
-    model: currentJob.model,
-    vehicle: currentJob.vehicle
-}));
+    alert(JSON.stringify({
+        vehicleName: currentJob.vehicleName,
+        make: currentJob.make,
+        model: currentJob.model,
+        vehicle: currentJob.vehicle
+    }));
 
-const jobRes = await fetch(API + "/jobs", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
+    const jobRes = await fetch(API + "/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-    title: "Job Card",
+            title: "Job Card",
 
-    customer: currentJob.customer || null,
-    vehicle: currentJob.vehicle || null,
+            customer: currentJob.customer || null,
+            vehicle: currentJob.vehicle || null,
 
-    customerName: currentJob.customerName || "",
-phone: currentJob.phone || "",
-rego: currentJob.rego || "",
+            customerName: currentJob.customerName || "",
+            phone: currentJob.phone || "",
+            rego: currentJob.rego || "",
 
-make: currentJob.make || "",
-model: currentJob.model || "",
-buildDate: currentJob.buildDate || "",
+            make: currentJob.make || "",
+            model: currentJob.model || "",
+            buildDate: currentJob.buildDate || "",
 
-vehicleName: currentJob.vehicleName || "",
+            vehicleName: currentJob.vehicleName || "",
 
-    jobs: (currentJob.services || []).map((s, i) => ({
-        summary: s,
-        description: descriptions[i] || ""
-    })),
+            jobs: (currentJob.services || []).map((s, i) => ({
+                summary: s,
+                description: descriptions[i] || ""
+            })),
 
-    status: "arrived"
-})
+            status: "arrived"
+        })
     });
 
     const job = await jobRes.json();
 
-    await fetch(API + "/bookings/" + id, { method:"DELETE" });
+    await fetch(API + "/bookings/" + id, { method: "DELETE" });
 
     show('jobs');
     loadJobs();
 }
 
-// ================= DELETE =================
 async function deleteBooking(id) {
-    await fetch(API + "/bookings/" + id, { method:"DELETE" });
+    await fetch(API + "/bookings/" + id, { method: "DELETE" });
     show('bookings');
     loadBookings();
 }
 
-// ================= MODAL =================
 function openBookingModal(date = null) {
     document.getElementById("bookingModal").style.display = "block";
 
     jobs = [];
-    
+
     document.getElementById("jobsContainer").innerHTML = "";
 
     document.getElementById("displayFirstName").value = "";
@@ -211,20 +206,19 @@ function openBookingModal(date = null) {
     document.getElementById("displayPhone").value = "";
     document.getElementById("displayRego").value = "";
     document.getElementById("displayMake").value = "";
-document.getElementById("displayModel").value = "";
-document.getElementById("displayBuildDate").value = "";
+    document.getElementById("displayModel").value = "";
+    document.getElementById("displayBuildDate").value = "";
 
     document.getElementById("bookingDate").value =
         date || new Date().toISOString().split("T")[0];
 
     addJob();
 }
+
 function closeBookingModal() {
     document.getElementById("bookingModal").style.display = "none";
 }
 
-
-// ================= CREATE BOOKING =================
 async function confirmBooking() {
 
     if (!jobs.length) {
@@ -239,96 +233,95 @@ async function confirmBooking() {
     }
 
     const rego = document.getElementById("displayRego").value || "";
-const make = document.getElementById("displayMake").value || "";
-const model = document.getElementById("displayModel").value || "";
-const buildDate = document.getElementById("displayBuildDate").value || "";
+    const make = document.getElementById("displayMake").value || "";
+    const model = document.getElementById("displayModel").value || "";
+    const buildDate = document.getElementById("displayBuildDate").value || "";
 
-let matchedCustomer = null;
+    let matchedCustomer = null;
 
-try {
+    try {
 
-    const cRes = await fetch(API + "/customers");
-    const customers = await cRes.json();
+        const cRes = await fetch(API + "/customers");
+        const customers = await cRes.json();
 
-    const vRes = await fetch(API + "/vehicles");
-    const vehicles = await vRes.json();
+        const vRes = await fetch(API + "/vehicles");
+        const vehicles = await vRes.json();
 
-    let matchedVehicle = vehicles.find(v =>
-    (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
-);
-
-if (matchedVehicle) {
-
-        matchedCustomer = customers.find(c =>
-            (c._id || "").toString() ===
-            ((matchedVehicle.customer?._id || matchedVehicle.customer || "").toString())
+        let matchedVehicle = vehicles.find(v =>
+            (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
         );
 
-        if (matchedCustomer) {
+        if (matchedVehicle) {
 
-            document.getElementById("displayFirstName").value =
-                matchedCustomer.firstName || "";
+            matchedCustomer = customers.find(c =>
+                (c._id || "").toString() ===
+                ((matchedVehicle.customer?._id || matchedVehicle.customer || "").toString())
+            );
 
-            document.getElementById("displayLastName").value =
-                matchedCustomer.lastName || "";
+            if (matchedCustomer) {
 
-            document.getElementById("displayPhone").value =
-                matchedCustomer.phone || "";
+                document.getElementById("displayFirstName").value =
+                    matchedCustomer.firstName || "";
+
+                document.getElementById("displayLastName").value =
+                    matchedCustomer.lastName || "";
+
+                document.getElementById("displayPhone").value =
+                    matchedCustomer.phone || "";
+            }
         }
-    }
 
-const customerName =
-(
-    (document.getElementById("displayFirstName").value || "") + " " +
-    (document.getElementById("displayLastName").value || "")
-).trim();
+        const customerName =
+            (
+                (document.getElementById("displayFirstName").value || "") + " " +
+                (document.getElementById("displayLastName").value || "")
+            ).trim();
 
-const phone = document.getElementById("displayPhone").value || "";
+        const phone = document.getElementById("displayPhone").value || "";
 
-const res = await fetch(API + "/bookings", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-    title: jobs[0]?.summary || "Booking",
+        const res = await fetch(API + "/bookings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: jobs[0]?.summary || "Booking",
 
-    customer: matchedCustomer || null,
-vehicle: matchedVehicle || null,
+                customer: matchedCustomer || null,
+                vehicle: matchedVehicle || null,
 
-    customerName,
-phone,
-rego,
+                customerName,
+                phone,
+                rego,
 
-make,
-model,
-buildDate,
+                make,
+                model,
+                buildDate,
 
-vehicleName: `${make} ${model}`.trim(),
+                vehicleName: `${make} ${model}`.trim(),
 
-description: jobs.map(j => j.description).join("\n"),
+                description: jobs.map(j => j.description).join("\n"),
 
-    services: jobs.map(j => j.summary || "")
-        .filter(s => s.trim() !== ""),
+                services: jobs.map(j => j.summary || "")
+                    .filter(s => s.trim() !== ""),
 
-    status: "booked",
-    date: bookingDate,
-    duration: duration
-})
-});
+                status: "booked",
+                date: bookingDate,
+                duration: duration
+            })
+        });
 
-    if (!res.ok) {
+        if (!res.ok) {
+            return;
+        }
+
+    } catch (err) {
         return;
     }
-
-} catch (err) {
-    return;
-}
 
     closeBookingModal();
     show('bookings');
     loadBookings();
 }
 
-// ================= JOB UI =================
 function addJob() {
     jobs.push({ mode: null, summary: "", description: "" });
     renderJobs();
@@ -373,29 +366,23 @@ function deleteBookingJob(i) {
 
     if (!confirm("Delete this job?")) return;
 
-    // remove from services
     currentJob.services.splice(i, 1);
 
-    // remove matching description
     const descriptions = (currentJob.description || "").split("\n");
     descriptions.splice(i, 1);
     currentJob.description = descriptions.join("\n");
 
-    // re-render UI
     renderBookingCard();
 }
 
 function addBookingJob() {
 
-    // add empty job
     currentJob.services.push("New Job");
 
-    // add matching description line
     const descriptions = (currentJob.description || "").split("\n");
     descriptions.push("");
     currentJob.description = descriptions.join("\n");
 
-    // refresh UI
     renderBookingCard();
 }
 
