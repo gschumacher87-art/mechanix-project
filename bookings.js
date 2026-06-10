@@ -154,8 +154,6 @@ async function arrivedBooking(id) {
             model: currentJob.model || "",
             buildDate: currentJob.buildDate || "",
 
-            vehicleName: currentJob.vehicleName || "",
-
             jobs: (currentJob.services || []).map((s, i) => ({
                 summary: s,
                 description: descriptions[i] || ""
@@ -281,7 +279,6 @@ async function confirmBooking() {
                 model,
                 buildDate,
 
-                vehicleName: `${make} ${model}`.trim(),
 
                 description: jobs.map(j => j.description).join("\n"),
 
