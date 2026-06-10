@@ -112,9 +112,7 @@ ${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}
     ${
         (() => {
             const services = currentJob.services || [];
-            const descriptions = (currentJob.description || "").split("\n");
 
-            return services.map((s, i) => `
 return services.map((s, i) => `
 <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
     <b>Job ${i + 1}</b><br>
