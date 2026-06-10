@@ -115,14 +115,10 @@ ${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}
             const descriptions = (currentJob.description || "").split("\n");
 
             return services.map((s, i) => `
+return services.map((s, i) => `
 <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
     <b>Job ${i + 1}</b><br>
-    <b>${s || "No Title"}</b><br>
-    <small style="color:#777;">
-        ${descriptions[i] || "No Description"}
-    </small>
-
-    <br><br>
+    <b>${s || "No Title"}</b><br><br>
 
     <button class="secondary" onclick="editBookingJob(${i})">Edit</button>
     <button class="secondary" onclick="deleteBookingJob(${i})">Delete</button>
