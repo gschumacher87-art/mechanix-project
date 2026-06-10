@@ -1,30 +1,61 @@
 const express = require("express");
 const router = express.Router();
+
 const Template = require("../models/Template");
 
-// ===== GET ALL =====
+// ================= GET ALL =================
 router.get("/", async (req, res) => {
-    const templates = await Template.find().sort({ createdAt: -1 });
+
+    const templates = await Template.find()
+        .sort({ summaryMatch: 1 });
+
     res.json(templates);
 });
 
-// ===== CREATE =====
-router.post("/", async (req, res) => {
-    const t = new Template({
-        name: req.body.name || "",
-        description: req.body.description || "",
-        duration: req.body.duration || 60,
-        price: req.body.price || 0
-    });
+// ================= GET ONE =================
+router.get("/:id", async (req, res) => {
 
-    await t.save();
-    res.json(t);
+    const template = await Template.findById(req.params.id);
+
+    res.json(template);
 });
 
-// ===== DELETE =====
+// ================= CREATE =================
+router.post("/", async (req, res) => {
+
+    const template = await Template.create({
+        summaryMatch: req.body.summaryMatch || "",
+        steps: req.body.steps || []
+    });
+
+    res.json(template);
+});
+
+// ================= UPDATE =================
+router.put("/:id", async (req, res) => {
+
+    const template = await Template.findByIdAndUpdate(
+        req.params.id,
+        {
+            summaryMatch: req.body.summaryMatch || "",
+            steps: req.body.steps || []
+        },
+        {
+            new: true
+        }
+    );
+
+    res.json(template);
+});
+
+// ================= DELETE =================
 router.delete("/:id", async (req, res) => {
+
     await Template.findByIdAndDelete(req.params.id);
-    res.json({ success: true });
+
+    res.json({
+        success: true
+    });
 });
 
 module.exports = router;
