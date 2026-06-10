@@ -1,10 +1,27 @@
 const mongoose = require("mongoose");
 
-const TemplateSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: String,
-    duration: { type: Number, default: 60 },
-    price: { type: Number, default: 0 }
-}, { timestamps: true });
+const templateSchema = new mongoose.Schema({
 
-module.exports = mongoose.model("Template", TemplateSchema);
+    summaryMatch: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
+    steps: [{
+        text: {
+            type: String,
+            default: ""
+        },
+
+        photoRequired: {
+            type: Boolean,
+            default: false
+        }
+    }]
+
+}, {
+    timestamps: true
+});
+
+module.exports = mongoose.model("Template", templateSchema);
