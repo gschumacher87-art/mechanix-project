@@ -170,9 +170,6 @@ ${
 }
         </div>
 
-        <div style="font-size:12px; color:#777; margin-top:4px;">
-            ${j.description || "No description"}
-        </div>
 
         <br>
 
@@ -186,7 +183,6 @@ ${
         <div class="card">
     <div class="title">Selected Job</div>
     <b>${selected.summary || ""}</b><br><br>
-    <div style="color:#555;">${selected.description || "No description"}</div>
 
     <br>
 
@@ -269,10 +265,7 @@ function editSubJob(i) {
     const newSummary = prompt("Edit job summary:", job.summary);
     if (newSummary === null) return;
 
-    const newDesc = prompt("Edit description:", job.description || "");
-
     job.summary = newSummary;
-    job.description = newDesc || "";
 
     saveSubJobs();
 }
