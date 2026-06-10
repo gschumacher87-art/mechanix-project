@@ -291,13 +291,21 @@
 <div id="createTemplateModal" class="modal">
     <div class="modal-content">
 
-        <div class="title">New Template</div>
+        <div class="title">Repair Type</div>
 
-        <input id="templateName" placeholder="Name">
-        <input id="templateDesc" placeholder="Description">
+        <input id="summaryMatch" placeholder="Summary Match">
 
-        <button class="primary" onclick="saveTemplate()">Save</button>
-        <button class="secondary" onclick="document.getElementById('createTemplateModal').style.display='none'">Cancel</button>
+        <div class="title">Steps</div>
+
+        <div id="repairSteps"></div>
+
+        <button class="secondary" onclick="addRepairStep()">
+            + Add Step
+        </button>
+
+        <button class="primary" onclick="saveRepairType()">
+            Save
+        </button>
 
     </div>
 </div>
