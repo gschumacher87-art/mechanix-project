@@ -110,7 +110,10 @@ if (jobId) {
     vehicle = jobData.vehicle || {
     make: jobData.make || "",
     model: jobData.model || "",
-    year: jobData.buildDate || ""
+    rego: jobData.rego || "",
+    vin: jobData.vin || "",
+    year: jobData.buildDate || "",
+    odometer: jobData.odometer || ""
 };
 }
 
@@ -210,8 +213,15 @@ labourHtml += `<button type="button" onclick="addLabour()">+ Add Labour</button>
     <div>Model</div>
     <input value="${vehicle.model || ""}" onchange="updateVehicleField('model', this.value)">
 
+    <div>Rego</div>
+    <input value="${vehicle.rego || ""}" onchange="updateVehicleField('rego', this.value)">
+
+    <div>VIN</div>
+    <input value="${vehicle.vin || ""}" onchange="updateVehicleField('vin', this.value)">
+
     <div>Build Date</div>
-<input value="${vehicle.year || ""}" onchange="updateVehicleField('buildDate', this.value)">
+    <input value="${vehicle.year || ""}" onchange="updateVehicleField('buildDate', this.value)">
+
     <div>Odometer</div>
     <input value="${vehicle.odometer || ""}" onchange="updateVehicleField('odometer', this.value)">
 </div>
