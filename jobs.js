@@ -436,15 +436,22 @@ function deleteJobCard() {
 }
 function addPart() {
 
-    const text = prompt("Part replaced");
+    const description = prompt("Description");
+    if (!description) return;
 
-    if (!text) return;
+    const partNumber = prompt("Part Number") || "";
+
+    const qty = parseFloat(prompt("Qty", "1")) || 1;
 
     const job = currentJob.jobs[selectedSubJobIndex];
 
     if (!job.parts) job.parts = [];
 
-    job.parts.push(text);
+    job.parts.push({
+        description,
+        partNumber,
+        qty
+    });
 
     saveSubJobs();
 }
