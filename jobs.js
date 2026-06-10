@@ -206,6 +206,38 @@ ${
 
     <b>${selected.summary || ""}</b><br><br>
 
+    <button class="secondary" onclick="addPart()">Add Part</button>
+    <button class="secondary" onclick="addInspection()">Add Inspection</button>
+    <button class="secondary" onclick="addNote()">Add Note</button>
+    <button class="secondary" onclick="addPhoto()">Add Photo</button>
+
+    <br><br>
+
+    <b>Parts</b><br>
+    ${
+        (selected.parts || []).map(p =>
+            `<div>• ${typeof p === "string" ? p : `${p.description} (${p.qty})`}</div>`
+        ).join("") || "None"
+    }
+
+    <br>
+
+    <b>Inspections</b><br>
+    ${
+        (selected.inspections || []).map(x =>
+            `<div>• ${x}</div>`
+        ).join("") || "None"
+    }
+
+    <br>
+
+    <b>Notes</b><br>
+    ${
+        (selected.notes || []).map(x =>
+            `<div>• ${x}</div>`
+        ).join("") || "None"
+    }
+
     <br><br>
 
     <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
