@@ -92,12 +92,36 @@ function renderBookingCard() {
 
     document.getElementById("bookingCardInfo").innerHTML = `
 <div class="card">
-    <b>Status:</b> BOOKING<br>
-    <b>Customer:</b> ${currentJob.customerName || ""}<br>
-    <b>Phone:</b> ${currentJob.phone || ""}<br>
-    <b>Rego:</b> ${currentJob.rego || ""}<br>
-    <b>Vehicle:</b>
-${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}
+
+<div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+
+<div style="flex:1;min-width:200px;">
+    <b>Customer:</b><br>
+    ${currentJob.customerName || ""}<br><br>
+
+    <b>Contact:</b><br>
+    ${currentJob.phone || ""}<br><br>
+
+    <b>Status:</b><br>
+    BOOKING
+</div>
+
+<div style="flex:1;min-width:200px;">
+    <b>Vehicle Details:</b><br>
+
+    <b>Rego:</b> ${currentJob.rego || currentJob.vehicle?.rego || ""}<br>
+
+    <b>VIN:</b> ${currentJob.vehicle?.vin || ""}<br>
+
+    <b>Make:</b> ${currentJob.make || currentJob.vehicle?.make || ""}<br>
+
+    <b>Model:</b> ${currentJob.model || currentJob.vehicle?.model || ""}<br>
+
+    <b>Build:</b> ${currentJob.buildDate || currentJob.vehicle?.buildDate || ""}
+</div>
+
+</div>
+
 </div>
 
 <div class="card">
