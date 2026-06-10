@@ -45,11 +45,22 @@ vehicleName: String,
 {
     summary: String,
     description: String,
+
+    parts: [String],
+
+    inspections: [String],
+
+    notes: [String],
+
+    photos: [String],
+
     status: String,
+
     timeSpent: {
         type: Number,
         default: 0
     },
+
     startedAt: {
         type: Number,
         default: null
