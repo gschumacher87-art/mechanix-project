@@ -101,23 +101,41 @@ function renderJobCard() {
 
     document.getElementById("jobCardInfo").innerHTML = `
         <div class="card">
-    <b>Customer:</b> ${
-    currentJob.customerName ||
-    `${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}`
-}<br>
+<div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;">
 
-<b>Phone:</b> ${currentJob.phone || ""}<br>
+<div style="flex:1;min-width:200px;">
+    <b>Customer:</b><br>
+    ${
+        currentJob.customerName ||
+        `${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}`
+    }<br><br>
 
-<b>Vehicle:</b> ${
-    (
-        `${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}`.trim()
-    ) ||
-    currentJob.vehicleName ||
-    `${currentJob.vehicle?.make || ""} ${currentJob.vehicle?.model || ""}`
-}<br>
-    <b>Status:</b> ${currentJob.status}<br><br>
+    <b>Contact:</b><br>
+    ${currentJob.phone || ""}<br><br>
 
-    <button class="secondary" onclick="deleteJobCard()">Delete Job Card</button>
+    <b>Status:</b><br>
+    ${currentJob.status}
+</div>
+
+<div style="flex:1;min-width:200px;">
+    <b>Vehicle Details:</b><br>
+
+    <b>Rego:</b> ${currentJob.rego || currentJob.vehicle?.rego || ""}<br>
+
+    <b>VIN:</b> ${currentJob.vehicle?.vin || ""}<br>
+
+    <b>Make:</b> ${currentJob.make || currentJob.vehicle?.make || ""}<br>
+
+    <b>Model:</b> ${currentJob.model || currentJob.vehicle?.model || ""}<br>
+
+    <b>Build:</b> ${currentJob.buildDate || currentJob.vehicle?.buildDate || ""}
+</div>
+
+</div>
+
+<br>
+
+<button class="secondary" onclick="deleteJobCard()">Delete Job Card</button>
 </div>
 
         <div class="card">
