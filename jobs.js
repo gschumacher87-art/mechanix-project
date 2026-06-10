@@ -106,6 +106,8 @@ function renderJobCard() {
     `${currentJob.customer?.firstName || ""} ${currentJob.customer?.lastName || ""}`
 }<br>
 
+<b>Phone:</b> ${currentJob.phone || ""}<br>
+
 <b>Vehicle:</b> ${
     (
         `${currentJob.make || ""} ${currentJob.model || ""} ${currentJob.buildDate || ""}`.trim()
