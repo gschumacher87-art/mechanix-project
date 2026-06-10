@@ -206,43 +206,6 @@ ${
 
     <b>${selected.summary || ""}</b><br><br>
 
-    <button class="secondary" onclick="addPart()">
-    + Add Part
-</button>
-
-<button class="secondary" onclick="addInspection()">
-    + Add Inspection
-</button>
-
-<button class="secondary" onclick="addNote()">
-    + Add Note
-</button>
-
-<button class="secondary" onclick="addPhoto()">
-    + Add Photo
-</button>
-
-<br><br>
-
-<div>
-${
-(selected.parts || []).map(x => `
-<div>🔧 ${x}</div>
-`).join("")
-}
-
-${
-(selected.inspections || []).map(x => `
-<div>🔍 ${x}</div>
-`).join("")
-}
-
-${
-(selected.notes || []).map(x => `
-<div>📝 ${x}</div>
-`).join("")
-}
-</div>
     <br><br>
 
     <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
