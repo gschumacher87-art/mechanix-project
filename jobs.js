@@ -206,9 +206,43 @@ ${
 
     <b>${selected.summary || ""}</b><br><br>
 
-    <button class="secondary">+ Add Line</button>
-    <button class="secondary">+ Add Photo</button>
+    <button class="secondary" onclick="addPart()">
+    + Add Part
+</button>
 
+<button class="secondary" onclick="addInspection()">
+    + Add Inspection
+</button>
+
+<button class="secondary" onclick="addNote()">
+    + Add Note
+</button>
+
+<button class="secondary" onclick="addPhoto()">
+    + Add Photo
+</button>
+
+<br><br>
+
+<div>
+${
+(selected.parts || []).map(x => `
+<div>🔧 ${x}</div>
+`).join("")
+}
+
+${
+(selected.inspections || []).map(x => `
+<div>🔍 ${x}</div>
+`).join("")
+}
+
+${
+(selected.notes || []).map(x => `
+<div>📝 ${x}</div>
+`).join("")
+}
+</div>
     <br><br>
 
     <button class="primary" onclick="clockOn(selectedSubJobIndex)">Clock On</button>
@@ -404,4 +438,53 @@ function deleteJobCard() {
         loadJobs();
     });
 
+}
+function addPart() {
+
+    const text = prompt("Part replaced");
+
+    if (!text) return;
+
+    const job = currentJob.jobs[selectedSubJobIndex];
+
+    if (!job.parts) job.parts = [];
+
+    job.parts.push(text);
+
+    saveSubJobs();
+}
+
+function addInspection() {
+
+    const text = prompt("Inspection");
+
+    if (!text) return;
+
+    const job = currentJob.jobs[selectedSubJobIndex];
+
+    if (!job.inspections) job.inspections = [];
+
+    job.inspections.push(text);
+
+    saveSubJobs();
+}
+
+function addNote() {
+
+    const text = prompt("Note");
+
+    if (!text) return;
+
+    const job = currentJob.jobs[selectedSubJobIndex];
+
+    if (!job.notes) job.notes = [];
+
+    job.notes.push(text);
+
+    saveSubJobs();
+}
+
+function addPhoto() {
+
+    alert("Photo upload later");
 }
