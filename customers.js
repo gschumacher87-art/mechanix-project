@@ -43,7 +43,7 @@ async function openCustomer(id) {
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
 
     invoices.forEach(i => {
-    invoiceHtml += `<div class="card" onclick="openInvoice('${i._id}')">$${i.totalCost || 0}</div>`;
+    invoiceHtml += `<div class="card" onclick="openCustomerInvoice('${i._id}')">$${i.totalCost || 0}</div>`;
 });
 
     if (!invoiceHtml) invoiceHtml = "<div>No invoices</div>";
@@ -253,4 +253,12 @@ async function deleteVehicle(id, customerId) {
     });
 
     openCustomer(customerId);
+}
+
+async function openCustomerInvoice(id) {
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    alert(JSON.stringify(invoice, null, 2));
 }
