@@ -217,30 +217,6 @@ function updateInvoiceTotals() {
     document.getElementById("invoiceTotal").textContent =
         invoiceTotal.toFixed(2);
 
-    document.getElementById("invoicePreview").innerHTML = `
-
-<b>Customer:</b>
-${document.getElementById("invoiceFirstName").value}
-${document.getElementById("invoiceLastName").value}
-
-<br><br>
-
-<b>Vehicle:</b>
-${document.getElementById("invoiceMake").value}
-${document.getElementById("invoiceModel").value}
-(${document.getElementById("invoiceRego").value})
-
-<br><br>
-
-<b>Parts:</b> $${partsTotal.toFixed(2)}
-<br>
-
-<b>Labour:</b> $${labourTotal.toFixed(2)}
-<br>
-
-<b>Total:</b> $${invoiceTotal.toFixed(2)}
-
-`;
 }
 function saveInvoice() {
     alert("Save later");
@@ -362,7 +338,7 @@ const savedInvoice = await invoiceRes.json();
         method: "DELETE"
     });
 
-    openFinalisedInvoice(savedInvoice);
+    show("customers");
 }
 async function deletePendingInvoice(id) {
 
@@ -375,49 +351,3 @@ async function deletePendingInvoice(id) {
     loadInvoices();
 }
 
-function openFinalisedInvoice(invoice) {
-
-    document.querySelectorAll(".screen")
-        .forEach(s => s.classList.remove("active"));
-
-    document.getElementById("invoiceCard")
-        .classList.add("active");
-
-    document.getElementById("invoicePreview").innerHTML = `
-
-<h2>TAX INVOICE</h2>
-
-<b>${document.getElementById("invoiceFirstName").value}
-${document.getElementById("invoiceLastName").value}</b>
-
-<br><br>
-
-${document.getElementById("invoiceMake").value}
-${document.getElementById("invoiceModel").value}
-
-<br>
-
-${document.getElementById("invoiceRego").value}
-
-<br><br>
-
-<b>Parts</b><br>
-
-${invoiceParts.map(p =>
-`${p.description} (${p.partNumber || ""}) x${p.qty} - $${(p.qty * p.price).toFixed(2)}`
-).join("<br>")}
-
-<br><br>
-
-<b>Labour</b><br>
-
-${invoiceLabour.map(l =>
-`${l.description} - ${l.hours}h @ $${l.rate}`
-).join("<br>")}
-
-<br><br>
-
-<b>Total: $${document.getElementById("invoiceTotal").textContent}</b>
-
-`;
-}
