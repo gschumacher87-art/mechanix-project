@@ -106,6 +106,8 @@ async function finaliseInvoice() {
 
     if (!confirm("Print & Finalise Invoice?")) return;
 
+alert(JSON.stringify(currentInvoice, null, 2));
+
     await fetch(API + "/invoices", {
         method: "POST",
         headers: {
