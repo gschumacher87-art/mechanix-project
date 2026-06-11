@@ -39,11 +39,18 @@ async function openCustomer(id) {
 
     vehicles.forEach(v => {
     vehicleHtml += `
-    <div class="card" onclick="editVehicle('${v._id}')">
+    <div class="card">
         <b>${v.make || ""} ${v.model || ""}</b><br>
         ${v.yearMonth || ""}<br>
         ${v.rego || ""}<br>
         ${v.vin || ""}
+
+<br><br>
+
+<button class="secondary" onclick="editVehicle('${v._id}')">Edit Vehicle</button>
+
+<button class="secondary" onclick="deleteVehicle('${v._id}','${customer._id}')">Delete Vehicle</button>
+
     </div>`;
 });
 
@@ -59,13 +66,19 @@ async function openCustomer(id) {
     document.getElementById("customerDetail").style.display = "block";
 
     document.getElementById("customerDetail").innerHTML = `
-    <div class="card" onclick="editCustomer('${customer._id}')">
+    <div class="card">
     <div class="title">Customer</div>
 
     <b>${customer.firstName || ""} ${customer.lastName || ""}</b><br>
     ${customer.phone || ""}
-</div>
 
+<br><br>
+
+<button class="secondary" onclick="editCustomer('${customer._id}')">Edit Customer</button>
+
+<button class="secondary" onclick="deleteCustomer('${customer._id}')">Delete Customer</button>
+
+</div>
         <div class="card">
         <div class="title">Vehicles</div>
 
