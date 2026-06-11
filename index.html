@@ -272,9 +272,15 @@
 
         <input id="displayLastName" placeholder="Last Name">
 
-        <input id="displayPhone" placeholder="Contact Number">
+        <div style="display:flex;gap:5px;">
+    <input id="displayPhone" placeholder="Contact Number" style="flex:1;">
+    <button type="button" class="secondary" onclick="lookupPhone()">Find</button>
+</div>
 
-        <input id="displayRego" placeholder="Rego">
+<div style="display:flex;gap:5px;">
+    <input id="displayRego" placeholder="Rego" style="flex:1;">
+    <button type="button" class="secondary" onclick="lookupRego()">Find</button>
+</div>
 
 <input id="displayMake" placeholder="Make">
 
