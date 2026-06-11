@@ -410,3 +410,101 @@ function createFromSelectedDay() {
 
     openBookingModal(selectedDate);
 }
+
+async function lookupRego() {
+
+    const rego =
+        document.getElementById("displayRego").value.trim();
+
+    if (!rego) return;
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    const vehicle = vehicles.find(v =>
+        (v.rego || "").toLowerCase().trim() ===
+        rego.toLowerCase().trim()
+    );
+
+    if (!vehicle) {
+        alert("Not Found");
+        return;
+    }
+
+    document.getElementById("displayMake").value =
+        vehicle.make || "";
+
+    document.getElementById("displayModel").value =
+        vehicle.model || "";
+
+    document.getElementById("displayBuildDate").value =
+        vehicle.buildDate || "";
+
+    if (vehicle.customer) {
+
+        const customerId =
+            vehicle.customer._id || vehicle.customer;
+
+        const cRes =
+            await fetch(API + "/customers/" + customerId);
+
+        const customer = await cRes.json();
+
+        document.getElementById("displayFirstName").value =
+            customer.firstName || "";
+
+        document.getElementById("displayLastName").value =
+            customer.lastName || "";
+
+        document.getElementById("displayPhone").value =
+            customer.phone || "";
+    }
+}
+
+async function lookupPhone() {
+
+    const phone =
+        document.getElementById("displayPhone").value.trim();
+
+    if (!phone) return;
+
+    const cRes = await fetch(API + "/customers");
+    const customers = await cRes.json();
+
+    const customer = customers.find(c =>
+        (c.phone || "").trim() === phone
+    );
+
+    if (!customer) {
+        alert("Not Found");
+        return;
+    }
+
+    document.getElementById("displayFirstName").value =
+        customer.firstName || "";
+
+    document.getElementById("displayLastName").value =
+        customer.lastName || "";
+
+    const vRes = await fetch(API + "/vehicles");
+    const vehicles = await vRes.json();
+
+    const vehicle = vehicles.find(v =>
+        (v.customer?._id || v.customer || "").toString() ===
+        customer._id.toString()
+    );
+
+    if (!vehicle) return;
+
+    document.getElementById("displayRego").value =
+        vehicle.rego || "";
+
+    document.getElementById("displayMake").value =
+        vehicle.make || "";
+
+    document.getElementById("displayModel").value =
+        vehicle.model || "";
+
+    document.getElementById("displayBuildDate").value =
+        vehicle.buildDate || "";
+}
