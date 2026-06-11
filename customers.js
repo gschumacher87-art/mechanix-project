@@ -43,7 +43,7 @@ async function openCustomer(id) {
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
 
     invoices.forEach(i => {
-    invoiceHtml += `<div class="card" onclick="openCustomerInvoice('${i._id}')">$${i.totalCost || 0}</div>`;
+    invoiceHtml += `<div class="card" onclick="openSavedInvoice('${i._id}')">$${i.totalCost || 0}</div>`;
 });
 
     if (!invoiceHtml) invoiceHtml = "<div>No invoices</div>";
@@ -261,4 +261,46 @@ async function openCustomerInvoice(id) {
     const invoice = await res.json();
 
     alert(JSON.stringify(invoice, null, 2));
+}
+
+async function openSavedInvoice(id) {
+
+    const res = await fetch(API + "/invoices/" + id);
+    const invoice = await res.json();
+
+    document.querySelectorAll(".screen")
+        .forEach(s => s.classList.remove("active"));
+
+    document.getElementById("invoiceCard")
+        .classList.add("active");
+
+    document.getElementById("invoiceFirstName").value =
+        invoice.customer?.firstName || "";
+
+    document.getElementById("invoiceLastName").value =
+        invoice.customer?.lastName || "";
+
+    document.getElementById("invoicePhone").value =
+        invoice.customer?.phone || "";
+
+    document.getElementById("invoiceEmail").value =
+        invoice.customer?.email || "";
+
+    document.getElementById("invoiceRego").value =
+        invoice.vehicle?.rego || "";
+
+    document.getElementById("invoiceVin").value =
+        invoice.vehicle?.vin || "";
+
+    document.getElementById("invoiceMake").value =
+        invoice.vehicle?.make || "";
+
+    document.getElementById("invoiceModel").value =
+        invoice.vehicle?.model || "";
+
+    document.getElementById("invoiceBuildDate").value =
+        invoice.vehicle?.buildDate || "";
+
+    document.getElementById("invoiceOdometer").value =
+        invoice.vehicle?.odometer || "";
 }
