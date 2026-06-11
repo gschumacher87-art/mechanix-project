@@ -53,11 +53,15 @@ async function openInvoice(id) {
     document.getElementById("invoiceCard")
         .classList.add("active");
 
-    document.getElementById("invoiceFirstName").value =
-        currentInvoice.customer?.firstName || "";
+    const customerName = currentInvoice.customerName || "";
 
-    document.getElementById("invoiceLastName").value =
-        currentInvoice.customer?.lastName || "";
+const parts = customerName.trim().split(" ");
+
+document.getElementById("invoiceFirstName").value =
+    parts[0] || "";
+
+document.getElementById("invoiceLastName").value =
+    parts.slice(1).join(" ") || "";
 
     document.getElementById("invoicePhone").value =
         currentInvoice.phone || "";
