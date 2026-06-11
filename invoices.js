@@ -174,10 +174,9 @@ async function finaliseInvoice() {
 
     // CREATE VEHICLE
     if (!vehicle) {
+alert("BUILD DATE = " + buildDate);
 
         const createVehicleRes = await fetch(API + "/vehicles", {
-            alert("BUILD DATE = " + buildDate);
-            
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
