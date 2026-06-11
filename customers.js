@@ -1,26 +1,12 @@
 // ===== LOAD CUSTOMERS =====
 async function loadCustomers() {
-    const res = await fetch(API + "/customers");
-    const data = await res.json();
 
-    let html = "";
+    document.getElementById("customerList").innerHTML = "";
 
-    data.forEach(c => {
-        html += `<div class="card" onclick="openCustomer('${c._id}')" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;">
-            <div>${c.firstName || ""}</div>
-            <div>${c.lastName || ""}</div>
-            <div>${c.phone || ""}</div>
-            <div>${c.rego || ""}</div>
-            <div>${c.vin || ""}</div>
-        </div>`;
-    });
-
-    document.getElementById("customerList").innerHTML = html;
     document.getElementById("customerList").style.display = "block";
+
     document.getElementById("customerDetail").style.display = "none";
 }
-
-
 
 // ===== OPEN CUSTOMER =====
 async function openCustomer(id) {
@@ -162,7 +148,7 @@ async function searchCustomers() {
         return v.includes(value);
     });
 
-    const list = value ? filtered : data;
+    const list = value ? filtered : [];
 
     let html = "";
 
@@ -176,7 +162,9 @@ async function searchCustomers() {
         </div>`;
     });
 
-    document.getElementById("customerList").innerHTML = html;
+    document.getElementById("customerList").innerHTML =
+    html ||
+    "<div class='card'>No customers found</div>";
 }
 
 async function editCustomer(id) {
