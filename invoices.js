@@ -130,16 +130,112 @@ function addInvoicePart() {
 
 function renderInvoiceLines() {
 
-    // code here
+    document.getElementById("invoiceParts").innerHTML =
+        invoiceParts.map((p, i) => `
 
+<div style="display:flex;gap:10px;margin-bottom:10px;">
+
+<input
+value="${p.description}"
+placeholder="Part Description"
+oninput="invoiceParts[${i}].description=this.value;updateInvoiceTotals();">
+
+<input
+type="number"
+value="${p.qty}"
+placeholder="Qty"
+oninput="invoiceParts[${i}].qty=parseFloat(this.value)||0;updateInvoiceTotals();">
+
+<input
+type="number"
+value="${p.price}"
+placeholder="Price"
+oninput="invoiceParts[${i}].price=parseFloat(this.value)||0;updateInvoiceTotals();">
+
+</div>
+
+`).join("");
+
+    document.getElementById("invoiceLabour").innerHTML =
+        invoiceLabour.map((l, i) => `
+
+<div style="display:flex;gap:10px;margin-bottom:10px;">
+
+<input
+value="${l.description}"
+placeholder="Labour Description"
+oninput="invoiceLabour[${i}].description=this.value;updateInvoiceTotals();">
+
+<input
+type="number"
+value="${l.hours}"
+placeholder="Hours"
+oninput="invoiceLabour[${i}].hours=parseFloat(this.value)||0;updateInvoiceTotals();">
+
+<input
+type="number"
+value="${l.rate}"
+placeholder="Rate"
+oninput="invoiceLabour[${i}].rate=parseFloat(this.value)||0;updateInvoiceTotals();">
+
+</div>
+
+`).join("");
+
+    updateInvoiceTotals();
 }
 
 function updateInvoiceTotals() {
 
-    // code here
+    const partsTotal =
+        invoiceParts.reduce(
+            (t, p) => t + (p.qty * p.price),
+            0
+        );
 
+    const labourTotal =
+        invoiceLabour.reduce(
+            (t, l) => t + (l.hours * l.rate),
+            0
+        );
+
+    const invoiceTotal =
+        partsTotal + labourTotal;
+
+    document.getElementById("partsTotal").textContent =
+        partsTotal.toFixed(2);
+
+    document.getElementById("labourTotal").textContent =
+        labourTotal.toFixed(2);
+
+    document.getElementById("invoiceTotal").textContent =
+        invoiceTotal.toFixed(2);
+
+    document.getElementById("invoicePreview").innerHTML = `
+
+<b>Customer:</b>
+${document.getElementById("invoiceFirstName").value}
+${document.getElementById("invoiceLastName").value}
+
+<br><br>
+
+<b>Vehicle:</b>
+${document.getElementById("invoiceMake").value}
+${document.getElementById("invoiceModel").value}
+(${document.getElementById("invoiceRego").value})
+
+<br><br>
+
+<b>Parts:</b> $${partsTotal.toFixed(2)}
+<br>
+
+<b>Labour:</b> $${labourTotal.toFixed(2)}
+<br>
+
+<b>Total:</b> $${invoiceTotal.toFixed(2)}
+
+`;
 }
-
 function saveInvoice() {
     alert("Save later");
 }
