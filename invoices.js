@@ -1,5 +1,8 @@
 let currentInvoice = null;
 
+let invoiceLabour = [];
+let invoiceParts = [];
+
 async function loadInvoices() {
 
     const res = await fetch(API + "/jobs");
@@ -95,7 +98,46 @@ document.getElementById("invoiceLastName").value =
         currentInvoice.buildDate || "";
 
     document.getElementById("invoiceOdometer").value =
-        currentInvoice.vehicle?.odometer || "";
+    currentInvoice.vehicle?.odometer || "";
+
+invoiceLabour = [];
+invoiceParts = [];
+
+renderInvoiceLines();
+}
+
+function addInvoiceLabour() {
+
+    invoiceLabour.push({
+        description: "",
+        hours: 1,
+        rate: 100
+    });
+
+    renderInvoiceLines();
+}
+
+function addInvoicePart() {
+
+    invoiceParts.push({
+        description: "",
+        qty: 1,
+        price: 0
+    });
+
+    renderInvoiceLines();
+}
+
+function renderInvoiceLines() {
+
+    // code here
+
+}
+
+function updateInvoiceTotals() {
+
+    // code here
+
 }
 
 function saveInvoice() {
