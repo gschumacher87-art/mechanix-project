@@ -170,8 +170,48 @@
 </div>
 
 <div id="invoices" class="screen">
-    <div class="title">Invoices</div>
-    <div id="invoiceList"></div>
+
+<div class="card">
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div class="title">Invoice</div>
+
+    <div>
+        <button class="secondary" onclick="show('jobs')">Back</button>
+        <button class="primary" onclick="saveInvoice()">Save Invoice</button>
+    </div>
+</div>
+
+<div style="display:flex;gap:20px;flex-wrap:wrap;">
+
+    <div style="flex:1;min-width:300px;">
+
+        <div class="title">Customer Details</div>
+
+        <input id="invoiceFirstName" placeholder="First Name">
+        <input id="invoiceLastName" placeholder="Last Name">
+        <input id="invoicePhone" placeholder="Phone">
+        <input id="invoiceEmail" placeholder="Email">
+
+    </div>
+
+    <div style="flex:1;min-width:300px;">
+
+        <div class="title">Vehicle Details</div>
+
+        <input id="invoiceRego" placeholder="Rego">
+        <input id="invoiceVin" placeholder="VIN">
+        <input id="invoiceMake" placeholder="Make">
+        <input id="invoiceModel" placeholder="Model">
+        <input id="invoiceBuildDate" placeholder="Build Date">
+        <input id="invoiceOdometer" placeholder="Odometer">
+
+    </div>
+
+</div>
+
+</div>
+
 </div>
 
 <div id="templates" class="screen">
