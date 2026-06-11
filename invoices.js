@@ -104,10 +104,97 @@ function saveInvoice() {
 
 async function finaliseInvoice() {
 
-    if (!confirm("Print & Finalise Invoice?")) return;
+    if (!confirm("Finalise Invoice?")) return;
 
-alert(JSON.stringify(currentInvoice, null, 2));
+    const firstName =
+        document.getElementById("invoiceFirstName").value.trim();
 
+    const lastName =
+        document.getElementById("invoiceLastName").value.trim();
+
+    const phone =
+        document.getElementById("invoicePhone").value.trim();
+
+    const email =
+        document.getElementById("invoiceEmail").value.trim();
+
+    const rego =
+        document.getElementById("invoiceRego").value.trim();
+
+    const vin =
+        document.getElementById("invoiceVin").value.trim();
+
+    const make =
+        document.getElementById("invoiceMake").value.trim();
+
+    const model =
+        document.getElementById("invoiceModel").value.trim();
+
+    const buildDate =
+        document.getElementById("invoiceBuildDate").value.trim();
+
+    const odometer =
+        parseInt(document.getElementById("invoiceOdometer").value) || 0;
+
+    // FIND CUSTOMER
+    const customersRes = await fetch(API + "/customers");
+    const customers = await customersRes.json();
+
+    let customer = customers.find(c =>
+        (c.phone || "").trim() === phone
+    );
+
+    // CREATE CUSTOMER
+    if (!customer) {
+
+        const createCustomerRes = await fetch(API + "/customers", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                phone,
+                email
+            })
+        });
+
+        customer = await createCustomerRes.json();
+    }
+
+    // FIND VEHICLE
+    const vehiclesRes = await fetch(API + "/vehicles");
+    const vehicles = await vehiclesRes.json();
+
+    let vehicle = vehicles.find(v =>
+        (v.rego || "").trim().toLowerCase() ===
+        rego.trim().toLowerCase()
+    );
+
+    // CREATE VEHICLE
+    if (!vehicle) {
+
+        const createVehicleRes = await fetch(API + "/vehicles", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                customer: customer._id,
+                make,
+                model,
+                buildDate,
+                odometer,
+                rego,
+                vin
+            })
+        });
+
+        vehicle = await createVehicleRes.json();
+    }
+
+    // CREATE INVOICE
     await fetch(API + "/invoices", {
         method: "POST",
         headers: {
@@ -115,12 +202,13 @@ alert(JSON.stringify(currentInvoice, null, 2));
         },
         body: JSON.stringify({
             job: currentInvoice._id,
-            customer: currentInvoice.customer?._id || currentInvoice.customer,
-            vehicle: currentInvoice.vehicle?._id || currentInvoice.vehicle,
+            customer: customer._id,
+            vehicle: vehicle._id,
             status: "unpaid"
         })
     });
 
+    // REMOVE PENDING JOB
     await fetch(API + "/jobs/" + currentInvoice._id, {
         method: "DELETE"
     });
