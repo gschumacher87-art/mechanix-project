@@ -7,14 +7,15 @@ const auth = require("../middleware/auth");
 router.post("/", auth, async (req, res) => {
     try {
         const vehicle = new Vehicle({
-            customer: req.body.customer,
-            make: req.body.make,
-            model: req.body.model,
-            year: req.body.year,
-            rego: req.body.rego,
-            vin: req.body.vin,
-            notes: req.body.notes
-        });
+    customer: req.body.customer,
+    make: req.body.make,
+    model: req.body.model,
+    buildDate: req.body.buildDate,
+    odometer: req.body.odometer,
+    rego: req.body.rego,
+    vin: req.body.vin,
+    notes: req.body.notes
+});
 
         await vehicle.save();
 
