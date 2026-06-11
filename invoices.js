@@ -12,7 +12,7 @@ async function loadInvoices() {
     document.getElementById("invoiceList").innerHTML =
         pendingJobs.map(j => `
 
-<div class="card" onclick="openInvoice('${j._id}')">
+<div class="card">
 
     <b>${j.rego || ""}</b><br>
 
@@ -35,6 +35,16 @@ async function loadInvoices() {
             .map(x => `• ${x.summary}`)
             .join("<br>")
     }
+
+    <br><br>
+
+    <button class="secondary" onclick="openInvoice('${j._id}')">
+        Open
+    </button>
+
+    <button class="secondary" onclick="deletePendingInvoice('${j._id}')">
+        Delete
+    </button>
 
 </div>
 
@@ -90,4 +100,14 @@ document.getElementById("invoiceLastName").value =
 
 function saveInvoice() {
     alert("Save later");
+}
+async function deletePendingInvoice(id) {
+
+    if (!confirm("Delete pending invoice?")) return;
+
+    await fetch(API + "/jobs/" + id, {
+        method: "DELETE"
+    });
+
+    loadInvoices();
 }
