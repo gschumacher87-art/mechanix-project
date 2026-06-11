@@ -166,10 +166,86 @@ async function searchCustomers() {
     document.getElementById("customerList").innerHTML = html;
 }
 
-function editCustomer(id) {
-    alert("Edit customer coming next");
+async function editCustomer(id) {
+
+    const res = await fetch(API + "/customers/" + id);
+    const customer = await res.json();
+
+    const firstName = prompt("First Name", customer.firstName || "");
+    if (firstName === null) return;
+
+    const lastName = prompt("Last Name", customer.lastName || "");
+    if (lastName === null) return;
+
+    const phone = prompt("Phone", customer.phone || "");
+    if (phone === null) return;
+
+    await fetch(API + "/customers/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            firstName,
+            lastName,
+            phone
+        })
+    });
+
+    openCustomer(id);
 }
 
-function editVehicle(id) {
-    alert("Edit vehicle coming next");
+async function deleteCustomer(id) {
+
+    if (!confirm("Delete customer?")) return;
+
+    await fetch(API + "/customers/" + id, {
+        method: "DELETE"
+    });
+
+    loadCustomers();
+}
+
+async function editVehicle(id) {
+
+    const res = await fetch(API + "/vehicles/" + id);
+    const vehicle = await res.json();
+
+    const make = prompt("Make", vehicle.make || "");
+    if (make === null) return;
+
+    const model = prompt("Model", vehicle.model || "");
+    if (model === null) return;
+
+    const rego = prompt("Rego", vehicle.rego || "");
+    if (rego === null) return;
+
+    const vin = prompt("VIN", vehicle.vin || "");
+    if (vin === null) return;
+
+    await fetch(API + "/vehicles/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            make,
+            model,
+            rego,
+            vin
+        })
+    });
+
+    const customerId = vehicle.customer || vehicle.customerId;
+
+    if (customerId) {
+        openCustomer(customerId);
+    }
+}
+
+async function deleteVehicle(id, customerId) {
+
+    if (!confirm("Delete vehicle?")) return;
+
+    await fetch(API + "/vehicles/" + id, {
+        method: "DELETE"
+    });
+
+    openCustomer(customerId);
 }
