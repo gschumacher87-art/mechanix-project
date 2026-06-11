@@ -96,7 +96,7 @@ async function addVehicleToCustomer(customerId) {
     customer: customerId,
     make: document.getElementById("newVehicleMake").value,
     model: document.getElementById("newVehicleModel").value,
-    yearMonth: document.getElementById("newVehicleYearMonth").value,
+    buildDate: document.getElementById("newVehicleYearMonth").value,
     rego: document.getElementById("newVehicleRego").value,
     vin: document.getElementById("newVehicleVin").value
 })
@@ -216,6 +216,9 @@ async function editVehicle(id) {
     const model = prompt("Model", vehicle.model || "");
     if (model === null) return;
 
+    const buildDate = prompt("Build Date", vehicle.buildDate || "");
+    if (buildDate === null) return;
+
     const rego = prompt("Rego", vehicle.rego || "");
     if (rego === null) return;
 
@@ -228,6 +231,7 @@ async function editVehicle(id) {
         body: JSON.stringify({
             make,
             model,
+            buildDate,
             rego,
             vin
         })
