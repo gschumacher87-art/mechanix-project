@@ -214,41 +214,13 @@ ${
     <br><br>
 
     <b>Parts</b><br>
-    ${
-        (selected.parts || []).map((p, i) => `
-<div style="margin-bottom:8px;">
-
-<input
-    placeholder="Description"
-    value="${p.description || ""}"
-    onchange="
-        currentJob.jobs[selectedSubJobIndex].parts[${i}].description=this.value;
-        saveSubJobs();
-    "
->
-
-<input
-    placeholder="Part Number"
-    value="${p.partNumber || ""}"
-    onchange="
-        currentJob.jobs[selectedSubJobIndex].parts[${i}].partNumber=this.value;
-        saveSubJobs();
-    "
->
-
-<input
-    type="number"
-    placeholder="Qty"
-    value="${p.qty || 1}"
-    onchange="
-        currentJob.jobs[selectedSubJobIndex].parts[${i}].qty=parseFloat(this.value)||1;
-        saveSubJobs();
-    "
->
-
-</div>
-`).join("") || "None"
-    }
+${
+    (selected.parts || []).map(p => `
+        <div>
+            • ${p.description} | ${p.partNumber} | Qty: ${p.qty}
+        </div>
+    `).join("") || "None"
+}
 
     <br>
 
@@ -466,14 +438,22 @@ function deleteJobCard() {
 }
 function addPart() {
 
+    const description = prompt("Description");
+    if (!description) return;
+
+    const partNumber = prompt("Part Number");
+    if (partNumber === null) return;
+
+    const qty = parseFloat(prompt("Qty", "1")) || 1;
+
     const job = currentJob.jobs[selectedSubJobIndex];
 
     if (!job.parts) job.parts = [];
 
     job.parts.push({
-        description: "",
-        partNumber: "",
-        qty: 1
+        description,
+        partNumber,
+        qty
     });
 
     saveSubJobs();
