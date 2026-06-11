@@ -121,6 +121,7 @@ function addInvoicePart() {
 
     invoiceParts.push({
         description: "",
+        partNumber: "",
         qty: 1,
         price: 0
     });
@@ -131,14 +132,19 @@ function addInvoicePart() {
 function renderInvoiceLines() {
 
     document.getElementById("invoiceParts").innerHTML =
-        invoiceParts.map((p, i) => `
+    invoiceParts.map((p, i) => `
 
-<div style="display:flex;gap:10px;margin-bottom:10px;">
+<div style="display:grid;grid-template-columns:3fr 2fr 80px 120px;gap:10px;margin-bottom:10px;">
 
 <input
-value="${p.description}"
+value="${p.description || ""}"
 placeholder="Part Description"
 oninput="invoiceParts[${i}].description=this.value;updateInvoiceTotals();">
+
+<input
+value="${p.partNumber || ""}"
+placeholder="Part Number"
+oninput="invoiceParts[${i}].partNumber=this.value;updateInvoiceTotals();">
 
 <input
 type="number"
