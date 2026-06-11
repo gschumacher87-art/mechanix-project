@@ -339,27 +339,30 @@ async function finaliseInvoice() {
     }
 
     // CREATE INVOICE
-    await fetch(API + "/invoices", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            job: currentInvoice._id,
-            customer: customer._id,
-            vehicle: vehicle._id,
-            status: "unpaid"
-        })
-    });
+    // CREATE INVOICE
+const invoiceRes = await fetch(API + "/invoices", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        job: currentInvoice._id,
+        customer: customer._id,
+        vehicle: vehicle._id,
+        labour: invoiceLabour,
+        parts: invoiceParts,
+        status: "unpaid"
+    })
+});
+
+const savedInvoice = await invoiceRes.json();
 
     // REMOVE PENDING JOB
     await fetch(API + "/jobs/" + currentInvoice._id, {
         method: "DELETE"
     });
 
-    show("invoices");
-
-    loadInvoices();
+    openFinalisedInvoice(savedInvoice);
 }
 async function deletePendingInvoice(id) {
 
@@ -370,4 +373,51 @@ async function deletePendingInvoice(id) {
     });
 
     loadInvoices();
+}
+
+function openFinalisedInvoice(invoice) {
+
+    document.querySelectorAll(".screen")
+        .forEach(s => s.classList.remove("active"));
+
+    document.getElementById("invoiceCard")
+        .classList.add("active");
+
+    document.getElementById("invoicePreview").innerHTML = `
+
+<h2>TAX INVOICE</h2>
+
+<b>${document.getElementById("invoiceFirstName").value}
+${document.getElementById("invoiceLastName").value}</b>
+
+<br><br>
+
+${document.getElementById("invoiceMake").value}
+${document.getElementById("invoiceModel").value}
+
+<br>
+
+${document.getElementById("invoiceRego").value}
+
+<br><br>
+
+<b>Parts</b><br>
+
+${invoiceParts.map(p =>
+`${p.description} (${p.partNumber || ""}) x${p.qty} - $${(p.qty * p.price).toFixed(2)}`
+).join("<br>")}
+
+<br><br>
+
+<b>Labour</b><br>
+
+${invoiceLabour.map(l =>
+`${l.description} - ${l.hours}h @ $${l.rate}`
+).join("<br>")}
+
+<br><br>
+
+<b>Total: $${document.getElementById("invoiceTotal").textContent}</b>
+
+`;
 }
