@@ -27,7 +27,7 @@ async function openCustomer(id) {
     vehicleHtml += `
     <div class="card">
         <b>${v.make || ""} ${v.model || ""}</b><br>
-        ${v.yearMonth || ""}<br>
+        ${v.buildDate || ""}
         ${v.rego || ""}<br>
         ${v.vin || ""}
 
