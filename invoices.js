@@ -101,6 +101,32 @@ document.getElementById("invoiceLastName").value =
 function saveInvoice() {
     alert("Save later");
 }
+
+async function finaliseInvoice() {
+
+    if (!confirm("Print & Finalise Invoice?")) return;
+
+    await fetch(API + "/invoices", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            job: currentInvoice._id,
+            customer: currentInvoice.customer?._id || currentInvoice.customer,
+            vehicle: currentInvoice.vehicle?._id || currentInvoice.vehicle,
+            status: "unpaid"
+        })
+    });
+
+    await fetch(API + "/jobs/" + currentInvoice._id, {
+        method: "DELETE"
+    });
+
+    show("invoices");
+
+    loadInvoices();
+}
 async function deletePendingInvoice(id) {
 
     if (!confirm("Delete pending invoice?")) return;
