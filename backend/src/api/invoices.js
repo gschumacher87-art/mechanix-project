@@ -6,7 +6,19 @@ const auth = require("../middleware/auth");
 // CREATE invoice
 router.post("/", auth, async (req, res) => {
     try {
-        const invoice = new Invoice(req.body);
+        const lastInvoice = await Invoice
+    .findOne()
+    .sort({ invoiceNumber: -1 });
+
+const nextInvoiceNumber =
+    lastInvoice
+        ? lastInvoice.invoiceNumber + 1
+        : 1001;
+
+const invoice = new Invoice({
+    ...req.body,
+    invoiceNumber: nextInvoiceNumber
+});
         await invoice.save();
         res.status(201).json(invoice);
     } catch (err) {
