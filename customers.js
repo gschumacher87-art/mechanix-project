@@ -43,7 +43,17 @@ async function openCustomer(id) {
     if (!vehicleHtml) vehicleHtml = "<div>No vehicles</div>";
 
     invoices.forEach(i => {
-    invoiceHtml += `<div class="card" onclick="openSavedInvoice('${i._id}')">$${i.totalCost || 0}</div>`;
+    invoiceHtml += `
+    <div class="card" onclick="openSavedInvoice('${i._id}')">
+
+        <b>Invoice #${i.invoiceNumber || "?"}</b>
+
+        <br><br>
+
+        $${i.totalCost || 0}
+
+    </div>
+    `;
 });
 
     if (!invoiceHtml) invoiceHtml = "<div>No invoices</div>";
