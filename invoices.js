@@ -332,7 +332,9 @@ const invoiceRes = await fetch(API + "/invoices", {
 });
 
 const savedInvoice = await invoiceRes.json();
-openFinalisedInvoice(savedInvoice);
+
+show("customers");
+
 return;
 
     // REMOVE PENDING JOB
@@ -350,85 +352,4 @@ async function deletePendingInvoice(id) {
     });
 
     loadInvoices();
-}
-
-function openFinalisedInvoice(invoice) {
-
-    document.querySelectorAll(".screen")
-        .forEach(s => s.classList.remove("active"));
-
-    document.getElementById("finalInvoiceCard")
-        .classList.add("active");
-
-    document.getElementById("finalInvoiceContent").innerHTML = `
-
-<div class="card">
-
-<h2>TAX INVOICE</h2>
-
-<b>${document.getElementById("invoiceFirstName").value}
-${document.getElementById("invoiceLastName").value}</b>
-
-<br><br>
-
-${document.getElementById("invoicePhone").value}
-
-<br><br>
-
-${document.getElementById("invoiceMake").value}
-${document.getElementById("invoiceModel").value}
-
-<br>
-
-${document.getElementById("invoiceRego").value}
-
-<br><br>
-
-<h3>Parts</h3>
-
-${invoiceParts.map(p => `
-<div>
-${p.description || ""}
-${p.partNumber ? `(${p.partNumber})` : ""}
- x ${p.qty}
- - $${(p.qty * p.price).toFixed(2)}
-</div>
-`).join("")}
-
-<br>
-
-<h3>Labour</h3>
-
-${invoiceLabour.map(l => `
-<div>
-${l.description || ""}
- - ${l.hours} hrs
- @ $${l.rate}
-</div>
-`).join("")}
-
-<br><br>
-
-<b>Parts Total:</b>
-$${document.getElementById("partsTotal").textContent}
-
-<br>
-
-<b>Labour Total:</b>
-$${document.getElementById("labourTotal").textContent}
-
-<br>
-
-<b>Invoice Total:</b>
-$${document.getElementById("invoiceTotal").textContent}
-
-<br><br>
-
-<button class="primary" onclick="window.print()">
-Print
-</button>
-
-</div>
-
-`;
 }
