@@ -51,7 +51,17 @@ router.post("/from-job/:jobId", auth, async (req, res) => {
     notes: `${job.title || ""}\n${job.description || ""}`.trim()
 };
 
+const lastInvoice = await Invoice
+    .findOne()
+    .sort({ invoiceNumber: -1 });
+
+const nextInvoiceNumber =
+    lastInvoice
+        ? lastInvoice.invoiceNumber + 1
+        : 1001;
+
 const invoice = new Invoice({
+    invoiceNumber: nextInvoiceNumber,
     job: job._id,
     customer: job.customer,
     vehicle: job.vehicle,
