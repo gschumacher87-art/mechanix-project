@@ -38,6 +38,11 @@ vehicle: {
     },
     // INSERTED BLOCK END
 
+        invoiceNumber: {
+        type: Number,
+        unique: true
+    },
+
     status: {
     type: String,
     enum: ["draft", "unpaid", "paid"],
