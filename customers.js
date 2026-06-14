@@ -312,5 +312,10 @@ async function openSavedInvoice(id) {
         invoice.vehicle?.buildDate || "";
 
     document.getElementById("invoiceOdometer").value =
-        invoice.vehicle?.odometer || "";
+    invoice.vehicle?.odometer || "";
+
+invoiceLabour = invoice.labour || [];
+invoiceParts = invoice.parts || [];
+
+renderInvoiceLines();
 }
