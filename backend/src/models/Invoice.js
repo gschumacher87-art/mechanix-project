@@ -25,10 +25,27 @@ vehicle: {
         type: Number,
         default: 0
     },
-    totalCost: {
+        totalCost: {
         type: Number,
         default: 0
     },
+
+    labour: [
+    {
+        description: String,
+        hours: Number,
+        rate: Number
+    }
+],
+
+    parts: [
+    {
+        description: String,
+        partNumber: String,
+        qty: Number,
+        price: Number
+    }
+],
 
     // INSERTED BLOCK START
     template: {
@@ -38,7 +55,7 @@ vehicle: {
     },
     // INSERTED BLOCK END
 
-        invoiceNumber: {
+    invoiceNumber: {
         type: Number,
         unique: true
     },
