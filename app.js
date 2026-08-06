@@ -59,8 +59,6 @@ async function show(id, btn) {
 
 async function login() {
 
-    alert("LOGIN FUNCTION RUNNING");
-
     const res = await fetch(API + "/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -71,8 +69,6 @@ async function login() {
     });
 
        const data = await res.json();
-
-alert(JSON.stringify(data));
 
 localStorage.setItem("token", data.token);
 alert("TOKEN SAVED: " + data.token);
