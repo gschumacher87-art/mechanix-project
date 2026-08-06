@@ -21,10 +21,12 @@ window.fetch = function(url, options = {}) {
 
     const token = localStorage.getItem("token");
 
+if (token && !url.includes("/auth/login")) {
     options.headers = {
         ...(options.headers || {}),
-        ...(token && { Authorization: "Bearer " + token })
+        Authorization: "Bearer " + token
     };
+}
 
     return originalFetch(url, options).then(res => {
     if (res.status === 401) {
