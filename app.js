@@ -75,7 +75,7 @@ async function login() {
 alert(JSON.stringify(data));
 
 localStorage.setItem("token", data.token);
-location.reload();
+alert("TOKEN SAVED: " + data.token);
 }
 
 if (localStorage.getItem("token")) {
