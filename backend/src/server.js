@@ -33,6 +33,22 @@ app.use("/api/templates", templateRoutes);
 app.use("/api/parts", require("./api/parts"));
 
 app.use("/api/users", require("./api/users"));
+app.use("/api/users", require("./api/users"));
+
+app.get("/create-admin", async (req, res) => {
+  const bcrypt = require("bcryptjs");
+  const User = require("./models/User");
+
+  const hashedPassword = await bcrypt.hash("123456", 10);
+
+  await User.create({
+    email: "admin@test.com",
+    password: hashedPassword,
+    role: "admin"
+  });
+
+  res.send("Admin created");
+});
 
 app.get("/", (req, res) => {
   res.send("Mechanix API running");
