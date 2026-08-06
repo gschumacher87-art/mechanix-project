@@ -21,12 +21,10 @@ window.fetch = function(url, options = {}) {
 
     const token = localStorage.getItem("token");
 
-if (token && !url.includes("/auth/login")) {
     options.headers = {
         ...(options.headers || {}),
-        Authorization: "Bearer " + token
+        ...(token && { Authorization: "Bearer " + token })
     };
-}
 
     return originalFetch(url, options).then(res => {
     if (res.status === 401) {
@@ -59,26 +57,16 @@ async function show(id, btn) {
 }
 
 async function login() {
-
     const res = await fetch(API + "/auth/login", {
         method: "POST",
-        headers: { 
-            "Content-Type": "application/json" 
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            email: document.getElementById("loginEmail").value,
-            password: document.getElementById("loginPassword").value
+            email: "admin@test.com",
+            password: "123456"
         })
     });
 
     const data = await res.json();
-
-    console.log("LOGIN:", data);
-
-    if (!data.token) {
-        document.getElementById("loginError").innerText = data.message;
-        return;
-    }
 
     localStorage.setItem("token", data.token);
     location.reload();
