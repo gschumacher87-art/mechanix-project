@@ -66,7 +66,9 @@ async function login() {
         })
     });
 
-    const data = await res.json();
+        const data = await res.json();
+
+    console.log(data);
 
     localStorage.setItem("token", data.token);
     location.reload();
