@@ -57,6 +57,9 @@ async function show(id, btn) {
 }
 
 async function login() {
+
+    alert("LOGIN FUNCTION RUNNING");
+
     const res = await fetch(API + "/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
