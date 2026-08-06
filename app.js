@@ -28,7 +28,6 @@ window.fetch = function(url, options = {}) {
 
     return originalFetch(url, options).then(res => {
     if (res.status === 401) {
-    alert("API RETURNED 401");
     localStorage.removeItem("token");
     location.reload();
     return;
