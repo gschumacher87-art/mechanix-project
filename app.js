@@ -70,6 +70,11 @@ async function login() {
        const data = await res.json();
 
 localStorage.setItem("token", data.token);
+
+document.getElementById("loginScreen").style.display = "none";
+document.getElementById("app").style.display = "block";
+
+show("dashboard");
 }
 
 if (localStorage.getItem("token")) {
