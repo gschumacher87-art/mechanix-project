@@ -28,10 +28,11 @@ window.fetch = function(url, options = {}) {
 
     return originalFetch(url, options).then(res => {
     if (res.status === 401) {
-        localStorage.removeItem("token");
-        location.reload();
-        return;
-    }
+    alert("401 ERROR");
+    localStorage.removeItem("token");
+    location.reload();
+    return;
+}
     return res;
 });
 };
