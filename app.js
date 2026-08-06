@@ -66,12 +66,12 @@ async function login() {
         })
     });
 
-        const data = await res.json();
+       const data = await res.json();
 
-    console.log(data);
+alert(JSON.stringify(data));
 
-    localStorage.setItem("token", data.token);
-    location.reload();
+localStorage.setItem("token", data.token);
+location.reload();
 }
 
 if (localStorage.getItem("token")) {
