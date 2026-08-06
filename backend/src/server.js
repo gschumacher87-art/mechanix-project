@@ -31,8 +31,6 @@ app.use("/api/invoices", invoiceRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/templates", templateRoutes);
 app.use("/api/parts", require("./api/parts"));
-
-app.use("/api/users", require("./api/users"));
 app.use("/api/users", require("./api/users"));
 
 app.get("/", (req, res) => {
