@@ -70,7 +70,6 @@ async function login() {
        const data = await res.json();
 
 localStorage.setItem("token", data.token);
-alert("TOKEN SAVED: " + data.token);
 }
 
 if (localStorage.getItem("token")) {
