@@ -139,7 +139,8 @@ function renderInvoiceLines() {
 <input
 value="${p.description || ""}"
 placeholder="Part Description"
-oninput="invoiceParts[${i}].description=this.value;updateInvoiceTotals();">
+oninput="invoiceParts[${i}].description=this.value;updateInvoiceTotals();"
+onchange="suggestInvoiceParts(${i})">
 
 <input
 value="${p.partNumber || ""}"
