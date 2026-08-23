@@ -64,6 +64,7 @@ async function createPart() {
 
     const part = {
     category: document.getElementById("partCategory").value,
+    description: document.getElementById("partDescription").value,
     partNumber: document.getElementById("partNumber").value,
     price: Number(document.getElementById("partPrice").value)
 };
@@ -94,16 +95,22 @@ async function editPart(id) {
     const part = await res.json();
 
     const category = prompt("Category:", part.category || "");
-    if (category === null) return;
+if (category === null) return;
 
-    const price = prompt("Price:", part.price || 0);
+const description = prompt("Description:", part.description || "");
+if (description === null) return;
 
+const partNumber = prompt("Part Number:", part.partNumber || "");
+if (partNumber === null) return;
+
+const price = prompt("Price:", part.price || 0);
     await fetch(API + "/parts/" + id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
     category,
-    partNumber: part.partNumber,
+    description,
+    partNumber,
     price: Number(price)
 })
     });
