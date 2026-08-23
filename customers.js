@@ -273,9 +273,9 @@ async function openCustomerInvoice(id) {
     alert(JSON.stringify(invoice, null, 2));
 }
 
-async function openSavedInvoice(id) {
+async function openSavedInvoice(invoiceNumber) {
 
-    const res = await fetch(API + "/invoices/" + id);
+    const res = await fetch(API + "/invoices/number/" + invoiceNumber);
     const invoice = await res.json();
 
     document.querySelectorAll(".screen")
@@ -312,10 +312,10 @@ async function openSavedInvoice(id) {
         invoice.vehicle?.buildDate || "";
 
     document.getElementById("invoiceOdometer").value =
-    invoice.vehicle?.odometer || "";
+        invoice.vehicle?.odometer || "";
 
-invoiceLabour = invoice.labour || [];
-invoiceParts = invoice.parts || [];
+    invoiceLabour = invoice.labour || [];
+    invoiceParts = invoice.parts || [];
 
-renderInvoiceLines();
+    renderInvoiceLines();
 }
