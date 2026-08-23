@@ -464,12 +464,45 @@ async function lookupPhone() {
     const vRes = await fetch(API + "/vehicles");
     const vehicles = await vRes.json();
 
-    const vehicle = vehicles.find(v =>
+    const customerVehicles = vehicles.filter(v =>
         (v.customer?._id || v.customer || "").toString() ===
         customer._id.toString()
     );
 
-    if (!vehicle) return;
+    if (!customerVehicles.length) return;
+
+    if (customerVehicles.length === 1) {
+
+        selectBookingVehicle(customerVehicles[0]);
+
+        return;
+    }
+
+    let message = "Select Vehicle:\n\n";
+
+    customerVehicles.forEach((v, i) => {
+        message +=
+            `${i + 1}. ${v.make || ""} ${v.model || ""} - ${v.rego || ""}\n`;
+    });
+
+    const choice = prompt(message);
+
+    if (!choice) return;
+
+    const index = parseInt(choice) - 1;
+
+    if (
+        isNaN(index) ||
+        index < 0 ||
+        index >= customerVehicles.length
+    ) {
+        return;
+    }
+
+    selectBookingVehicle(customerVehicles[index]);
+}
+
+function selectBookingVehicle(vehicle) {
 
     document.getElementById("displayRego").value =
         vehicle.rego || "";
