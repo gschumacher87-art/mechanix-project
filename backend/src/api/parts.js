@@ -19,6 +19,7 @@ router.post("/", auth, async (req, res) => {
 
         const part = new Part({
     category: category,
+    description: req.body.description,
     partNumber: req.body.partNumber,
     price: req.body.price || 0
 });
