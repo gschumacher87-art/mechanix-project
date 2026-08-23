@@ -288,9 +288,11 @@ async function finaliseInvoice() {
     const vehicles = await vehiclesRes.json();
 
     let vehicle = vehicles.find(v =>
-        (v.rego || "").trim().toLowerCase() ===
-        rego.trim().toLowerCase()
-    );
+    (v.rego || "").trim().toLowerCase() ===
+    rego.trim().toLowerCase() &&
+    (v.customer?._id || v.customer || "").toString() ===
+    customer._id.toString()
+);
 
     // CREATE VEHICLE
     if (!vehicle) {
