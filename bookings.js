@@ -252,32 +252,7 @@ async function confirmBooking() {
         const cRes = await fetch(API + "/customers");
         const customers = await cRes.json();
 
-        const vRes = await fetch(API + "/vehicles");
-        const vehicles = await vRes.json();
-
-        let matchedVehicle = vehicles.find(v =>
-            (v.rego || "").toLowerCase().trim() === rego.toLowerCase().trim()
-        );
-
-        if (matchedVehicle) {
-
-            matchedCustomer = customers.find(c =>
-                (c._id || "").toString() ===
-                ((matchedVehicle.customer?._id || matchedVehicle.customer || "").toString())
-            );
-
-            if (matchedCustomer) {
-
-                document.getElementById("displayFirstName").value =
-                    matchedCustomer.firstName || "";
-
-                document.getElementById("displayLastName").value =
-                    matchedCustomer.lastName || "";
-
-                document.getElementById("displayPhone").value =
-                    matchedCustomer.phone || "";
-            }
-        }
+        const matchedVehicle = null;
 
         const customerName =
             (
@@ -293,8 +268,8 @@ async function confirmBooking() {
             body: JSON.stringify({
                 title: jobs[0]?.summary || "Booking",
 
-                customer: matchedCustomer || null,
-                vehicle: matchedVehicle || null,
+                customer: null,
+                vehicle: null,
 
                 customerName,
                 phone,
