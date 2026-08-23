@@ -333,14 +333,12 @@ const invoiceRes = await fetch(API + "/invoices", {
 
 const savedInvoice = await invoiceRes.json();
 
+// REMOVE PENDING JOB
+await fetch(API + "/jobs/" + currentInvoice._id, {
+    method: "DELETE"
+});
+
 show("customers");
-
-return;
-
-    // REMOVE PENDING JOB
-    await fetch(API + "/jobs/" + currentInvoice._id, {
-        method: "DELETE"
-    });
 
 }
 async function deletePendingInvoice(id) {
