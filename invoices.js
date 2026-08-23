@@ -103,6 +103,30 @@ document.getElementById("invoiceLastName").value =
 invoiceLabour = [];
 invoiceParts = [];
 
+(currentInvoice.jobs || [])
+    .filter(j => j.status === "done")
+    .forEach(j => {
+
+        const hours =
+            (j.timeSpent || 0) / 3600000;
+
+        invoiceLabour.push({
+            description: j.summary || "",
+            hours: parseFloat(hours.toFixed(2)),
+            rate: 100
+        });
+
+        (j.parts || []).forEach(p => {
+            invoiceParts.push({
+                description: p.description || "",
+                partNumber: p.partNumber || "",
+                qty: p.qty || 1,
+                price: 0
+            });
+        });
+
+    });
+
 renderInvoiceLines();
 }
 
