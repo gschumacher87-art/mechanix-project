@@ -189,7 +189,39 @@ oninput="invoiceLabour[${i}].rate=parseFloat(this.value)||0;updateInvoiceTotals(
 
 `).join("");
 
-    updateInvoiceTotals();
+        updateInvoiceTotals();
+}
+
+async function suggestInvoiceParts(index) {
+
+    const description = invoiceParts[index].description.trim();
+
+    if (!description) return;
+
+    const res = await fetch(
+        API + "/parts?q=" + encodeURIComponent(description)
+    );
+
+    const parts = await res.json();
+
+    if (!parts.length) return;
+
+    const part = parts[0];
+
+    const usePart = confirm(
+        "Use saved part?\n\n" +
+        (part.description || "") + "\n" +
+        (part.partNumber || "") + "\n" +
+        "$" + (part.price || 0)
+    );
+
+    if (!usePart) return;
+
+    invoiceParts[index].description = part.description || description;
+    invoiceParts[index].partNumber = part.partNumber || "";
+    invoiceParts[index].price = part.price || 0;
+
+    renderInvoiceLines();
 }
 
 function updateInvoiceTotals() {
