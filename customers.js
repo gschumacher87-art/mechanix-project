@@ -44,8 +44,7 @@ async function openCustomer(id) {
 
     invoices.forEach(i => {
     invoiceHtml += `
-    <div class="card" onclick="openSavedInvoice('${i._id}')">
-
+    <div class="card" onclick="openSavedInvoice('${i.invoiceNumber}')">
         <b>Invoice #${i.invoiceNumber || "?"}</b>
 
         <br><br>
