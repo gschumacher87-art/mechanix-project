@@ -79,6 +79,7 @@ async function openBooking(id) {
         make: booking.make || "",
         model: booking.model || "",
         buildDate: booking.buildDate || "",
+        vin: booking.vin || "",
 
 
         description: booking.description || "",
@@ -111,7 +112,7 @@ function renderBookingCard() {
 
     <b>Rego:</b> ${currentJob.rego || currentJob.vehicle?.rego || ""}<br>
 
-    <b>VIN:</b> ${currentJob.vehicle?.vin || ""}<br>
+    <b>VIN:</b> ${currentJob.vin || currentJob.vehicle?.vin || ""}<br>
 
     <b>Make:</b> ${currentJob.make || currentJob.vehicle?.make || ""}<br>
 
@@ -178,6 +179,7 @@ async function arrivedBooking(id) {
             make: currentJob.make || "",
             model: currentJob.model || "",
             buildDate: currentJob.buildDate || "",
+            vin: currentJob.vin || "",
 
             jobs: (currentJob.services || []).map((s, i) => ({
                 summary: s,
@@ -244,6 +246,7 @@ async function confirmBooking() {
     const make = document.getElementById("displayMake").value || "";
     const model = document.getElementById("displayModel").value || "";
     const buildDate = document.getElementById("displayBuildDate").value || "";
+    const vin = window.selectedBookingVehicle?.vin || "";
 
     let matchedCustomer = null;
 
@@ -278,6 +281,7 @@ async function confirmBooking() {
                 make,
                 model,
                 buildDate,
+                 vin,
 
 
                 description: jobs.map(j => j.description).join("\n"),
@@ -503,6 +507,8 @@ async function lookupPhone() {
 }
 
 function selectBookingVehicle(vehicle) {
+    
+    window.selectedBookingVehicle = vehicle;
 
     document.getElementById("displayRego").value =
         vehicle.rego || "";
