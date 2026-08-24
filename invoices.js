@@ -230,20 +230,33 @@ async function suggestInvoiceParts(index) {
 
     if (!parts.length) return;
 
-    const part = parts[0];
+    const options = parts.map((part, i) =>
+        `${i + 1}. ${part.description || ""} | ${part.partNumber || ""} | $${part.price || 0}`
+    ).join("\n");
 
-    const usePart = confirm(
-        "Use saved part?\n\n" +
-        (part.description || "") + "\n" +
-        (part.partNumber || "") + "\n" +
-        "$" + (part.price || 0)
+    const choice = prompt(
+        "Select saved part:\n\n" +
+        options +
+        "\n\nEnter number:"
     );
 
-    if (!usePart) return;
+    const selectedIndex = parseInt(choice) - 1;
 
-    invoiceParts[index].description = part.description || description;
-    invoiceParts[index].partNumber = part.partNumber || "";
-    invoiceParts[index].price = part.price || 0;
+    if (
+        isNaN(selectedIndex) ||
+        !parts[selectedIndex]
+    ) return;
+
+    const part = parts[selectedIndex];
+
+    invoiceParts[index].description =
+        part.description || description;
+
+    invoiceParts[index].partNumber =
+        part.partNumber || "";
+
+    invoiceParts[index].price =
+        part.price || 0;
 
     renderInvoiceLines();
 }
