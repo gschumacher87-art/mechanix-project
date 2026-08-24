@@ -271,8 +271,8 @@ async function confirmBooking() {
             body: JSON.stringify({
                 title: jobs[0]?.summary || "Booking",
 
-                customer: null,
-                vehicle: null,
+                customer: window.selectedBookingVehicle?.customer?._id || window.selectedBookingVehicle?.customer || null,
+                 vehicle: window.selectedBookingVehicle?._id || null,
 
                 customerName,
                 phone,
