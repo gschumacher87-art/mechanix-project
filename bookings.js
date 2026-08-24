@@ -521,4 +521,6 @@ function selectBookingVehicle(vehicle) {
 
     document.getElementById("displayBuildDate").value =
         vehicle.buildDate || "";
+
+    console.log("SELECTED VEHICLE VIN:", vehicle.vin);
 }
