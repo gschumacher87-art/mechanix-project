@@ -17,6 +17,10 @@ vehicle: {
     ref: "Vehicle",
     default: null
 },
+odometer: {
+    type: Number,
+    default: 0
+},
     labourCost: {
         type: Number,
         default: 0
