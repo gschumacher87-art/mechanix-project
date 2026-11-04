@@ -205,6 +205,9 @@ async function deleteBooking(id) {
 }
 
 function openBookingModal(date = null) {
+
+    window.selectedBookingVehicle = null;
+
     document.getElementById("bookingModal").style.display = "block";
 
     jobs = [];
