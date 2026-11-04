@@ -406,12 +406,14 @@ async function lookupRego() {
     );
 
     if (!vehicle) {
-        alert("Not Found");
-        return;
-    }
+    alert("Not Found");
+    return;
+}
 
-    document.getElementById("displayMake").value =
-        vehicle.make || "";
+selectBookingVehicle(vehicle);
+
+document.getElementById("displayMake").value =
+    vehicle.make || "";
 
     document.getElementById("displayModel").value =
         vehicle.model || "";
