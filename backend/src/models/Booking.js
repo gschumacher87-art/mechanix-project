@@ -13,6 +13,7 @@ const BookingSchema = new mongoose.Schema({
     make: String,
     model: String,
     buildDate: String,
+    vin: String,
 
     customer: {
         type: mongoose.Schema.Types.ObjectId,
