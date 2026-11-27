@@ -429,14 +429,13 @@ async function finaliseInvoice() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                customer: customer._id,
-                make,
-                model,
-                buildDate,
-                odometer,
-                rego,
-                vin
-            })
+    customer: customer._id,
+    make,
+    model,
+    buildDate,
+    rego,
+    vin
+})
         });
 
         vehicle = await createVehicleRes.json();
@@ -447,14 +446,13 @@ async function finaliseInvoice() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            job: currentInvoice._id,
-            customer: customer._id,
-            vehicle: vehicle._id,
-            odometer,
-            labour: invoiceLabour,
-            parts: invoiceParts,
-            status: "unpaid"
-        })
+    job: currentInvoice._id,
+    customer: customer._id,
+    vehicle: vehicle._id,
+    labour: invoiceLabour,
+    parts: invoiceParts,
+    status: "unpaid"
+})
     });
 
     const savedInvoice = await invoiceRes.json();
