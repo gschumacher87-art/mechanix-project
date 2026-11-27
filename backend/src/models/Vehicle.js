@@ -18,9 +18,6 @@ const vehicleSchema = new mongoose.Schema(
    buildDate: {
         type: String
 },
-odometer: {
-        type: Number
-},
     rego: {
         type: String
     },
