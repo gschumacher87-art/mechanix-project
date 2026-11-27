@@ -288,8 +288,71 @@ function updateInvoiceTotals() {
         invoiceTotal.toFixed(2);
 
 }
-function saveInvoice() {
-    alert("Save later");
+async function saveInvoice() {
+
+    if (!currentInvoice) return;
+
+    const payload = {
+
+        job: currentInvoice._id,
+
+        customer: currentInvoice.customer?._id ||
+                  currentInvoice.customer || null,
+
+        vehicle: currentInvoice.vehicle?._id ||
+                 currentInvoice.vehicle || null,
+
+        odometer:
+            parseInt(document.getElementById("invoiceOdometer").value) || 0,
+
+        labour: invoiceLabour,
+        parts: invoiceParts,
+
+        labourCost: invoiceLabour.reduce(
+            (t, l) => t + (l.hours * l.rate), 0
+        ),
+
+        partsCost: invoiceParts.reduce(
+            (t, p) => t + (p.qty * p.price), 0
+        ),
+
+        totalCost:
+            invoiceLabour.reduce((t, l) => t + (l.hours * l.rate), 0) +
+            invoiceParts.reduce((t, p) => t + (p.qty * p.price), 0),
+
+        status: "draft"
+    };
+
+    try {
+
+        const res = await fetch(
+            API + (currentInvoice.savedDraftId
+                ? "/invoices/" + currentInvoice.savedDraftId
+                : "/invoices"),
+            {
+                method: currentInvoice.savedDraftId ? "PUT" : "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error("Could not save invoice");
+        }
+
+        const saved = await res.json();
+
+        currentInvoice.savedDraftId = saved._id;
+
+        alert("Invoice draft saved.");
+
+    } catch (err) {
+
+        alert(err.message);
+
+    }
 }
 
 async function finaliseInvoice() {
