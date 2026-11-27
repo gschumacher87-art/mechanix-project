@@ -97,9 +97,7 @@ document.getElementById("invoiceLastName").value =
     document.getElementById("invoiceBuildDate").value =
         currentInvoice.buildDate || "";
 
-    document.getElementById("invoiceOdometer").value =
-    currentInvoice.vehicle?.odometer || "";
-
+    
 invoiceLabour = [];
 invoiceParts = [];
 
@@ -302,9 +300,6 @@ async function saveInvoice() {
         vehicle: currentInvoice.vehicle?._id ||
                  currentInvoice.vehicle || null,
 
-        odometer:
-            parseInt(document.getElementById("invoiceOdometer").value) || 0,
-
         labour: invoiceLabour,
         parts: invoiceParts,
 
@@ -386,8 +381,6 @@ async function finaliseInvoice() {
     const buildDate =
         document.getElementById("invoiceBuildDate").value.trim();
 
-    const odometer =
-        parseInt(document.getElementById("invoiceOdometer").value) || 0;
 
     // FIND CUSTOMER
     const customersRes = await fetch(API + "/customers");
