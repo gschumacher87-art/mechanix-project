@@ -1,29 +1,21 @@
 const mongoose = require("mongoose");
-
-const jobSchema = new mongoose.Schema(
-{
+const jobSchema = new mongoose.Schema({
     customerName: String,
-phone: String,
-rego: String,
-
-make: String,
-model: String,
-buildDate: String,
-
-vehicleName: String,
-
+    phone: String,
+    rego: String,
+    make: String,
+    model: String,
+    buildDate: String,
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Customer",
         default: null
     },
-
     bookingId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Booking",
         default: null
     },
-
     vehicle: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Vehicle",
@@ -33,53 +25,25 @@ vehicleName: String,
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-
     title: {
         type: String,
         required: true
     },
-    description: {
-        type: String
-    },
-    jobs: [
-{
-    summary: String,
-    description: String,
-
-    parts: [String],
-
-    inspections: [String],
-
-    notes: [String],
-
-    photos: [String],
-
-    status: String,
-
-    timeSpent: {
-        type: Number,
-        default: 0
-    },
-
-    startedAt: {
-        type: Number,
-        default: null
-    }
-}
-],
-
-    // ✅ CHECKLIST
-    checklist: [
-        {
-            text: String,
-            done: {
-                type: Boolean,
-                default: false
-            }
+    jobs: [{
+        summary: String,
+        status: {
+            type: String,
+            default: "waiting"
+        },
+        timeSpent: {
+            type: Number,
+            default: 0
+        },
+        startedAt: {
+            type: Number,
+            default: null
         }
-    ],
-
-    // 🔥 WORKFLOW STATUS
+    }],
     status: {
         type: String,
         enum: [
@@ -90,46 +54,8 @@ vehicleName: String,
             "completed"
         ],
         default: "booked"
-    },
-
-    // ⏱️ CLOCKING
-    clockIn: {
-        type: Date
-    },
-    clockOut: {
-        type: Date
-    },
-
-    // 📸 PHOTO CATEGORIES
-    photos: {
-        brakes: [String],
-        suspension: [String],
-        engine: [String],
-        other: [String]
-    },
-
-    // 💰 COSTS
-    labourCost: {
-        type: Number,
-        default: 0
-    },
-    partsCost: {
-        type: Number,
-        default: 0
-    },
-    totalCost: {
-        type: Number,
-        default: 0
     }
-},
-{
+}, {
     timestamps: true
-}
-);
-
-jobSchema.pre("save", function(next) {
-    this.totalCost = this.labourCost + this.partsCost;
-    next();
 });
-
 module.exports = mongoose.model("Job", jobSchema);
