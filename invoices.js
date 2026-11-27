@@ -386,24 +386,30 @@ async function finaliseInvoice() {
         vehicle = await createVehicleRes.json();
     }
 
-    // CREATE INVOICE
-    // CREATE INVOICE
-const invoiceRes = await fetch(API + "/invoices", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        job: currentInvoice._id,
-        customer: customer._id,
-        vehicle: vehicle._id,
-        labour: invoiceLabour,
-        parts: invoiceParts,
-        status: "unpaid"
-    })
-});
+        // CREATE INVOICE
+    const invoiceRes = await fetch(API + "/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            job: currentInvoice._id,
+            customer: customer._id,
+            vehicle: vehicle._id,
+            odometer,
+            labour: invoiceLabour,
+            parts: invoiceParts,
+            status: "unpaid"
+        })
+    });
 
-const savedInvoice = await invoiceRes.json();
+    const savedInvoice = await invoiceRes.json();
+
+    // UPDATE VEHICLE ODOMETER
+    await fetch(API + "/vehicles/" + vehicle._id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ odometer })
+    });
+
 
 // REMOVE PENDING JOB
 await fetch(API + "/jobs/" + currentInvoice._id, {
