@@ -457,13 +457,6 @@ async function finaliseInvoice() {
 
     const savedInvoice = await invoiceRes.json();
 
-    // UPDATE VEHICLE ODOMETER
-    await fetch(API + "/vehicles/" + vehicle._id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ odometer })
-    });
-
 
 // REMOVE PENDING JOB
 await fetch(API + "/jobs/" + currentInvoice._id, {
