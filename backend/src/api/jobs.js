@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Job = require("../models/Job");
 const auth = require("../middleware/auth");
-
-// CREATE job
+// CREATE JOB
 router.post("/", auth, async (req, res) => {
     try {
         const job = new Job(req.body);
@@ -13,70 +12,52 @@ router.post("/", auth, async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 });
-
-// GET all jobs
+// GET ALL JOBS
 router.get("/", auth, async (req, res) => {
     try {
         const jobs = await Job.find()
             .populate("customer")
             .populate("vehicle")
             .sort({ createdAt: -1 });
-
         res.json(jobs);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
-
-// GET single job
+// GET SINGLE JOB
 router.get("/:id", auth, async (req, res) => {
     try {
         const job = await Job.findById(req.params.id)
             .populate("customer")
             .populate("vehicle");
-
-        if (!job) return res.status(404).json({ error: "Not found" });
-
+        if (!job) {
+            return res.status(404).json({ error: "Job not found" });
+        }
         res.json(job);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
-
-// UPDATE job
+// UPDATE JOB
 router.put("/:id", auth, async (req, res) => {
     try {
         const job = await Job.findById(req.params.id);
-
-        if (!job) return res.status(404).json({ error: "Not found" });
-
-        // update sub-jobs
-        if (req.body.jobs) {
+        if (!job) {
+            return res.status(404).json({ error: "Job not found" });
+        }
+        if (req.body.jobs !== undefined) {
             job.jobs = req.body.jobs;
         }
-
-        
-if (req.body.status) {
-    job.status = req.body.status;
-} else {
-
-    const anyRunning = job.jobs.some(j => j.startedAt);
-    const allDone = job.jobs.length && job.jobs.every(j => j.status === "done");
-
-    if (allDone) job.status = "pending-invoice";
-    else if (anyRunning) job.status = "in-progress";
-    else job.status = "arrived";
-}
-
+        if (req.body.status !== undefined) {
+            job.status = req.body.status;
+        }
         await job.save();
-
         res.json(job);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 });
-
-// DELETE job
+// DELETE JOB
 router.delete("/:id", auth, async (req, res) => {
     try {
         await Job.findByIdAndDelete(req.params.id);
@@ -85,5 +66,4 @@ router.delete("/:id", auth, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
 module.exports = router;
